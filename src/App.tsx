@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, homeSharp, notificationsCircleSharp, notificationsSharp, personAddSharp, personCircleSharp, personSharp, searchCircleSharp, searchSharp, square, triangle } from 'ionicons/icons';
+import {  homeOutline, notificationsOutline , personOutline, searchOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,6 +34,8 @@ import HomePage from './ui/pages/home_page';
 import SearchPage from './ui/pages/search_page';
 import NotificationPage from './ui/pages/notification_page';
 import ProfilePage from './ui/pages/profile_page';
+import ChildPage from './ui/pages/child_page';
+import FollowUpPage from './ui/pages/follow_up_page';
 
 setupIonicReact();
 
@@ -54,27 +56,36 @@ const App: React.FC = () => (
           <Route path="/profilePage">
             <ProfilePage />
           </Route>
+          <Route path="/childPage">
+            <ChildPage/>
+          </Route>
+          <Route path="/followUpPage">
+            <FollowUpPage/>
+          </Route>
+          
           <Route exact path="/">
             <Redirect to="/homePage" />
           </Route>
         </IonRouterOutlet>
+
+        
         <IonTabBar slot="bottom">
         <IonTabButton tab="homePage" href="/homePage">
-            <IonIcon icon={homeSharp} />
+            <IonIcon icon={homeOutline} />
             <IonLabel>Home</IonLabel>
           </IonTabButton>
           <IonTabButton tab="searchPage" href="/searchPage">
-            <IonIcon icon={searchSharp} />
+            <IonIcon icon={searchOutline} />
             <IonLabel>Search</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="notificationPage" href="/notificationPage">
-            <IonIcon icon={notificationsSharp} />
+            <IonIcon icon={notificationsOutline} />
             <IonLabel>Notification</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="profilePage" href="/profilePage">
-            <IonIcon icon={personSharp} />
+            <IonIcon icon={personOutline} />
             <IonLabel>Profile</IonLabel>
           </IonTabButton>
          

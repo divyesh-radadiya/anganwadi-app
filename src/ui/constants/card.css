@@ -1,0 +1,21 @@
+.ion-card {
+  box-shadow: none;
+  border: 3px solid black;
+  background-color: white;
+  border-width: 2px;
+  border-radius: 10px;
+  margin-top: 6%;
+  margin-bottom: 6%;
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+.ion-text-head {
+  font-size: x-large;
+  font-weight: 700;
+}
+
+.ion-text-subhead {
+  font-size: large;
+  font-weight: 700;
+}
