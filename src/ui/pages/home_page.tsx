@@ -15,6 +15,8 @@ import "../constants/home.css";
 import React from "react";
 import { useState } from "react";
 import sendRequest from "../../services/getdata";
+import { Child, fChild } from "../../models/child";
+import { Children } from "../../models/fake_data";
 
 const HomePage: React.FC = () => {
   const children = [
@@ -27,12 +29,26 @@ const HomePage: React.FC = () => {
     "child 7",
     "child 8",
   ];
+
+  const AllChildren: Child[] = Children;
+
   const [listItems, setListItems] = useState<any>([]);
+  const [listChild, setListChild] = useState<Child[]>([]);
+
+  // var d = new Child();
 
   React.useEffect(() => {
     sendRequest().then((data) => {
-      setListItems(data);
-      // console.log(data);
+      data.forEach((cData: any) => {
+        let newChild = Object.assign(new Child(), cData);
+        setListChild((listChild) => {
+          return listChild.concat(newChild);
+        });
+        console.log(newChild.name);
+      });
+      // setListChild()
+      // setListItems(data);
+      console.log(data);
     });
   }, []);
 
@@ -56,16 +72,17 @@ const HomePage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList color="primary">
+        {/* <IonList color="primary">
           {listItems.map((item: any) => {
             return <ChildCard key={item["id"]} name={item["username"]} />;
           })}
-        </IonList>
-        {/* <IonList>
-          {children.map((child) => (
-            <ChildCard name={child} />
-          ))}
         </IonList> */}
+        <IonList>
+          {AllChildren.map(
+            (child: Child) =>
+              !child.is_done && <ChildCard key={child.sam_id} child={child} />
+          )}
+        </IonList>
       </IonContent>
     </IonPage>
   );

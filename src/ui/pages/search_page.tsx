@@ -12,10 +12,19 @@ import {
   IonCol,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
+import { useState } from "react";
+import { Child } from "../../models/child";
+import { Children } from "../../models/fake_data";
 import ChildCard from "../components/child_card";
 import "../constants/search.css";
 
 const SearchPage: React.FC = () => {
+  const AllChildren: Child[] = Children;
+
+  const [searchText, setSearchText] = useState("");
+
+  // searchbar.addEventListener('ionInput', handleInput);
+
   return (
     <IonPage>
       <IonHeader className="IonHeader">
@@ -41,9 +50,14 @@ const SearchPage: React.FC = () => {
           </IonRow>
         </IonCard>
         <IonList>
-          <ChildCard name="Child 1" />
+          {/* <ChildCard name="Child 1" />
           <ChildCard name="Child 2" />
-          <ChildCard name="Child 3" />
+          <ChildCard name="Child 3" /> */}
+          <IonList>
+            {AllChildren.map((child: Child) => (
+              <ChildCard key={child.sam_id} child={child} />
+            ))}
+          </IonList>
         </IonList>
       </IonContent>
     </IonPage>

@@ -6,36 +6,38 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
+import { Child } from "../../models/child";
 import "../constants/card.css";
 interface ContainerProps {
-  name: string;
+  child: Child;
 }
 
-const ChildCard: React.FC<ContainerProps> = ({ name }) => {
+const ChildCard: React.FC<ContainerProps> = ({ child }) => {
   return (
-    <IonCard routerLink="/childPage" className="ion-card">
+    <IonCard routerLink={`/childPage/${child.sam_id}`} className="ion-card">
       <IonGrid>
         <IonRow>
           <IonCol>
             <IonLabel color="primary" className="ion-text-head">
-              {name}
+              {child.name}
             </IonLabel>
           </IonCol>
           <IonCol className="ion-text-end">
             <IonText color="primary" className="ion-text-subhead">
-              Sam id
+              Samid: {child.sam_id}
             </IonText>
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol>
             <IonText color="primary" className="ion-text-subhead">
-              Age
+              Age: {child.age}
             </IonText>
           </IonCol>
           <IonCol className="ion-text-end">
             <IonText color="primary" className="ion-text-subhead">
-              Follow up date
+              {child.is_done && "Done"}
+              {!child.is_done && child.next_date?.toDateString()}
             </IonText>
           </IonCol>
         </IonRow>

@@ -3,28 +3,34 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
-  IonIcon,
   IonItem,
-  IonLabel,
   IonList,
-  IonListHeader,
   IonPage,
   IonRow,
-  IonSegment,
   IonText,
   IonToolbar,
 } from "@ionic/react";
+import { useParams } from "react-router";
+import { Child } from "../../models/child";
+import { Children } from "../../models/fake_data";
+import { Followup } from "../../models/followup";
 import FollowUpCard from "../components/follow_up_card";
 
 import "../constants/home.css";
 
 const ChildPage: React.FC = () => {
+  const selectedChildId = useParams<{ childId: string }>().childId;
+  const AllChildren: Child[] = Children;
+  const selectedChild = AllChildren.find(
+    (child) => child.sam_id === selectedChildId
+  );
+
   return (
     <IonPage>
       <IonHeader className="IonHeader">
         <IonToolbar>
           <IonText slot="start" color="primary" className="ion-text-title">
-            Child 1
+            {selectedChild?.name}
           </IonText>
           <div className="box" slot="end">
             <IonGrid>
@@ -49,30 +55,67 @@ const ChildPage: React.FC = () => {
           </IonItem>
 
           <IonItem>
-            <IonText className="ion-text-subhead">Sam id : {"123456"}</IonText>
+            <IonText className="ion-text-subhead">
+              Sam id : {selectedChild?.sam_id}
+            </IonText>
           </IonItem>
 
           <IonItem>
-            <IonText className="ion-text-subhead">Age : {"1"}</IonText>
+            <IonText className="ion-text-subhead">
+              Age : {selectedChild?.age}
+            </IonText>
           </IonItem>
 
           <IonItem>
-            <IonText className="ion-text-subhead">Address : {"sdsd"}</IonText>
+            <IonText className="ion-text-subhead">
+              Gender : {selectedChild?.gender}
+            </IonText>
           </IonItem>
 
           <IonItem>
+            <IonText className="ion-text-subhead">
+              Address : {selectedChild?.address}
+            </IonText>
+          </IonItem>
+
+          <IonItem>
+            <IonText className="ion-text-subhead">
+              Phone No : {selectedChild?.phone_no}
+            </IonText>
+          </IonItem>
+
+          {/* <IonItem>
             <IonText className="ion-text-head">Next follow up</IonText>
-          </IonItem>
-          <FollowUpCard name="Child 1" isDone={false} />
+          </IonItem> */}
+          {/* <FollowUpCard name="Child 1" isDone={false} /> */}
+
+          {/* <FollowUpCard
+            key={selectedChild?.followups[
+              selectedChild?.next_followupid?
+            ].given_date.toString()}
+            
+            followup={selectedChild?.followups[
+              selectedChild?.next_followupid?
+            ]}
+          /> */}
 
           <IonItem>
             <IonText className="ion-text-head">All follow ups</IonText>
           </IonItem>
+          {/* <FollowUpCard name="Child 1" isDone={true} />
           <FollowUpCard name="Child 1" isDone={true} />
           <FollowUpCard name="Child 1" isDone={true} />
           <FollowUpCard name="Child 1" isDone={true} />
-          <FollowUpCard name="Child 1" isDone={true} />
-          <FollowUpCard name="Child 1" isDone={true} />
+          <FollowUpCard name="Child 1" isDone={true} /> */}
+          <IonList>
+            {selectedChild?.followups.map((followup: Followup) => (
+              <FollowUpCard
+                key={followup.given_date.toString()}
+                followup={followup}
+                childId={selectedChildId}
+              />
+            ))}
+          </IonList>
         </IonList>
       </IonContent>
     </IonPage>
