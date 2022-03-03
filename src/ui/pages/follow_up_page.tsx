@@ -14,10 +14,12 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { idCardSharp } from "ionicons/icons";
-import { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useParams } from "react-router";
 import { Child } from "../../models/child";
 import { Children } from "../../models/fake_data";
+import { Followup } from "../../models/followup";
+import sendRequest from "../../services/getdata";
 
 import "../constants/home.css";
 
@@ -25,13 +27,46 @@ const FollowUpPage: React.FC = () => {
   const selectedChildId = useParams<{ childId: string }>().childId;
   const selectedFollowUpId = useParams<{ id: string }>().id;
 
-  const AllChildren: Child[] = Children;
-  const selectedChild = AllChildren.find(
-    (child) => child.sam_id === selectedChildId
-  );
-  const selectedFollowUp = selectedChild?.followups.find(
-    (followup) => followup.id === selectedFollowUpId
-  );
+  // const AllChildren: Child[] = Children;
+  // const selectedChild = AllChildren.find(
+  //   (child) => child.samId === selectedChildId
+  // );
+  // const selectedFollowUp = selectedChild?.followUps.find(
+  //   (followup) => followup.followUpId === selectedFollowUpId
+  // );
+
+  const [selectedFollowUp, setFollow] = useState<Followup>();
+  const [selectedChild, setChild] = useState<Child>();
+
+  React.useEffect(() => {
+    sendRequest().then((data) => {
+      data.forEach((curData: any) => {
+        if (curData["child"]["samId"].toString() == selectedChildId) {
+          let newChild: Child = Object.assign(new Child(), curData["child"]);
+          // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
+          setChild(() => {
+            return newChild;
+          });
+          curData["followUps"].forEach((curfollow: any) => {
+            if (curfollow["followUpId"] == selectedFollowUpId) {
+              let newFollow: Followup = Object.assign(
+                new Followup(),
+                curfollow
+              );
+              console.log(newFollow);
+
+              setFollow(() => {
+                return newFollow;
+              });
+            }
+          });
+        }
+      });
+      // setListChild()
+      // setListItems(data);
+      // console.log(data);
+    });
+  }, []);
 
   // const textRef = useRef<HTMLIonInputElement>(null);
 
@@ -40,7 +75,7 @@ const FollowUpPage: React.FC = () => {
       <IonHeader className="IonHeader">
         <IonToolbar>
           <IonText slot="start" color="primary" className="ion-text-title">
-            Follow up {selectedFollowUp?.id}
+            Follow up {selectedFollowUp?.followUpId}
           </IonText>
         </IonToolbar>
       </IonHeader>
@@ -48,7 +83,7 @@ const FollowUpPage: React.FC = () => {
         <IonList>
           <IonItem>
             <IonText className="ion-text-subhead">
-              Sam id : {selectedChild?.sam_id}
+              Sam id : {selectedChild?.samId}
             </IonText>
           </IonItem>
 
@@ -74,7 +109,7 @@ const FollowUpPage: React.FC = () => {
                 <IonCard className="ion-card">
                   <IonInput
                     placeholder="Date"
-                    value={selectedFollowUp?.visited_date?.toDateString()}
+                    // value={selectedFollowUp?.attemptedDate?}
                   ></IonInput>
                 </IonCard>
               </IonCol>
@@ -115,7 +150,7 @@ const FollowUpPage: React.FC = () => {
                 <IonCard className="ion-card">
                   <IonInput
                     placeholder="Growth status"
-                    value={selectedFollowUp?.growth_status?.toString()}
+                    value={selectedFollowUp?.growthStatus?.toString()}
                   ></IonInput>
                 </IonCard>
               </IonCol>
@@ -126,14 +161,14 @@ const FollowUpPage: React.FC = () => {
                 <IonCard className="ion-card">
                   <IonInput
                     placeholder="Any other symptoms"
-                    value={selectedFollowUp?.other?.toString()}
+                    value={selectedFollowUp?.symptoms?.toString()}
                   ></IonInput>
                 </IonCard>
               </IonCol>
             </IonRow>
           </IonGrid>
 
-          {selectedFollowUp?.is_attemted && (
+          {selectedFollowUp?.attempted && (
             <IonButton
               className="button-submit"
               slot="end"
@@ -146,7 +181,7 @@ const FollowUpPage: React.FC = () => {
               Done
             </IonButton>
           )}
-          {!selectedFollowUp?.is_attemted && (
+          {!selectedFollowUp?.attempted && (
             <IonButton
               className="button-submit"
               slot="end"

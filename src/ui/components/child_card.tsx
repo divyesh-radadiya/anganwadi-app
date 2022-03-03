@@ -14,7 +14,7 @@ interface ContainerProps {
 
 const ChildCard: React.FC<ContainerProps> = ({ child }) => {
   return (
-    <IonCard routerLink={`/childPage/${child.sam_id}`} className="ion-card">
+    <IonCard routerLink={`/childPage/${child.samId}`} className="ion-card">
       <IonGrid>
         <IonRow>
           <IonCol>
@@ -24,7 +24,7 @@ const ChildCard: React.FC<ContainerProps> = ({ child }) => {
           </IonCol>
           <IonCol className="ion-text-end">
             <IonText color="primary" className="ion-text-subhead">
-              Samid: {child.sam_id}
+              Samid: {child.samId}
             </IonText>
           </IonCol>
         </IonRow>
@@ -36,8 +36,8 @@ const ChildCard: React.FC<ContainerProps> = ({ child }) => {
           </IonCol>
           <IonCol className="ion-text-end">
             <IonText color="primary" className="ion-text-subhead">
-              {child.is_done && "Done"}
-              {!child.is_done && child.next_date?.toDateString()}
+              {child.isDone && "Done"}
+              {!child.isDone && child.nextDate?.toDateString()}
             </IonText>
           </IonCol>
         </IonRow>

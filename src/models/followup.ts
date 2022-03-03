@@ -1,12 +1,12 @@
 export class Followup {
-    id!: string;
+  followUpId!: string;
     height?: Number;
     weight?: Number;
     muac?: Number;
-    growth_status?: string;
-    other?: string;
-    is_attemted!: boolean;
-    given_date!: Date;
-    visited_date?: Date;
+    growthStatus?: string;
+    symptoms?: string;
+    attempted!: boolean;
+    followupDate!: Date;
+    attemptedDate?: Date;
   }
   

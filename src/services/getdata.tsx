@@ -2,7 +2,7 @@ import axios from "axios";
 
 const sendRequest = async () => {
   const response = await axios.get(
-    "https://jsonplaceholder.typicode.com/users",
+    "http://localhost:8080/api/v1/discharge_summary/findByAwwId/10001",
     {
       headers: {
         "Content-Type": "application/json",

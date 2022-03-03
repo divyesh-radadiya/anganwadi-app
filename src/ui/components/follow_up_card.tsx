@@ -23,29 +23,29 @@ interface ContainerProps {
 const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
   return (
     <IonCard className="ion-card">
-      {followup.is_attemted && (
+      {followup.attempted && (
         <IonGrid>
           <IonRow>
             <IonCol>
               <IonLabel color="primary" className="ion-text-subhead">
-                Follow up {followup.id}
+                Follow up {followup.followUpId}
               </IonLabel>
             </IonCol>
             <IonCol className="ion-text-end">
               <IonText color="primary" className="ion-text-subhead">
-                Status: {followup.growth_status}
+                Status: {followup.growthStatus}
               </IonText>
             </IonCol>
           </IonRow>
           <IonRow class="ion-align-items-center" style={{ height: "100%" }}>
             <IonCol>
               <IonText color="primary" className="ion-text-subhead">
-                {followup.given_date.toDateString()}
+                {followup.followupDate}
               </IonText>
             </IonCol>
             <IonCol className="ion-text-end">
               <IonButton
-                routerLink={`/followUpPage/${childId}/${followup.id}`}
+                routerLink={`/followUpPage/${childId}/${followup.followUpId}`}
                 size="small"
                 color="primary"
                 fill="solid"
@@ -59,28 +59,28 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
         </IonGrid>
       )}
 
-      {!followup.is_attemted && (
+      {!followup.attempted && (
         <IonGrid>
           <IonRow class="ion-align-items-center" style={{ height: "100%" }}>
             <IonCol className="col-no-left">
               <IonRow>
                 <IonCol>
                   <IonLabel color="primary" className="ion-text-subhead">
-                    Follow up {followup.id}
+                    Follow up {followup.followUpId}
                   </IonLabel>
                 </IonCol>
               </IonRow>
               <IonRow>
                 <IonCol>
                   <IonLabel color="primary" className="ion-text-subhead">
-                    {followup.given_date.toDateString()}
+                    {followup.followupDate}
                   </IonLabel>
                 </IonCol>
               </IonRow>
             </IonCol>
             <IonCol className="ion-text-end">
               <IonButton
-                routerLink={`/followUpPage/${childId}/${followup.id}`}
+                routerLink={`/followUpPage/${childId}/${followup.followUpId}`}
                 size="small"
                 color="primary"
                 fill="solid"

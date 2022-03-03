@@ -10,20 +10,62 @@ import {
   IonText,
   IonToolbar,
 } from "@ionic/react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
 import { Child } from "../../models/child";
 import { Children } from "../../models/fake_data";
 import { Followup } from "../../models/followup";
 import FollowUpCard from "../components/follow_up_card";
+import sendRequest from "../../services/getdata";
 
 import "../constants/home.css";
 
 const ChildPage: React.FC = () => {
   const selectedChildId = useParams<{ childId: string }>().childId;
   const AllChildren: Child[] = Children;
-  const selectedChild = AllChildren.find(
-    (child) => child.sam_id === selectedChildId
-  );
+  // const selectedChild = AllChildren.find(
+  //   (child) => child.samId === selectedChildId
+  // );
+  // console.log(selectedChildId);
+
+  const [selectedChild, setChild] = useState<Child>();
+
+  React.useEffect(() => {
+    sendRequest().then((data) => {
+      data.forEach((curData: any) => {
+        if (curData["child"]["samId"].toString() == selectedChildId) {
+          let newChild: Child = Object.assign(new Child(), curData["child"]);
+          // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
+          let allfollowUps: Followup[] = [];
+          let isDone = true;
+          let nextDate = new Date();
+          let nextFollowupid = "-";
+
+          curData["followUps"].forEach((curfollow: any) => {
+            let newFollow: Followup = Object.assign(new Followup(), curfollow);
+            if (newFollow.attempted == false) {
+              isDone = false;
+              nextDate = newFollow.followupDate;
+              nextFollowupid = newFollow.followUpId;
+            }
+            allfollowUps = allfollowUps.concat(newFollow);
+          });
+          newChild.followUps = allfollowUps;
+          newChild.isDone = isDone;
+          newChild.nextDate = nextDate;
+          newChild.nextFollowupid = nextFollowupid;
+
+          setChild(() => {
+            return newChild;
+          });
+          console.log(newChild.followUps);
+        }
+      });
+      // setListChild()
+      // setListItems(data);
+      // console.log(data);
+    });
+  }, []);
 
   return (
     <IonPage>
@@ -56,7 +98,7 @@ const ChildPage: React.FC = () => {
 
           <IonItem>
             <IonText className="ion-text-subhead">
-              Sam id : {selectedChild?.sam_id}
+              Sam id : {selectedChild?.samId}
             </IonText>
           </IonItem>
 
@@ -80,7 +122,7 @@ const ChildPage: React.FC = () => {
 
           <IonItem>
             <IonText className="ion-text-subhead">
-              Phone No : {selectedChild?.phone_no}
+              Phone No : {selectedChild?.contactNumber}
             </IonText>
           </IonItem>
 
@@ -108,9 +150,9 @@ const ChildPage: React.FC = () => {
           <FollowUpCard name="Child 1" isDone={true} />
           <FollowUpCard name="Child 1" isDone={true} /> */}
           <IonList>
-            {selectedChild?.followups.map((followup: Followup) => (
+            {selectedChild?.followUps.map((followup: Followup) => (
               <FollowUpCard
-                key={followup.given_date.toString()}
+                key={followup.followUpId}
                 followup={followup}
                 childId={selectedChildId}
               />
