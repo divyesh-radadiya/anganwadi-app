@@ -52,7 +52,7 @@ const SearchPage: React.FC = () => {
         });
         newChild.followUps = allfollowUps;
         newChild.isDone = isDone;
-        newChild.nextDate = nextDate;
+        newChild.nextDate = new Date(nextDate);
         newChild.nextFollowupid = nextFollowupid;
 
         setListChild((listChild) => {

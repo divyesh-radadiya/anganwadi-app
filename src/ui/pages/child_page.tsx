@@ -48,11 +48,12 @@ const ChildPage: React.FC = () => {
               nextDate = newFollow.followupDate;
               nextFollowupid = newFollow.followUpId;
             }
+            newFollow.followupDate = new Date(newFollow.followupDate);
             allfollowUps = allfollowUps.concat(newFollow);
           });
           newChild.followUps = allfollowUps;
           newChild.isDone = isDone;
-          newChild.nextDate = nextDate;
+          newChild.nextDate = new Date(nextDate);
           newChild.nextFollowupid = nextFollowupid;
 
           setChild(() => {

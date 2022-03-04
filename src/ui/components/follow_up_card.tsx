@@ -40,7 +40,7 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
           <IonRow class="ion-align-items-center" style={{ height: "100%" }}>
             <IonCol>
               <IonText color="primary" className="ion-text-subhead">
-                {followup.followupDate}
+                {followup.followupDate.toDateString()}
               </IonText>
             </IonCol>
             <IonCol className="ion-text-end">
@@ -73,7 +73,7 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
               <IonRow>
                 <IonCol>
                   <IonLabel color="primary" className="ion-text-subhead">
-                    {followup.followupDate}
+                    {followup.followupDate.toDateString()}
                   </IonLabel>
                 </IonCol>
               </IonRow>

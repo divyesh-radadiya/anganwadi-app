@@ -49,7 +49,8 @@ const HomePage: React.FC = () => {
         });
         newChild.followUps = allfollowUps;
         newChild.isDone = isDone;
-        newChild.nextDate = nextDate;
+
+        newChild.nextDate = new Date(nextDate);
         newChild.nextFollowupid = nextFollowupid;
 
         setListChild((listChild) => {
@@ -92,7 +93,7 @@ const HomePage: React.FC = () => {
         <IonList>
           {listChild.map(
             (child: Child) =>
-              child.isDone && <ChildCard key={child.samId} child={child} />
+              !child.isDone && <ChildCard key={child.samId} child={child} />
           )}
         </IonList>
       </IonContent>
