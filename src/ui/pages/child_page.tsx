@@ -29,6 +29,9 @@ const ChildPage: React.FC = () => {
   // console.log(selectedChildId);
 
   const [selectedChild, setChild] = useState<Child>();
+  const [selectedStatus, setStatus] = useState<String | undefined>("-");
+  const [selectedWeight, setWeight] = useState<any>("0");
+  // let status = "-";
 
   React.useEffect(() => {
     sendRequest().then((data) => {
@@ -47,6 +50,14 @@ const ChildPage: React.FC = () => {
               isDone = false;
               nextDate = newFollow.followupDate;
               nextFollowupid = newFollow.followUpId;
+            } else {
+              setStatus(() => {
+                return newFollow?.growthStatus?.toUpperCase();
+              });
+              // status=newFollow?.growthStatus?.toUpperCase();
+              setWeight(() => {
+                return newFollow.weight?.toString();
+              });
             }
             newFollow.followupDate = new Date(newFollow.followupDate);
             allfollowUps = allfollowUps.concat(newFollow);
@@ -79,12 +90,16 @@ const ChildPage: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol className="ion-text-end" class="col-no-top">
-                  <IonText className="ion-text-subhead">Growth status</IonText>
+                  <IonText className="ion-text-subhead">
+                    {selectedStatus}
+                  </IonText>
                 </IonCol>
               </IonRow>
               <IonRow>
                 <IonCol className="ion-text-end" class="col-no-top">
-                  <IonText className="ion-text-subhead">Weight</IonText>
+                  <IonText className="ion-text-subhead">
+                    {selectedWeight} KG
+                  </IonText>
                 </IonCol>
               </IonRow>
             </IonGrid>

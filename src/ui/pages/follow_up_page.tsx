@@ -55,7 +55,9 @@ const FollowUpPage: React.FC = () => {
               );
               console.log(newFollow);
               newFollow.followupDate = new Date(newFollow.followupDate);
-              // newFollow.attemptedDate = new Date(newFollow.attemptedDate);
+              newFollow.attemptedDate = new Date(
+                newFollow.attemptedDate ?? newFollow.followupDate
+              );
               setFollow(() => {
                 return newFollow;
               });
@@ -110,7 +112,7 @@ const FollowUpPage: React.FC = () => {
                 <IonCard className="ion-card">
                   <IonInput
                     placeholder="Date"
-                    // value={selectedFollowUp?.attemptedDate?.toDateString()}
+                    value={selectedFollowUp?.attemptedDate?.toDateString()}
                   ></IonInput>
                 </IonCard>
               </IonCol>
