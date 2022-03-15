@@ -11,6 +11,8 @@ import { Followup } from "./followup";
     nextDate?: Date;
     nextFollowupid?: string;
     followUps!: Followup[];
+    currWeight?: Number;
+    currGrowthStatus?: string;
 
   }
  

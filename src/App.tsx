@@ -41,60 +41,64 @@ import NotificationPage from "./ui/pages/notification_page";
 import ProfilePage from "./ui/pages/profile_page";
 import ChildPage from "./ui/pages/child_page";
 import FollowUpPage from "./ui/pages/follow_up_page";
+import ChildernContext from "./stores/childern_contex";
+import ChildernContextProvider from "./stores/childern_contex_provider";
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/homePage">
-            <HomePage />
-          </Route>
-          <Route exact path="/searchPage">
-            <SearchPage />
-          </Route>
-          <Route exact path="/notificationPage">
-            <NotificationPage />
-          </Route>
-          <Route path="/profilePage">
-            <ProfilePage />
-          </Route>
-          <Route path="/childPage/:childId">
-            <ChildPage />
-          </Route>
-          <Route path="/followUpPage/:childId/:id">
-            <FollowUpPage />
-          </Route>
+    <ChildernContextProvider>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/homePage">
+              <HomePage />
+            </Route>
+            <Route exact path="/searchPage">
+              <SearchPage />
+            </Route>
+            <Route exact path="/notificationPage">
+              <NotificationPage />
+            </Route>
+            <Route path="/profilePage">
+              <ProfilePage />
+            </Route>
+            <Route path="/childPage/:childId">
+              <ChildPage />
+            </Route>
+            <Route path="/followUpPage/:childId/:id">
+              <FollowUpPage />
+            </Route>
 
-          <Route exact path="/">
-            <Redirect to="/homePage" />
-          </Route>
-        </IonRouterOutlet>
+            <Route exact path="/">
+              <Redirect to="/homePage" />
+            </Route>
+          </IonRouterOutlet>
 
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="homePage" href="/homePage">
-            <IonIcon icon={homeOutline} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="searchPage" href="/searchPage">
-            <IonIcon icon={searchOutline} />
-            <IonLabel>Search</IonLabel>
-          </IonTabButton>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="homePage" href="/homePage">
+              <IonIcon icon={homeOutline} />
+              <IonLabel>Home</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="searchPage" href="/searchPage">
+              <IonIcon icon={searchOutline} />
+              <IonLabel>Search</IonLabel>
+            </IonTabButton>
 
-          <IonTabButton tab="notificationPage" href="/notificationPage">
-            <IonIcon icon={notificationsOutline} />
-            <IonLabel>Notification</IonLabel>
-          </IonTabButton>
+            <IonTabButton tab="notificationPage" href="/notificationPage">
+              <IonIcon icon={notificationsOutline} />
+              <IonLabel>Notification</IonLabel>
+            </IonTabButton>
 
-          <IonTabButton tab="profilePage" href="/profilePage">
-            <IonIcon icon={personOutline} />
-            <IonLabel>Profile</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
+            <IonTabButton tab="profilePage" href="/profilePage">
+              <IonIcon icon={personOutline} />
+              <IonLabel>Profile</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </ChildernContextProvider>
   </IonApp>
 );
 

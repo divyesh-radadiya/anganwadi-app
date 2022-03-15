@@ -6,15 +6,25 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
+import { useContext } from "react";
 import { Child } from "../../models/child";
+import ChildernContext from "../../stores/childern_contex";
 import "../constants/card.css";
 interface ContainerProps {
   child: Child;
 }
 
 const ChildCard: React.FC<ContainerProps> = ({ child }) => {
+  const childernCtx = useContext(ChildernContext);
+
   return (
-    <IonCard routerLink={`/childPage/${child.samId}`} className="ion-card">
+    <IonCard
+      // onClick={() => {
+      //   childernCtx.isSelect(child.samId);
+      // }}
+      routerLink={`/childPage/${child.samId}`}
+      className="ion-card"
+    >
       <IonGrid>
         <IonRow>
           <IonCol>

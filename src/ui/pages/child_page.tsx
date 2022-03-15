@@ -10,7 +10,7 @@ import {
   IonText,
   IonToolbar,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router";
 import { Child } from "../../models/child";
 import { Children } from "../../models/fake_data";
@@ -19,64 +19,66 @@ import FollowUpCard from "../components/follow_up_card";
 import sendRequest from "../../services/getdata";
 
 import "../constants/home.css";
+import ChildernContext from "../../stores/childern_contex";
 
 const ChildPage: React.FC = () => {
   const selectedChildId = useParams<{ childId: string }>().childId;
-  const AllChildren: Child[] = Children;
+  // const AllChildren: Child[] = Children;
   // const selectedChild = AllChildren.find(
   //   (child) => child.samId === selectedChildId
   // );
   // console.log(selectedChildId);
+  const childernCtx = useContext(ChildernContext);
 
-  const [selectedChild, setChild] = useState<Child>();
-  const [selectedStatus, setStatus] = useState<String | undefined>("-");
-  const [selectedWeight, setWeight] = useState<any>("0");
+  // const [selectedStatus, setStatus] = useState<String | undefined>("-");
+  // const [selectedWeight, setWeight] = useState<any>("0");
   // let status = "-";
 
   React.useEffect(() => {
-    sendRequest().then((data) => {
-      data.forEach((curData: any) => {
-        if (curData["child"]["samId"].toString() == selectedChildId) {
-          let newChild: Child = Object.assign(new Child(), curData["child"]);
-          // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
-          let allfollowUps: Followup[] = [];
-          let isDone = true;
-          let nextDate = new Date();
-          let nextFollowupid = "-";
+    childernCtx.isChildSelect(selectedChildId);
+    console.log("cccccccccccccccc");
 
-          curData["followUps"].forEach((curfollow: any) => {
-            let newFollow: Followup = Object.assign(new Followup(), curfollow);
-            if (newFollow.attempted == false) {
-              isDone = false;
-              nextDate = newFollow.followupDate;
-              nextFollowupid = newFollow.followUpId;
-            } else {
-              setStatus(() => {
-                return newFollow?.growthStatus?.toUpperCase();
-              });
-              // status=newFollow?.growthStatus?.toUpperCase();
-              setWeight(() => {
-                return newFollow.weight?.toString();
-              });
-            }
-            newFollow.followupDate = new Date(newFollow.followupDate);
-            allfollowUps = allfollowUps.concat(newFollow);
-          });
-          newChild.followUps = allfollowUps;
-          newChild.isDone = isDone;
-          newChild.nextDate = new Date(nextDate);
-          newChild.nextFollowupid = nextFollowupid;
-
-          setChild(() => {
-            return newChild;
-          });
-          console.log(newChild.followUps);
-        }
-      });
-      // setListChild()
-      // setListItems(data);
-      // console.log(data);
-    });
+    // sendRequest().then((data) => {
+    //   data.forEach((curData: any) => {
+    //     if (curData["child"]["samId"].toString() == selectedChildId) {
+    //       let newChild: Child = Object.assign(new Child(), curData["child"]);
+    //       // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
+    //       let allfollowUps: Followup[] = [];
+    //       let isDone = true;
+    //       let nextDate = new Date();
+    //       let nextFollowupid = "-";
+    //       curData["followUps"].forEach((curfollow: any) => {
+    //         let newFollow: Followup = Object.assign(new Followup(), curfollow);
+    //         if (newFollow.attempted == false) {
+    //           isDone = false;
+    //           nextDate = newFollow.followupDate;
+    //           nextFollowupid = newFollow.followUpId;
+    //         } else {
+    //           setStatus(() => {
+    //             return newFollow?.growthStatus?.toUpperCase();
+    //           });
+    //           // status=newFollow?.growthStatus?.toUpperCase();
+    //           setWeight(() => {
+    //             return newFollow.weight?.toString();
+    //           });
+    //         }
+    //         newFollow.followupDate = new Date(newFollow.followupDate);
+    //         allfollowUps = allfollowUps.concat(newFollow);
+    //       });
+    //       newChild.followUps = allfollowUps;
+    //       newChild.isDone = isDone;
+    //       newChild.nextDate = new Date(nextDate);
+    //       newChild.nextFollowupid = nextFollowupid;
+    //       setChild(() => {
+    //         return newChild;
+    //       });
+    //       console.log(newChild.followUps);
+    //     }
+    //   });
+    //   // setListChild()
+    //   // setListItems(data);
+    //   // console.log(data);
+    // });
   }, []);
 
   return (
@@ -84,21 +86,21 @@ const ChildPage: React.FC = () => {
       <IonHeader className="IonHeader">
         <IonToolbar>
           <IonText slot="start" color="primary" className="ion-text-title">
-            {selectedChild?.name}
+            {childernCtx.selectedChild?.name}
           </IonText>
           <div className="box" slot="end">
             <IonGrid>
               <IonRow>
                 <IonCol className="ion-text-end" class="col-no-top">
                   <IonText className="ion-text-subhead">
-                    {selectedStatus}
+                    {childernCtx.selectedChild.currGrowthStatus}
                   </IonText>
                 </IonCol>
               </IonRow>
               <IonRow>
                 <IonCol className="ion-text-end" class="col-no-top">
                   <IonText className="ion-text-subhead">
-                    {selectedWeight} KG
+                    {childernCtx.selectedChild.currWeight} KG
                   </IonText>
                 </IonCol>
               </IonRow>
@@ -114,31 +116,31 @@ const ChildPage: React.FC = () => {
 
           <IonItem>
             <IonText className="ion-text-subhead">
-              Sam id : {selectedChild?.samId}
+              Sam id : {childernCtx.selectedChild?.samId}
             </IonText>
           </IonItem>
 
           <IonItem>
             <IonText className="ion-text-subhead">
-              Age : {selectedChild?.age}
+              Age : {childernCtx.selectedChild?.age}
             </IonText>
           </IonItem>
 
           <IonItem>
             <IonText className="ion-text-subhead">
-              Gender : {selectedChild?.gender}
+              Gender : {childernCtx.selectedChild?.gender}
             </IonText>
           </IonItem>
 
           <IonItem>
             <IonText className="ion-text-subhead">
-              Address : {selectedChild?.address}
+              Address : {childernCtx.selectedChild?.address}
             </IonText>
           </IonItem>
 
           <IonItem>
             <IonText className="ion-text-subhead">
-              Phone No : {selectedChild?.contactNumber}
+              Phone No : {childernCtx.selectedChild?.contactNumber}
             </IonText>
           </IonItem>
 
@@ -166,11 +168,11 @@ const ChildPage: React.FC = () => {
           <FollowUpCard name="Child 1" isDone={true} />
           <FollowUpCard name="Child 1" isDone={true} /> */}
           <IonList>
-            {selectedChild?.followUps.map((followup: Followup) => (
+            {childernCtx.selectedChild?.followUps.map((followup: Followup) => (
               <FollowUpCard
                 key={followup.followUpId}
                 followup={followup}
-                childId={selectedChildId}
+                childId={childernCtx.selectedChild.samId}
               />
             ))}
           </IonList>
