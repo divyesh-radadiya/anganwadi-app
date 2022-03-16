@@ -8,12 +8,10 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
-import {
-  addOutline,
-  chevronForwardOutline,
-  pencilOutline,
-} from "ionicons/icons";
+import { addOutline } from "ionicons/icons";
+import { useContext } from "react";
 import { Followup } from "../../models/followup";
+import ChildernContext from "../../stores/childern_contex";
 import "../constants/card.css";
 interface ContainerProps {
   followup: Followup;
@@ -21,6 +19,10 @@ interface ContainerProps {
 }
 
 const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
+  const childernCtx = useContext(ChildernContext);
+  const clickHandler = () => {
+    childernCtx.isFollowUpSelect(followup.followUpId);
+  };
   return (
     <IonCard className="ion-card">
       {followup.attempted && (
@@ -45,7 +47,8 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
             </IonCol>
             <IonCol className="ion-text-end">
               <IonButton
-                routerLink={`/followUpPage/${childId}/${followup.followUpId}`}
+                routerLink={`/followUpPage`}
+                onClick={clickHandler}
                 size="small"
                 color="primary"
                 fill="solid"
@@ -80,7 +83,8 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
             </IonCol>
             <IonCol className="ion-text-end">
               <IonButton
-                routerLink={`/followUpPage/${childId}/${followup.followUpId}`}
+                routerLink={`/followUpPage`}
+                onClick={clickHandler}
                 size="small"
                 color="primary"
                 fill="solid"

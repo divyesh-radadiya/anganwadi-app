@@ -12,73 +12,37 @@ import {
   IonRow,
   IonText,
   IonToolbar,
+  IonIcon,
 } from "@ionic/react";
-import { idCardSharp } from "ionicons/icons";
+
+import { calendarOutline } from "ionicons/icons";
 import React, { useContext, useRef, useState } from "react";
 import { useParams } from "react-router";
-import { Child } from "../../models/child";
-import { Children } from "../../models/fake_data";
-import { Followup } from "../../models/followup";
-import sendRequest from "../../services/getdata";
 import ChildernContext from "../../stores/childern_contex";
+import DateModal from "../components/date_modal";
 
 import "../constants/home.css";
 
 const FollowUpPage: React.FC = () => {
   const childernCtx = useContext(ChildernContext);
 
-  // const selectedChildId = useParams<{ childId: string }>().childId;
-  const selectedFollowUpId = useParams<{ id: string }>().id;
+  const [isAdding, setIsAdding] = useState(false);
+  const [cDate, setCDate] = useState<Date>(new Date());
 
-  // const AllChildren: Child[] = Children;
-  // const selectedChild = AllChildren.find(
-  //   (child) => child.samId === selectedChildId
-  // );
-  // const selectedFollowUp = selectedChild?.followUps.find(
-  //   (followup) => followup.followUpId === selectedFollowUpId
-  // );
+  const startAddDateHandler = () => {
+    setIsAdding(true);
+  };
 
-  // const [selectedFollowUp, setFollow] = useState<Followup>();
-  // const [selectedChild, setChild] = useState<Child>();
+  const cancelAddDateHandler = () => {
+    setIsAdding(false);
+  };
 
-  React.useEffect(() => {
-    sendRequest().then((data) => {
-      childernCtx.isFollowUpSelect(selectedFollowUpId);
-
-      console.log("fffffffffffffffff");
-
-      // data.forEach((curData: any) => {
-      //   if (curData["child"]["samId"].toString() == selectedChildId) {
-      //     let newChild: Child = Object.assign(new Child(), curData["child"]);
-      //     // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
-      //     setChild(() => {
-      //       return newChild;
-      //     });
-      //     curData["followUps"].forEach((curfollow: any) => {
-      //       if (curfollow["followUpId"] == selectedFollowUpId) {
-      //         let newFollow: Followup = Object.assign(
-      //           new Followup(),
-      //           curfollow
-      //         );
-      //         console.log(newFollow);
-      //         newFollow.followupDate = new Date(newFollow.followupDate);
-      //         newFollow.attemptedDate = new Date(
-      //           newFollow.attemptedDate ?? newFollow.followupDate
-      //         );
-      //         setFollow(() => {
-      //           return newFollow;
-      //         });
-      //       }
-      //     });
-      //   }
-      // });
-      // setListChild()
-      // setListItems(data);
-      // console.log(data);
+  const dateAddHandler = (date: Date) => {
+    setCDate((oDate) => {
+      return date;
     });
-  }, []);
-
-  // const textRef = useRef<HTMLIonInputElement>(null);
+    setIsAdding(false);
+  };
 
   return (
     <IonPage>
@@ -121,6 +85,7 @@ const FollowUpPage: React.FC = () => {
                     <IonInput
                       placeholder="Date"
                       value={childernCtx.selectedFollowUp?.attemptedDate?.toDateString()}
+                      readonly
                     ></IonInput>
                   </IonCard>
                 </IonCol>
@@ -132,6 +97,8 @@ const FollowUpPage: React.FC = () => {
                     <IonInput
                       placeholder="Weight"
                       value={childernCtx.selectedFollowUp?.weight?.toString()}
+                      readonly
+                      inputmode="numeric"
                     ></IonInput>
                   </IonCard>
                 </IonCol>
@@ -140,6 +107,8 @@ const FollowUpPage: React.FC = () => {
                     <IonInput
                       placeholder="Height"
                       value={childernCtx.selectedFollowUp?.height?.toString()}
+                      readonly
+                      inputmode="numeric"
                     ></IonInput>
                   </IonCard>
                 </IonCol>
@@ -151,6 +120,8 @@ const FollowUpPage: React.FC = () => {
                     <IonInput
                       placeholder="Middle upper arm circumference"
                       value={childernCtx.selectedFollowUp?.muac?.toString()}
+                      readonly
+                      inputmode="numeric"
                     ></IonInput>
                   </IonCard>
                 </IonCol>
@@ -162,6 +133,8 @@ const FollowUpPage: React.FC = () => {
                     <IonInput
                       placeholder="Growth status"
                       value={childernCtx.selectedFollowUp?.growthStatus?.toString()}
+                      readonly
+                      inputmode="text"
                     ></IonInput>
                   </IonCard>
                 </IonCol>
@@ -173,6 +146,8 @@ const FollowUpPage: React.FC = () => {
                     <IonInput
                       placeholder="Any other symptoms"
                       value={childernCtx.selectedFollowUp?.symptoms?.toString()}
+                      readonly
+                      inputmode="text"
                     ></IonInput>
                   </IonCard>
                 </IonCol>
@@ -181,14 +156,34 @@ const FollowUpPage: React.FC = () => {
           )}
 
           {!childernCtx.selectedFollowUp?.attempted && (
-            <IonGrid>
+            <IonGrid className="grid-no-top">
               <IonRow>
                 <IonCol className="col-no-top">
                   <IonCard className="ion-card">
-                    <IonInput
-                      placeholder="Date"
-                      // value={childernCtx.selectedFollowUp?.attemptedDate?.toDateString()}
-                    ></IonInput>
+                    <IonRow>
+                      <IonCol class="col-no-top">
+                        <IonInput
+                          placeholder="Date"
+                          value={cDate.toDateString()}
+                        ></IonInput>
+                      </IonCol>
+
+                      <IonCol size="1.5" class="col-no-top">
+                        <IonIcon
+                          color="primary"
+                          size="large"
+                          icon={calendarOutline}
+                          onClick={startAddDateHandler}
+                        />
+                        <DateModal
+                          show={isAdding}
+                          onCancel={cancelAddDateHandler}
+                          onSave={dateAddHandler}
+                        />
+                      </IonCol>
+                    </IonRow>
+
+                    {/* <IonDatetime placeholder="Select Date"></IonDatetime> */}
                   </IonCard>
                 </IonCol>
               </IonRow>
@@ -198,6 +193,8 @@ const FollowUpPage: React.FC = () => {
                   <IonCard className="ion-card">
                     <IonInput
                       placeholder="Weight"
+                      inputmode="numeric"
+
                       // value={childernCtx.selectedFollowUp?.weight?.toString()}
                     ></IonInput>
                   </IonCard>
@@ -206,6 +203,8 @@ const FollowUpPage: React.FC = () => {
                   <IonCard className="ion-card">
                     <IonInput
                       placeholder="Height"
+                      inputmode="numeric"
+
                       // value={childernCtx.selectedFollowUp?.height?.toString()}
                     ></IonInput>
                   </IonCard>
@@ -217,6 +216,8 @@ const FollowUpPage: React.FC = () => {
                   <IonCard className="ion-card">
                     <IonInput
                       placeholder="Middle upper arm circumference"
+                      inputmode="numeric"
+
                       // value={childernCtx.selectedFollowUp?.muac?.toString()}
                     ></IonInput>
                   </IonCard>
@@ -228,6 +229,8 @@ const FollowUpPage: React.FC = () => {
                   <IonCard className="ion-card">
                     <IonInput
                       placeholder="Growth status"
+                      inputmode="text"
+
                       // value={childernCtx.selectedFollowUp?.growthStatus?.toString()}
                     ></IonInput>
                   </IonCard>
@@ -239,6 +242,8 @@ const FollowUpPage: React.FC = () => {
                   <IonCard className="ion-card">
                     <IonInput
                       placeholder="Any other symptoms"
+                      inputmode="text"
+
                       // value={childernCtx.selectedFollowUp?.symptoms?.toString()}
                     ></IonInput>
                   </IonCard>

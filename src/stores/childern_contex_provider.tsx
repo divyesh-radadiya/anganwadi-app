@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Child } from "../models/child";
 import { Followup } from "../models/followup";
 import sendRequest from "../services/getdata";
@@ -56,6 +56,8 @@ const ChildernContextProvider: React.FC = (props) => {
       ],
     },
   ]);
+
+  const [searchChildren, setSearchChildern] = useState<Child[]>([]);
 
   const [selectedChild, setChild] = useState<Child>({
     samId: "123",
@@ -119,7 +121,7 @@ const ChildernContextProvider: React.FC = (props) => {
     attemptedDate: new Date("2022-02-14"),
   });
 
-  React.useEffect(() => {
+  const updateData = () => {
     sendRequest().then((data) => {
       setChildern(() => {
         return [];
@@ -151,13 +153,22 @@ const ChildernContextProvider: React.FC = (props) => {
         setChildern((allChildren) => {
           return allChildren.concat(newChild);
         });
-
-        // console.log(newChild);
       });
-      // setListChild()
-      // setListItems(data);
-      // console.log(childernCtx.allChildren[0]);
+
+      setSearchChildern((allSearchChildren) => {
+        return allChildren;
+      });
     });
+  };
+
+  const updateSearchData = () => {
+    setSearchChildern((allSearchChildren) => {
+      return allChildren;
+    });
+  };
+
+  React.useEffect(() => {
+    updateData();
   }, []);
 
   const isChildSelect = (samId: string) => {
@@ -167,27 +178,10 @@ const ChildernContextProvider: React.FC = (props) => {
         return child.samId == samId;
       }) ?? selectedChild;
 
-    // setChild((currChild) => {
-    //   console.log(currSelectedChild == null);
-    //   if (!!currSelectedChild) {
-    //     console.log(currSelectedChild.samId);
-    //   } else {
-    //     console.log(currChild.samId);
-    //   }
-    //   return !!currSelectedChild ? currSelectedChild : currChild;
-    //   return currSelectedChild ?? currChild;
-    // });
-
-    // console.log(selectedChild.samId);
-
-    // const currSelectedChildNext = selectedChild;
     let allfollowUps: Followup[] = [];
 
     currSelectedChildNext.followUps.forEach((curfollow: Followup) => {
       if (curfollow.attempted == false) {
-        // currSelectedChildNext.isDone = false;
-        // currSelectedChildNext.nextDate = new Date(curfollow.followupDate);
-        // currSelectedChildNext.nextFollowupid = curfollow.followUpId;
       } else {
         currSelectedChildNext.currGrowthStatus = curfollow?.growthStatus;
         currSelectedChildNext.currWeight = curfollow?.weight;
@@ -207,28 +201,43 @@ const ChildernContextProvider: React.FC = (props) => {
   const isFollowUpSelect = (followUpId: string) => {
     selectedChild.followUps.forEach((curfollow: Followup) => {
       if (curfollow.followUpId == followUpId) {
-        // let newFollow: Followup = Object.assign(new Followup(), curfollow);
-        // console.log(curfollow);
-        // curfollow.followupDate = new Date(curfollow.followupDate);
         curfollow.attemptedDate = new Date(
           curfollow.attemptedDate ?? curfollow.followupDate
         );
-        // setFollow(() => {
-        //   return newFollow;
-        // });
         setFollowUp((currFollowUp) => curfollow);
       }
     });
+  };
+
+  const search = (name?: string) => {
+    if (name == "" || name == null || name == undefined) {
+      updateData();
+    } else {
+      setSearchChildern(() => {
+        return [];
+      });
+      allChildren.forEach((child: Child) => {
+        if (name?.toLowerCase() == child.name.toLowerCase()) {
+          setSearchChildern((allSearchChildren) => {
+            return allSearchChildren.concat(child);
+          });
+        }
+      });
+    }
   };
 
   return (
     <ChildernContext.Provider
       value={{
         allChildren,
+        searchChildren,
         selectedChild,
         selectedFollowUp,
         isChildSelect,
         isFollowUpSelect,
+        search,
+        updateData,
+        updateSearchData,
       }}
     >
       {props.children}

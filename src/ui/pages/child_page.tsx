@@ -10,76 +10,15 @@ import {
   IonText,
   IonToolbar,
 } from "@ionic/react";
-import React, { useContext, useState } from "react";
-import { useParams } from "react-router";
-import { Child } from "../../models/child";
-import { Children } from "../../models/fake_data";
+import React, { useContext } from "react";
 import { Followup } from "../../models/followup";
 import FollowUpCard from "../components/follow_up_card";
-import sendRequest from "../../services/getdata";
 
 import "../constants/home.css";
 import ChildernContext from "../../stores/childern_contex";
 
 const ChildPage: React.FC = () => {
-  const selectedChildId = useParams<{ childId: string }>().childId;
-  // const AllChildren: Child[] = Children;
-  // const selectedChild = AllChildren.find(
-  //   (child) => child.samId === selectedChildId
-  // );
-  // console.log(selectedChildId);
   const childernCtx = useContext(ChildernContext);
-
-  // const [selectedStatus, setStatus] = useState<String | undefined>("-");
-  // const [selectedWeight, setWeight] = useState<any>("0");
-  // let status = "-";
-
-  React.useEffect(() => {
-    childernCtx.isChildSelect(selectedChildId);
-    console.log("cccccccccccccccc");
-
-    // sendRequest().then((data) => {
-    //   data.forEach((curData: any) => {
-    //     if (curData["child"]["samId"].toString() == selectedChildId) {
-    //       let newChild: Child = Object.assign(new Child(), curData["child"]);
-    //       // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
-    //       let allfollowUps: Followup[] = [];
-    //       let isDone = true;
-    //       let nextDate = new Date();
-    //       let nextFollowupid = "-";
-    //       curData["followUps"].forEach((curfollow: any) => {
-    //         let newFollow: Followup = Object.assign(new Followup(), curfollow);
-    //         if (newFollow.attempted == false) {
-    //           isDone = false;
-    //           nextDate = newFollow.followupDate;
-    //           nextFollowupid = newFollow.followUpId;
-    //         } else {
-    //           setStatus(() => {
-    //             return newFollow?.growthStatus?.toUpperCase();
-    //           });
-    //           // status=newFollow?.growthStatus?.toUpperCase();
-    //           setWeight(() => {
-    //             return newFollow.weight?.toString();
-    //           });
-    //         }
-    //         newFollow.followupDate = new Date(newFollow.followupDate);
-    //         allfollowUps = allfollowUps.concat(newFollow);
-    //       });
-    //       newChild.followUps = allfollowUps;
-    //       newChild.isDone = isDone;
-    //       newChild.nextDate = new Date(nextDate);
-    //       newChild.nextFollowupid = nextFollowupid;
-    //       setChild(() => {
-    //         return newChild;
-    //       });
-    //       console.log(newChild.followUps);
-    //     }
-    //   });
-    //   // setListChild()
-    //   // setListItems(data);
-    //   // console.log(data);
-    // });
-  }, []);
 
   return (
     <IonPage>

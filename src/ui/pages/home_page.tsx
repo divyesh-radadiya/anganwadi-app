@@ -1,6 +1,8 @@
 import {
   IonButton,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonHeader,
   IonIcon,
   IonList,
@@ -8,95 +10,90 @@ import {
   IonText,
   IonToolbar,
 } from "@ionic/react";
-import { chevronDownOutline } from "ionicons/icons";
+import {
+  chevronDownOutline,
+  optionsOutline,
+  refreshOutline,
+} from "ionicons/icons";
 import ChildCard from "../components/child_card";
 import "../constants/home.css";
 
-import React, { useContext } from "react";
-import { useState } from "react";
-import sendRequest from "../../services/getdata";
+import React, { useContext, useState } from "react";
 import { Child } from "../../models/child";
-import { Children } from "../../models/fake_data";
-import { Followup } from "../../models/followup";
 import ChildernContext from "../../stores/childern_contex";
+import FilterModal from "../components/filter_modal";
 
 const HomePage: React.FC = () => {
-  // const AllChildren: Child[] = Children;
   const childernCtx = useContext(ChildernContext);
 
-  // const [listChild, setListChild] = useState<Child[]>([]);
-  // React.useEffect(() => {
-  //   sendRequest().then((data) => {
-  //     setListChild(() => {
-  //       return [];
-  //     });
+  const [isAdding, setIsAdding] = useState(false);
 
-  //     data.forEach((curData: any) => {
-  //       let newChild: Child = Object.assign(new Child(), curData["child"]);
-  //       // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
-  //       let allfollowUps: Followup[] = [];
-  //       let isDone = true;
-  //       let nextDate = new Date();
-  //       let nextFollowupid = "-";
+  const [selected, setSelected] = useState<string>("pending_children");
 
-  //       curData["followUps"].forEach((curfollow: any) => {
-  //         let newFollow: Followup = Object.assign(new Followup(), curfollow);
-  //         if (newFollow.attempted == false) {
-  //           isDone = false;
-  //           nextDate = newFollow.followupDate;
-  //           nextFollowupid = newFollow.followUpId;
-  //         }
-  //         allfollowUps = allfollowUps.concat(newFollow);
-  //       });
-  //       newChild.followUps = allfollowUps;
-  //       newChild.isDone = isDone;
+  const startAddFilterHandler = () => {
+    setIsAdding(true);
+  };
 
-  //       newChild.nextDate = new Date(nextDate);
-  //       newChild.nextFollowupid = nextFollowupid;
+  const cancelAddFilterHandler = () => {
+    setIsAdding(false);
+  };
 
-  //       setListChild((listChild) => {
-  //         return listChild.concat(newChild);
-  //       });
+  const filterAddHandler = (curr: string) => {
+    setSelected((old) => {
+      return curr;
+    });
 
-  //       console.log(newChild);
-  //     });
-  //     // setListChild()
-  //     // setListItems(data);
-  //     // console.log(childernCtx.allChildren[0]);
-  //   });
-  // }, []);
+    setIsAdding(false);
+  };
 
   return (
     <IonPage>
+      <FilterModal
+        show={isAdding}
+        onCancel={cancelAddFilterHandler}
+        onSave={filterAddHandler}
+      />
       <IonHeader className="IonHeader">
         <IonToolbar>
           <IonText slot="start" color="primary">
-            <strong>Pending children</strong>
+            {selected == "pending_children" ? (
+              <strong>Pending children</strong>
+            ) : (
+              <strong>Completed children</strong>
+            )}
           </IonText>
-          <IonButton
+          {/* <IonButton
             slot="end"
-            size="small"
+            // size="large"
             color="primary"
             fill="solid"
             shape="round"
-          >
-            Sort by
-            <IonIcon icon={chevronDownOutline} />
-          </IonButton>
+            
+          > */}
+          <IonIcon
+            icon={optionsOutline}
+            slot="end"
+            color="primary"
+            size="large"
+            onClick={startAddFilterHandler}
+          />
+          {/* </IonButton> */}
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        {/* <IonList color="primary">
-          {listItems.map((item: any) => {
-            return <ChildCard key={item["id"]} name={item["username"]} />;
-          })}
-        </IonList> */}
+      <IonContent>
         <IonList>
           {childernCtx.allChildren.map(
             (child: Child) =>
-              !child.isDone && <ChildCard key={child.samId} child={child} />
+              (selected == "pending_children"
+                ? !child.isDone
+                : child.isDone) && <ChildCard key={child.samId} child={child} />
           )}
         </IonList>
+        <IonFab horizontal="end" vertical="bottom">
+          <IonFabButton color="primary" onClick={childernCtx.updateData}>
+            <IonIcon icon={refreshOutline} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );

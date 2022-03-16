@@ -16,13 +16,17 @@ interface ContainerProps {
 
 const ChildCard: React.FC<ContainerProps> = ({ child }) => {
   const childernCtx = useContext(ChildernContext);
+  const clickHandler = () => {
+    childernCtx.isChildSelect(child.samId);
+  };
 
   return (
     <IonCard
       // onClick={() => {
       //   childernCtx.isSelect(child.samId);
       // }}
-      routerLink={`/childPage/${child.samId}`}
+      routerLink={`/childPage`}
+      onClick={clickHandler}
       className="ion-card"
     >
       <IonGrid>

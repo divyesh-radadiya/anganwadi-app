@@ -42,6 +42,10 @@
   padding-top: 0px;
   padding-bottom: 0px;
 }
+.grid-no-top {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
 
 .col-left {
   padding-left: 4%;
@@ -56,3 +60,24 @@
 .col-no-right {
   padding-right: 0%;
 }
+
+/* ion-content {
+  --background: #f2f2f7;
+}
+
+ion-datetime {
+  height: auto;
+  width: auto;
+
+  max-width: 350px;
+}
+
+ion-modal {
+  --width: 290px;
+  --height: 382px;
+  --border-radius: 8px;
+}
+
+ion-modal ion-datetime {
+  height: 382px;
+} */

@@ -64,10 +64,10 @@ const App: React.FC = () => (
             <Route path="/profilePage">
               <ProfilePage />
             </Route>
-            <Route path="/childPage/:childId">
+            <Route path="/childPage">
               <ChildPage />
             </Route>
-            <Route path="/followUpPage/:childId/:id">
+            <Route path="/followUpPage">
               <FollowUpPage />
             </Route>
 

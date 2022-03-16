@@ -10,67 +10,34 @@ import {
   IonIcon,
   IonRow,
   IonCol,
+  IonFabButton,
+  IonFab,
 } from "@ionic/react";
-import { searchOutline } from "ionicons/icons";
-import React, { useContext, useState } from "react";
+import { refreshOutline, searchOutline } from "ionicons/icons";
+import React, { useContext, useRef, useState } from "react";
 import { Child } from "../../models/child";
 import { Children } from "../../models/fake_data";
-import { Followup } from "../../models/followup";
-import sendRequest from "../../services/getdata";
 import ChildernContext from "../../stores/childern_contex";
 import ChildCard from "../components/child_card";
 import "../constants/search.css";
 
 const SearchPage: React.FC = () => {
-  const AllChildren: Child[] = Children;
-
   const childernCtx = useContext(ChildernContext);
 
-  const [searchText, setSearchText] = useState("");
+  const searchRef = useRef<HTMLIonSearchbarElement>(null);
 
-  // const [listChild, setListChild] = useState<Child[]>([]);
+  const searchHandler = () => {
+    const enteredName = searchRef.current!.value;
+    childernCtx.search(enteredName ?? "");
+  };
+  const refreshHandler = () => {
+    searchRef.current!.value = "";
+    childernCtx.updateData();
+  };
 
-  // React.useEffect(() => {
-  //   sendRequest().then((data) => {
-  //     setListChild(() => {
-  //       return [];
-  //     });
-
-  //     data.forEach((curData: any) => {
-  //       let newChild: Child = Object.assign(new Child(), curData["child"]);
-  //       // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
-  //       let allfollowUps: Followup[] = [];
-  //       let isDone = true;
-  //       let nextDate = new Date();
-  //       let nextFollowupid = "-";
-
-  //       curData["followUps"].forEach((curfollow: any) => {
-  //         let newFollow: Followup = Object.assign(new Followup(), curfollow);
-  //         if (newFollow.attempted == false) {
-  //           isDone = false;
-  //           nextDate = newFollow.followupDate;
-  //           nextFollowupid = newFollow.followUpId;
-  //         }
-  //         allfollowUps = allfollowUps.concat(newFollow);
-  //       });
-  //       newChild.followUps = allfollowUps;
-  //       newChild.isDone = isDone;
-  //       newChild.nextDate = new Date(nextDate);
-  //       newChild.nextFollowupid = nextFollowupid;
-
-  //       setListChild((listChild) => {
-  //         return listChild.concat(newChild);
-  //       });
-
-  //       console.log(newChild);
-  //     });
-  //     // setListChild()
-  //     // setListItems(data);
-  //     // console.log(data);
-  //   });
-  // }, []);
-
-  // searchbar.addEventListener('ionInput', handleInput);
+  React.useEffect(() => {
+    childernCtx.updateSearchData();
+  }, []);
 
   return (
     <IonPage>
@@ -89,11 +56,20 @@ const SearchPage: React.FC = () => {
                 searchIcon="undefined"
                 showClearButton="never"
                 className="ion-searchbar"
+                ref={searchRef}
               ></IonSearchbar>
             </IonCol>
-            <IonCol className="ion-text-center" size="2">
-              <IonIcon size="large" color="primary" icon={searchOutline} />
+            <IonCol className="ion-text-center" size="1.5">
+              <IonIcon
+                size="large"
+                color="primary"
+                icon={searchOutline}
+                onClick={searchHandler}
+              />
             </IonCol>
+            {/* <IonCol className="ion-text-center" size="1.5">
+             
+            </IonCol> */}
           </IonRow>
         </IonCard>
         <IonList>
@@ -101,11 +77,16 @@ const SearchPage: React.FC = () => {
           <ChildCard name="Child 2" />
           <ChildCard name="Child 3" /> */}
           <IonList>
-            {childernCtx.allChildren.map((child: Child) => (
+            {childernCtx.searchChildren.map((child: Child) => (
               <ChildCard key={child.samId} child={child} />
             ))}
           </IonList>
         </IonList>
+        <IonFab horizontal="end" vertical="bottom">
+          <IonFabButton color="primary" onClick={refreshHandler}>
+            <IonIcon icon={refreshOutline} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );
