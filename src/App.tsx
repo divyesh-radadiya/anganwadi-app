@@ -8,6 +8,7 @@ import {
   IonTabButton,
   IonTabs,
   setupIonicReact,
+  useIonLoading,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
@@ -41,14 +42,34 @@ import NotificationPage from "./ui/pages/notification_page";
 import ProfilePage from "./ui/pages/profile_page";
 import ChildPage from "./ui/pages/child_page";
 import FollowUpPage from "./ui/pages/follow_up_page";
+import { useContext, useEffect } from "react";
 import ChildernContext from "./stores/childern_contex";
-import ChildernContextProvider from "./stores/childern_contex_provider";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <ChildernContextProvider>
+const App: React.FC = () => {
+  const childernCtx = useContext(ChildernContext);
+  const { initContext, updateOfflineData, getOfflineData, updateSearchData } =
+    childernCtx;
+
+  useEffect(() => {
+    initContext();
+  }, [initContext]);
+
+  const [present, dismiss] = useIonLoading();
+
+  useEffect(() => {
+    if (childernCtx.isLoad == true) {
+      present({
+        message: "Loading...",
+      });
+    } else {
+      dismiss();
+    }
+  }, [childernCtx.isLoad]);
+
+  return (
+    <IonApp>
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
@@ -98,8 +119,8 @@ const App: React.FC = () => (
           </IonTabBar>
         </IonTabs>
       </IonReactRouter>
-    </ChildernContextProvider>
-  </IonApp>
-);
+    </IonApp>
+  );
+};
 
 export default App;

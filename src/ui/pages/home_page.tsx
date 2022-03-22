@@ -1,4 +1,5 @@
 import {
+  IonAlert,
   IonButton,
   IonContent,
   IonFab,
@@ -7,8 +8,10 @@ import {
   IonIcon,
   IonList,
   IonPage,
+  IonRippleEffect,
   IonText,
   IonToolbar,
+  useIonLoading,
 } from "@ionic/react";
 import {
   chevronDownOutline,
@@ -18,7 +21,7 @@ import {
 import ChildCard from "../components/child_card";
 import "../constants/home.css";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Child } from "../../models/child";
 import ChildernContext from "../../stores/childern_contex";
 import FilterModal from "../components/filter_modal";
@@ -46,6 +49,16 @@ const HomePage: React.FC = () => {
     setIsAdding(false);
   };
 
+  useEffect(() => {
+    if (childernCtx.isOn == false) {
+      setShowAlert1(true);
+    } else {
+      setShowAlert1(false);
+    }
+  }, [childernCtx.isOn]);
+
+  const [showAlert1, setShowAlert1] = useState(false);
+
   return (
     <IonPage>
       <FilterModal
@@ -70,13 +83,15 @@ const HomePage: React.FC = () => {
             shape="round"
             
           > */}
-          <IonIcon
-            icon={optionsOutline}
-            slot="end"
-            color="primary"
-            size="large"
-            onClick={startAddFilterHandler}
-          />
+          <IonButton onClick={startAddFilterHandler} fill="clear" slot="end">
+            <IonIcon
+              icon={optionsOutline}
+              color="primary"
+              size="large"
+              onClick={startAddFilterHandler}
+            />
+          </IonButton>
+
           {/* </IonButton> */}
         </IonToolbar>
       </IonHeader>
@@ -89,11 +104,15 @@ const HomePage: React.FC = () => {
                 : child.isDone) && <ChildCard key={child.samId} child={child} />
           )}
         </IonList>
-        <IonFab horizontal="end" vertical="bottom">
-          <IonFabButton color="primary" onClick={childernCtx.updateData}>
-            <IonIcon icon={refreshOutline} />
-          </IonFabButton>
-        </IonFab>
+
+        <IonAlert
+          isOpen={showAlert1}
+          onDidDismiss={() => setShowAlert1(false)}
+          cssClass="my-custom-class"
+          header={"Alert"}
+          message={"You are offline!!"}
+          buttons={["OK"]}
+        />
       </IonContent>
     </IonPage>
   );

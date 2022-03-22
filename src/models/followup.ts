@@ -1,5 +1,5 @@
 export class Followup {
-  followUpId!: string;
+    followUpId!: string;
     height?: Number;
     weight?: Number;
     muac?: Number;

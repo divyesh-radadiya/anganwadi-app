@@ -12,6 +12,7 @@ import {
   IonCol,
   IonFabButton,
   IonFab,
+  IonButton,
 } from "@ionic/react";
 import { refreshOutline, searchOutline } from "ionicons/icons";
 import React, { useContext, useRef, useState } from "react";
@@ -32,7 +33,7 @@ const SearchPage: React.FC = () => {
   };
   const refreshHandler = () => {
     searchRef.current!.value = "";
-    childernCtx.updateData();
+    childernCtx.updateSearchData();
   };
 
   React.useEffect(() => {
@@ -59,13 +60,10 @@ const SearchPage: React.FC = () => {
                 ref={searchRef}
               ></IonSearchbar>
             </IonCol>
-            <IonCol className="ion-text-center" size="1.5">
-              <IonIcon
-                size="large"
-                color="primary"
-                icon={searchOutline}
-                onClick={searchHandler}
-              />
+            <IonCol className="ion-text-center" size="3">
+              <IonButton onClick={searchHandler} fill="clear">
+                <IonIcon size="large" color="primary" icon={searchOutline} />
+              </IonButton>
             </IonCol>
             {/* <IonCol className="ion-text-center" size="1.5">
              
