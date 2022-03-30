@@ -1,8 +1,12 @@
 import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
   IonCol,
   IonContent,
   IonGrid,
   IonHeader,
+  IonIcon,
   IonItem,
   IonList,
   IonPage,
@@ -13,17 +17,35 @@ import {
 import React, { useContext } from "react";
 import { Followup } from "../../models/followup";
 import FollowUpCard from "../components/follow_up_card";
+import { chevronBackOutline } from "ionicons/icons";
 
 import "../constants/home.css";
 import ChildernContext from "../../stores/childern_contex";
+import { useHistory } from "react-router";
 
 const ChildPage: React.FC = () => {
   const childernCtx = useContext(ChildernContext);
-
+  const history = useHistory();
   return (
     <IonPage>
       <IonHeader className="IonHeader">
         <IonToolbar>
+          <IonButton
+            onClick={() => {
+              history.goBack();
+            }}
+            slot="start"
+            fill="clear"
+          >
+            <IonIcon
+              icon={chevronBackOutline}
+              color="primary"
+              size="large"
+              onClick={() => {
+                history.goBack();
+              }} // onClick={startSearchTypeAddHandler}
+            />
+          </IonButton>
           <IonText slot="start" color="primary" className="ion-text-title">
             {childernCtx.selectedChild?.name}
           </IonText>

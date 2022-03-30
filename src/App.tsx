@@ -44,17 +44,31 @@ import ChildPage from "./ui/pages/child_page";
 import FollowUpPage from "./ui/pages/follow_up_page";
 import { useContext, useEffect } from "react";
 import ChildernContext from "./stores/childern_contex";
+import FollowupContextProvider from "./stores/followup_context_provider";
 
 setupIonicReact();
 
 const App: React.FC = () => {
+  // useEffect(() => {
+  //   const setupStore = async () => {
+  //     await createStore("APPDB");
+  //     // const exists = await get("allChildrenData");
+  //     // console.log("Got exists", exists);
+  //     // if (!exists) {
+  //     //   const msgs = "dvs";
+  //     //   set("msgs", msgs);
+  //     // }
+  //   };
+
+  //   setupStore();
+  // }, []);
+
   const childernCtx = useContext(ChildernContext);
-  const { initContext, updateOfflineData, getOfflineData, updateSearchData } =
-    childernCtx;
+  const { initContext } = childernCtx;
 
   useEffect(() => {
     initContext();
-  }, [initContext]);
+  }, []);
 
   const [present, dismiss] = useIonLoading();
 
@@ -89,7 +103,9 @@ const App: React.FC = () => {
               <ChildPage />
             </Route>
             <Route path="/followUpPage">
-              <FollowUpPage />
+              <FollowupContextProvider>
+                <FollowUpPage />
+              </FollowupContextProvider>
             </Route>
 
             <Route exact path="/">

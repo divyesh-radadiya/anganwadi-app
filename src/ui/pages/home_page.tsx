@@ -2,24 +2,17 @@ import {
   IonAlert,
   IonButton,
   IonContent,
-  IonFab,
-  IonFabButton,
   IonHeader,
   IonIcon,
   IonList,
   IonPage,
-  IonRippleEffect,
   IonText,
   IonToolbar,
-  useIonLoading,
 } from "@ionic/react";
-import {
-  chevronDownOutline,
-  optionsOutline,
-  refreshOutline,
-} from "ionicons/icons";
+import { optionsOutline } from "ionicons/icons";
 import ChildCard from "../components/child_card";
 import "../constants/home.css";
+import { useHistory } from "react-router";
 
 import React, { useContext, useEffect, useState } from "react";
 import { Child } from "../../models/child";
@@ -57,7 +50,18 @@ const HomePage: React.FC = () => {
     }
   }, [childernCtx.isOn]);
 
+  useEffect(() => {
+    if (childernCtx.isSync == true) {
+      setShowAlert2(true);
+    } else {
+      setShowAlert2(false);
+    }
+  }, [childernCtx.isSync]);
+
   const [showAlert1, setShowAlert1] = useState(false);
+  const [showAlert2, setShowAlert2] = useState(false);
+
+  const history = useHistory();
 
   return (
     <IonPage>
@@ -111,6 +115,19 @@ const HomePage: React.FC = () => {
           cssClass="my-custom-class"
           header={"Alert"}
           message={"You are offline!!"}
+          buttons={["OK"]}
+        />
+
+        <IonAlert
+          isOpen={showAlert2}
+          onDidDismiss={() => {
+            setShowAlert2(false);
+            childernCtx.initContext();
+            history.push("/");
+          }}
+          cssClass="my-custom-class"
+          header={"Alert"}
+          message={"Sync data updated online successfully!!"}
           buttons={["OK"]}
         />
       </IonContent>

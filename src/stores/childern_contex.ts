@@ -7,6 +7,7 @@ interface Context {
     isLoad:boolean;
     db:Database;
     isOn:boolean;
+    isSync:boolean;
     allChildren: Child[];
     searchChildren:Child[];
     selectedChild:Child;
@@ -15,7 +16,7 @@ interface Context {
     initContext: () => void;
     isChildSelect: (samId: string) => void;
     isFollowUpSelect: (followUpId: string) => void;
-    search: (name?: string) => void;
+    search: (searchType : string,name?: string) => void;
     updateData:() => void;
     getOfflineData:() => void;
     updateOfflineData:() => void;

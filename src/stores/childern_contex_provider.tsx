@@ -1,15 +1,17 @@
 import { Child } from "../models/child";
 import { Followup } from "../models/followup";
-import sendRequest from "../services/getdata";
+import sendRequest, { putRequest } from "../services/network_service";
 import ChildernContext from "./childern_contex";
 import { useCallback, useEffect, useState } from "react";
 import { Database, Drivers, Storage } from "@ionic/storage";
 import { Network } from "@awesome-cordova-plugins/network";
+import { football } from "ionicons/icons";
 // import IonicSecureStorageDriver from "@ionic-native/secure-storage/index";
 
 const ChildernContextProvider: React.FC = (props) => {
   const [isOn, setOn] = useState<boolean>(true);
   const [isLoad, setLoad] = useState<boolean>(true);
+  const [isSync, setSync] = useState<boolean>(false);
 
   const [allChildren, setChildern] = useState<Child[]>([
     // {
@@ -180,16 +182,16 @@ const ChildernContextProvider: React.FC = (props) => {
   });
   const [db, setDb] = useState<Database>();
 
-  const initContext = useCallback(async () => {
+  const initContext = async () => {
     setLoad(true);
-    setOn(true);
+    // setOn(true);
 
     await updateData();
 
     await initDb();
 
     setLoad(false);
-  }, []);
+  };
 
   const updateData = async () => {
     try {
@@ -202,7 +204,10 @@ const ChildernContextProvider: React.FC = (props) => {
           });
 
           data.forEach((curData: any) => {
-            let newChild: Child = Object.assign(new Child(), curData["child"]);
+            let newChild: Child = Object.assign(
+              new Child(),
+              curData["admission"]["child"]
+            );
             // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
             let allfollowUps: Followup[] = [];
             let isDone = true;
@@ -241,19 +246,57 @@ const ChildernContextProvider: React.FC = (props) => {
     } catch (exception_var) {
       setOn(false);
     }
+
+    // updateOfflineData();
   };
 
   const updateOfflineData = async () => {
-    console.log("Set value", allOnChildren);
+    // console.log("Set value", allOnChildren);
     if (isOn) {
-      console.log("Set value");
-      await db.set("allChildrenData", allOnChildren);
+      const isSynFollowUps = await db.get("isSynFollowUps");
+      const followupsnull = Array(0);
+
+      if (isSynFollowUps == false) {
+        console.log("Set value");
+        // await db.set("allChildrenData", allOnChildren);
+        await db.set("childrenDataAll", allOnChildren);
+
+        await getOfflineData();
+      } else {
+        const followups: Followup[] = (await db.get("synFollowUps")) ?? [];
+        console.log("Got value", followups);
+        const l = followups.length;
+        var i = 0;
+        //
+        try {
+          followups.forEach(async (curData: any) => {
+            await putRequest(curData).then(async (data) => {
+              console.log("syn data added", data["followUpId"]);
+              i++;
+              if (i == l) {
+                setSync(true);
+              }
+            });
+          });
+          db.set("synFollowUps", followupsnull);
+          db.set("isSynFollowUps", false);
+          console.log("Set NULL");
+        } catch {
+          console.log("sync error!!!");
+          console.log("Set value");
+          // await db.set("allChildrenData", allOnChildren);
+          await db.set("childrenDataAll", allOnChildren);
+
+          await getOfflineData();
+        }
+      }
+    } else {
+      await getOfflineData();
     }
-    await getOfflineData();
   };
 
   const getOfflineData = async () => {
-    const children = await db.get("allChildrenData");
+    const children = await db.get("childrenDataAll");
     setChildern((allChildren) => {
       return children;
     });
@@ -320,7 +363,7 @@ const ChildernContextProvider: React.FC = (props) => {
     });
   };
 
-  const search = (name?: string) => {
+  const search = (searchType: string, name?: string) => {
     // setLoad(true);
     if (name == "" || name == null || name == undefined) {
       updateSearchData();
@@ -328,13 +371,34 @@ const ChildernContextProvider: React.FC = (props) => {
       setSearchChildern(() => {
         return [];
       });
-      allChildren.forEach((child: Child) => {
-        if (name?.toLowerCase() == child.name.toLowerCase()) {
-          setSearchChildern((allSearchChildren) => {
-            return allSearchChildren.concat(child);
-          });
-        }
-      });
+
+      if (searchType == "child_name") {
+        allChildren.forEach((child: Child) => {
+          if (name?.toLowerCase() == child.name.toLowerCase()) {
+            setSearchChildern((allSearchChildren) => {
+              return allSearchChildren.concat(child);
+            });
+          }
+        });
+      } else if (searchType == "sam_id") {
+        allChildren.forEach((child: Child) => {
+          if (name?.toLowerCase() == child.samId.toString().toLowerCase()) {
+            setSearchChildern((allSearchChildren) => {
+              return allSearchChildren.concat(child);
+            });
+          }
+        });
+      } else if (searchType == "mobile_no") {
+        allChildren.forEach((child: Child) => {
+          if (
+            name?.toLowerCase() == child.contactNumber.toString().toLowerCase()
+          ) {
+            setSearchChildern((allSearchChildren) => {
+              return allSearchChildren.concat(child);
+            });
+          }
+        });
+      }
     }
     // setLoad(false);
   };
@@ -344,6 +408,7 @@ const ChildernContextProvider: React.FC = (props) => {
       value={{
         isLoad,
         isOn,
+        isSync,
         db,
         allChildren,
         searchChildren,
