@@ -45,6 +45,7 @@ import FollowUpPage from "./ui/pages/follow_up_page";
 import { useContext, useEffect } from "react";
 import ChildernContext from "./stores/childern_contex";
 import FollowupContextProvider from "./stores/followup_context_provider";
+import LoginPage from "./ui/pages/login_page";
 
 setupIonicReact();
 
@@ -97,6 +98,7 @@ const App: React.FC = () => {
               <NotificationPage />
             </Route>
             <Route path="/profilePage">
+              {/* <LoginPage /> */}
               <ProfilePage />
             </Route>
             <Route path="/childPage">

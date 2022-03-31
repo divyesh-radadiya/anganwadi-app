@@ -1,19 +1,23 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 
 const NotificationPage: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader >
+      <IonHeader className="IonHeader">
         <IonToolbar>
-          <IonTitle>Notification page</IonTitle>
+          <IonText slot="start" color="primary">
+            <strong>Notification page</strong>
+          </IonText>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        
-        <ExploreContainer name="Notification page" />
-      </IonContent>
+      <IonContent fullscreen></IonContent>
     </IonPage>
   );
 };

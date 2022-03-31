@@ -1,12 +1,10 @@
 import { Child } from "../models/child";
 import { Followup } from "../models/followup";
-import sendRequest, { putRequest } from "../services/network_service";
-import ChildernContext from "./childern_contex";
-import { useCallback, useEffect, useState } from "react";
-import { Database, Drivers, Storage } from "@ionic/storage";
+import { putRequest } from "../services/network_service";
+import { useEffect, useState } from "react";
+import { Database, Storage } from "@ionic/storage";
 import { Network } from "@awesome-cordova-plugins/network";
 import FollowupContext from "./followup_contex";
-// import IonicSecureStorageDriver from "@ionic-native/secure-storage/index";
 
 const FollowupContextProvider: React.FC = (props) => {
   const [isOn, setOn] = useState<boolean>(true);
@@ -247,18 +245,6 @@ const FollowupContextProvider: React.FC = (props) => {
         db,
         curFollowUp,
         onSubmit,
-        // allChildren,
-        // searchChildren,
-        // selectedChild,
-        // selectedFollowUp,
-        // initContext,
-        // isChildSelect,
-        // isFollowUpSelect,
-        // search,
-        // updateData,
-        // getOfflineData,
-        // updateOfflineData,
-        // updateSearchData,
       }}
     >
       {props.children}
