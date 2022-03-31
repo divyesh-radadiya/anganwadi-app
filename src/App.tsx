@@ -1,4 +1,5 @@
 import { Redirect, Route } from "react-router-dom";
+import OneSignal from "react-onesignal";
 import {
   IonApp,
   IonIcon,
@@ -50,6 +51,11 @@ import LoginPage from "./ui/pages/login_page";
 setupIonicReact();
 
 const App: React.FC = () => {
+  useEffect(() => {
+    OneSignal.init({
+      appId: "18f5d069-02a9-4bd2-820f-587ddc221dee",
+    });
+  }, []);
   // useEffect(() => {
   //   const setupStore = async () => {
   //     await createStore("APPDB");

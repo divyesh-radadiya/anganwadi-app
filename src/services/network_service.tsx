@@ -9,6 +9,8 @@ const sendRequest = async () => {
     {
       headers: {
         "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb3BhbCIsImV4cCI6MTY0ODc3NjAxMywiaWF0IjoxNjQ4NzExMjEzfQ.UD1HRiCnCEeOvahW1osI090yUG1lMHWfMruQOpk1BmY",
       },
     }
   );
@@ -31,6 +33,8 @@ export const putRequest = async (curFollowUp: Followup) => {
   const response = await axios.put(base + "/api/v1/followup/update", article, {
     headers: {
       "Content-Type": "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb3BhbCIsImV4cCI6MTY0ODc3NjAxMywiaWF0IjoxNjQ4NzExMjEzfQ.UD1HRiCnCEeOvahW1osI090yUG1lMHWfMruQOpk1BmY",
     },
   });
   return response.data;
