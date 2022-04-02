@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Database, Storage } from "@ionic/storage";
 import { Network } from "@awesome-cordova-plugins/network";
 import FollowupContext from "./followup_contex";
+import { useAuth } from "./auth";
 
 const FollowupContextProvider: React.FC = (props) => {
   const [isOn, setOn] = useState<boolean>(true);
@@ -77,6 +78,8 @@ const FollowupContextProvider: React.FC = (props) => {
   var synFollowUps: Followup[] = [];
   var allChildren: Child[] = [];
 
+  const [userJWT, setUserJWT] = useState<string>("");
+
   // const [allChildren, setChildern] = useState<Child[]>([
   //   // {
   //   //   samId: "123",
@@ -130,6 +133,9 @@ const FollowupContextProvider: React.FC = (props) => {
   // ]);
   // const [synFollowUps, setSynFollowUps] = useState<Followup[]>([]);
 
+  const updateJwt = (jwt: string) => {
+    setUserJWT(jwt);
+  };
   const onSubmit = async (subFollowUp: Followup, subChild: Child) => {
     setLoad(11);
     setOn(true);
@@ -175,7 +181,7 @@ const FollowupContextProvider: React.FC = (props) => {
       if (Network.type == Network.Connection.NONE) {
         setOn(false);
       } else {
-        await putRequest(subFollowUp).then((data) => {
+        await putRequest(subFollowUp, userJWT ?? "").then((data) => {
           console.log("syn data added", data["followUpId"]);
           console.log("syn data added", data["growthStatus"]);
 
@@ -244,6 +250,8 @@ const FollowupContextProvider: React.FC = (props) => {
         isOn,
         db,
         curFollowUp,
+
+        updateJwt,
         onSubmit,
       }}
     >

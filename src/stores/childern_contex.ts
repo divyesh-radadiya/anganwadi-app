@@ -13,6 +13,7 @@ interface Context {
     selectedChild:Child;
     selectedFollowUp:Followup;
 
+    updateJwt:(jwt:string)=>void;
     initContext: () => void;
     isChildSelect: (samId: string) => void;
     isFollowUpSelect: (followUpId: string) => void;

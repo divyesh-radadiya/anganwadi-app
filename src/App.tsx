@@ -1,22 +1,11 @@
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
+  IonLoading,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
   setupIonicReact,
-  useIonLoading,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import {
-  homeOutline,
-  notificationsOutline,
-  personOutline,
-  searchOutline,
-} from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -36,107 +25,36 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./ui/theme/variables.css";
-import HomePage from "./ui/pages/home_page";
-import SearchPage from "./ui/pages/search_page";
-import NotificationPage from "./ui/pages/notification_page";
-import ProfilePage from "./ui/pages/profile_page";
-import ChildPage from "./ui/pages/child_page";
-import FollowUpPage from "./ui/pages/follow_up_page";
-import { useContext, useEffect } from "react";
-import ChildernContext from "./stores/childern_contex";
-import FollowupContextProvider from "./stores/followup_context_provider";
+
 import LoginPage from "./ui/pages/login_page";
+import Dashbord from "./ui/dashbord";
+import { AuthContext, useAuthInit } from "./stores/auth";
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  // useEffect(() => {
-  //   const setupStore = async () => {
-  //     await createStore("APPDB");
-  //     // const exists = await get("allChildrenData");
-  //     // console.log("Got exists", exists);
-  //     // if (!exists) {
-  //     //   const msgs = "dvs";
-  //     //   set("msgs", msgs);
-  //     // }
-  //   };
-
-  //   setupStore();
-  // }, []);
-
-  const childernCtx = useContext(ChildernContext);
-  const { initContext } = childernCtx;
-
-  useEffect(() => {
-    initContext();
-  }, []);
-
-  const [present, dismiss] = useIonLoading();
-
-  useEffect(() => {
-    if (childernCtx.isLoad == true) {
-      present({
-        message: "Loading...",
-      });
-    } else {
-      dismiss();
-    }
-  }, [childernCtx.isLoad]);
+  const { loading, auth } = useAuthInit();
+  if (loading) {
+    return <IonLoading isOpen />;
+  }
 
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonTabs>
+      <AuthContext.Provider value={auth}>
+        <IonReactRouter>
           <IonRouterOutlet>
-            <Route exact path="/homePage">
-              <HomePage />
+            <Route path="/loginPage">
+              <LoginPage />
             </Route>
-            <Route exact path="/searchPage">
-              <SearchPage />
+            <Route path="/dashbord">
+              <Dashbord />
             </Route>
-            <Route exact path="/notificationPage">
-              <NotificationPage />
-            </Route>
-            <Route path="/profilePage">
-              {/* <LoginPage /> */}
-              <ProfilePage />
-            </Route>
-            <Route path="/childPage">
-              <ChildPage />
-            </Route>
-            <Route path="/followUpPage">
-              <FollowupContextProvider>
-                <FollowUpPage />
-              </FollowupContextProvider>
-            </Route>
-
             <Route exact path="/">
-              <Redirect to="/homePage" />
+              <Redirect to="/dashbord/homePage" />
             </Route>
           </IonRouterOutlet>
-
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="homePage" href="/homePage">
-              <IonIcon icon={homeOutline} />
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="searchPage" href="/searchPage">
-              <IonIcon icon={searchOutline} />
-              <IonLabel>Search</IonLabel>
-            </IonTabButton>
-
-            <IonTabButton tab="notificationPage" href="/notificationPage">
-              <IonIcon icon={notificationsOutline} />
-              <IonLabel>Notification</IonLabel>
-            </IonTabButton>
-
-            <IonTabButton tab="profilePage" href="/profilePage">
-              <IonIcon icon={personOutline} />
-              <IonLabel>Profile</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
+        </IonReactRouter>
+      </AuthContext.Provider>
     </IonApp>
   );
 };

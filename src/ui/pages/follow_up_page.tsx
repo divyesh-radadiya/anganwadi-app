@@ -23,6 +23,7 @@ import { calendarOutline, chevronBackOutline } from "ionicons/icons";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { Followup } from "../../models/followup";
+import { useAuth } from "../../stores/auth";
 import ChildernContext from "../../stores/childern_contex";
 import FollowupContext from "../../stores/followup_contex";
 import DateModal from "../components/date_modal";
@@ -30,8 +31,13 @@ import DateModal from "../components/date_modal";
 import "../constants/home.css";
 
 const FollowUpPage: React.FC = () => {
+  const { userJWT } = useAuth();
   const childernCtx = useContext(ChildernContext);
   const followupCtx = useContext(FollowupContext);
+
+  useEffect(() => {
+    followupCtx.updateJwt(userJWT ?? "");
+  }, []);
 
   const [isAdding, setIsAdding] = useState(false);
   const [cDate, setCDate] = useState<Date>(new Date());

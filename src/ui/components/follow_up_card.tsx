@@ -16,9 +16,10 @@ import "../constants/card.css";
 interface ContainerProps {
   followup: Followup;
   childId: string;
+  no: number;
 }
 
-const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
+const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId, no }) => {
   const childernCtx = useContext(ChildernContext);
   const clickHandler = () => {
     childernCtx.isFollowUpSelect(followup.followUpId);
@@ -30,7 +31,7 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
           <IonRow>
             <IonCol>
               <IonLabel color="primary" className="ion-text-subhead">
-                Follow up {followup.followUpId}
+                Follow up {no}
               </IonLabel>
             </IonCol>
             <IonCol className="ion-text-end">
@@ -47,7 +48,7 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
             </IonCol>
             <IonCol className="ion-text-end">
               <IonButton
-                routerLink={`/followUpPage`}
+                routerLink={`/dashbord/followUpPage`}
                 onClick={clickHandler}
                 size="small"
                 color="primary"
@@ -69,7 +70,7 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
               <IonRow>
                 <IonCol>
                   <IonLabel color="primary" className="ion-text-subhead">
-                    Follow up {followup.followUpId}
+                    Follow up {no}
                   </IonLabel>
                 </IonCol>
               </IonRow>
@@ -83,7 +84,7 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId }) => {
             </IonCol>
             <IonCol className="ion-text-end">
               <IonButton
-                routerLink={`/followUpPage`}
+                routerLink={`/dashbord/followUpPage`}
                 onClick={clickHandler}
                 size="small"
                 color="primary"

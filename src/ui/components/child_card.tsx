@@ -25,7 +25,7 @@ const ChildCard: React.FC<ContainerProps> = ({ child }) => {
       // onClick={() => {
       //   childernCtx.isSelect(child.samId);
       // }}
-      routerLink={`/childPage`}
+      routerLink={`/dashbord/childPage`}
       onClick={clickHandler}
       className="ion-card"
     >

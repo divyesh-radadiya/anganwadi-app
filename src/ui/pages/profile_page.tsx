@@ -14,8 +14,27 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { personCircle } from "ionicons/icons";
+import { useState } from "react";
+import { Redirect, useHistory } from "react-router";
+import { createStore, set } from "../../services/IonicStorage";
 
 const ProfilePage: React.FC = () => {
+  const history = useHistory();
+  const [logO, setLogO] = useState(false);
+
+  const handleLogout = () => {
+    createStore("APPDB");
+    set("jwt", "none");
+    set("userId", "none");
+    // history.push("/");
+    setLogO(true);
+  };
+
+  if (logO) {
+    window.location.assign("/");
+    return <Redirect to="/dashbord" />;
+  }
+
   return (
     <IonPage>
       <IonHeader className="IonHeader">
@@ -68,7 +87,7 @@ const ProfilePage: React.FC = () => {
             Contact nrc
           </IonButton>
           <IonButton
-            // onClick={saveHandler}
+            onClick={handleLogout}
             className="button-submit"
             slot="end"
             expand="block"

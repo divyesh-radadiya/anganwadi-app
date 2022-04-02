@@ -26,6 +26,7 @@ import { useHistory } from "react-router";
 const ChildPage: React.FC = () => {
   const childernCtx = useContext(ChildernContext);
   const history = useHistory();
+  var i = 0;
   return (
     <IonPage>
       <IonHeader className="IonHeader">
@@ -105,37 +106,22 @@ const ChildPage: React.FC = () => {
             </IonText>
           </IonItem>
 
-          {/* <IonItem>
-            <IonText className="ion-text-head">Next follow up</IonText>
-          </IonItem> */}
-          {/* <FollowUpCard name="Child 1" isDone={false} /> */}
-
-          {/* <FollowUpCard
-            key={selectedChild?.followups[
-              selectedChild?.next_followupid?
-            ].given_date.toString()}
-            
-            followup={selectedChild?.followups[
-              selectedChild?.next_followupid?
-            ]}
-          /> */}
-
           <IonItem>
             <IonText className="ion-text-head">All follow ups</IonText>
           </IonItem>
-          {/* <FollowUpCard name="Child 1" isDone={true} />
-          <FollowUpCard name="Child 1" isDone={true} />
-          <FollowUpCard name="Child 1" isDone={true} />
-          <FollowUpCard name="Child 1" isDone={true} />
-          <FollowUpCard name="Child 1" isDone={true} /> */}
+
           <IonList>
-            {childernCtx.selectedChild?.followUps.map((followup: Followup) => (
-              <FollowUpCard
-                key={followup.followUpId}
-                followup={followup}
-                childId={childernCtx.selectedChild.samId}
-              />
-            ))}
+            {childernCtx.selectedChild?.followUps.map((followup: Followup) => {
+              i++;
+              return (
+                <FollowUpCard
+                  key={followup.followUpId}
+                  no={i}
+                  followup={followup}
+                  childId={childernCtx.selectedChild.samId}
+                />
+              );
+            })}
           </IonList>
         </IonList>
       </IonContent>

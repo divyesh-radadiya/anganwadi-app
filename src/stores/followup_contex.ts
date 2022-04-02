@@ -8,7 +8,7 @@ interface Context {
     db:Database;
     isOn:boolean;
     curFollowUp:Followup;
-
+    updateJwt:(jwt:string)=>void;
     onSubmit: (subFollowup: Followup,subChild:Child) => void;
     // allChildren: Child[];
     // searchChildren:Child[];

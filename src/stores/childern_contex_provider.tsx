@@ -6,12 +6,17 @@ import { useCallback, useEffect, useState } from "react";
 import { Database, Drivers, Storage } from "@ionic/storage";
 import { Network } from "@awesome-cordova-plugins/network";
 import { football } from "ionicons/icons";
+import { useAuth } from "./auth";
 // import IonicSecureStorageDriver from "@ionic-native/secure-storage/index";
 
 const ChildernContextProvider: React.FC = (props) => {
+  // const { userJWT } = useAuth();
+
   const [isOn, setOn] = useState<boolean>(true);
   const [isLoad, setLoad] = useState<boolean>(true);
   const [isSync, setSync] = useState<boolean>(false);
+
+  const [userJWT, setUserJWT] = useState<string>("");
 
   const [allChildren, setChildern] = useState<Child[]>([
     // {
@@ -182,6 +187,10 @@ const ChildernContextProvider: React.FC = (props) => {
   });
   const [db, setDb] = useState<Database>();
 
+  const updateJwt = (jwt: string) => {
+    setUserJWT(jwt);
+  };
+
   const initContext = async () => {
     setLoad(true);
     // setOn(true);
@@ -198,7 +207,7 @@ const ChildernContextProvider: React.FC = (props) => {
       if (Network.type == Network.Connection.NONE) {
         setOn(false);
       } else {
-        await sendRequest().then((data) => {
+        await sendRequest(userJWT ?? "").then((data) => {
           setOnChildern(() => {
             return [];
           });
@@ -270,7 +279,7 @@ const ChildernContextProvider: React.FC = (props) => {
         //
         try {
           followups.forEach(async (curData: any) => {
-            await putRequest(curData).then(async (data) => {
+            await putRequest(curData, userJWT ?? "").then(async (data) => {
               console.log("syn data added", data["followUpId"]);
               i++;
               if (i == l) {
@@ -346,7 +355,10 @@ const ChildernContextProvider: React.FC = (props) => {
       curfollow.followupDate = new Date(curfollow.followupDate);
       allfollowUps = allfollowUps.concat(curfollow);
     });
-
+    // allfollowUps.sort()
+    // allfollowUps.sort(function(a, b) {
+    //   return a.followupDate.getTime()-b.followupDate.getTime();
+    // });
     currSelectedChildNext.followUps = allfollowUps;
 
     setChild((currChild) => currSelectedChildNext);
@@ -414,6 +426,7 @@ const ChildernContextProvider: React.FC = (props) => {
         searchChildren,
         selectedChild,
         selectedFollowUp,
+        updateJwt,
         initContext,
         isChildSelect,
         isFollowUpSelect,

@@ -8,6 +8,7 @@ import {
   IonPage,
   IonText,
   IonToolbar,
+  useIonLoading,
 } from "@ionic/react";
 import { optionsOutline } from "ionicons/icons";
 import ChildCard from "../components/child_card";
@@ -21,6 +22,21 @@ import FilterModal from "../components/filter_modal";
 
 const HomePage: React.FC = () => {
   const childernCtx = useContext(ChildernContext);
+  useEffect(() => {
+    childernCtx.initContext();
+  }, []);
+
+  const [present, dismiss] = useIonLoading();
+
+  useEffect(() => {
+    if (childernCtx.isLoad == true) {
+      present({
+        message: "Loading...",
+      });
+    } else {
+      dismiss();
+    }
+  }, [childernCtx.isLoad]);
 
   const [isAdding, setIsAdding] = useState(false);
 
