@@ -13,6 +13,7 @@ import {
   IonItem,
   IonRadio,
 } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 
 const SearchModal: React.FC<{
   show: boolean;
@@ -24,6 +25,7 @@ const SearchModal: React.FC<{
   };
 
   const [selected, setSelected] = useState<string>("child_name");
+  const { t } = useTranslation();
 
   return (
     <IonModal
@@ -41,21 +43,21 @@ const SearchModal: React.FC<{
                 onIonChange={(e) => setSelected(e.detail.value)}
               >
                 <IonListHeader>
-                  <IonLabel>Search By</IonLabel>
+                  <IonLabel>{t("search_by")}</IonLabel>
                 </IonListHeader>
 
                 <IonItem>
-                  <IonLabel>Child Name</IonLabel>
+                  <IonLabel>{t("child_name")}</IonLabel>
                   <IonRadio slot="start" value="child_name" />
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel>Sam id</IonLabel>
+                  <IonLabel>{t("sam_id")}</IonLabel>
                   <IonRadio slot="start" value="sam_id" />
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel>Mobile no</IonLabel>
+                  <IonLabel>{t("mobile_no")}</IonLabel>
                   <IonRadio slot="start" value="mobile_no" />
                 </IonItem>
               </IonRadioGroup>
@@ -65,12 +67,12 @@ const SearchModal: React.FC<{
           <IonRow className="ion-text-center">
             <IonCol>
               <IonButton color="dark" fill="clear" onClick={props.onCancel}>
-                Cancel
+                {t("cancel")}
               </IonButton>
             </IonCol>
             <IonCol>
               <IonButton expand="block" color="primary" onClick={saveHandler}>
-                Save
+                {t("save")}
               </IonButton>
             </IonCol>
           </IonRow>

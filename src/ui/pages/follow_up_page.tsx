@@ -409,7 +409,7 @@ const FollowUpPage: React.FC = () => {
               color="primary"
               fill="solid"
               shape="round"
-              routerLink="/homePage"
+              routerLink="/"
             >
               Done
             </IonButton>

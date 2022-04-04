@@ -36,7 +36,7 @@ export const logInRequest = async (userId: string, password: string) => {
     password: password,
     role: "USER",
   };
-  const response = await axios.post(base + "/api/v1/authenticate");
+  const response = await axios.post(base + "/api/v1/authenticate", loginData);
   //   console.log(response);
   return response.data;
 };

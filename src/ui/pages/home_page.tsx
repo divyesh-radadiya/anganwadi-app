@@ -19,8 +19,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Child } from "../../models/child";
 import ChildernContext from "../../stores/childern_contex";
 import FilterModal from "../components/filter_modal";
+import { useTranslation } from "react-i18next";
 
 const HomePage: React.FC = () => {
+  const { t } = useTranslation();
+
   const childernCtx = useContext(ChildernContext);
   useEffect(() => {
     childernCtx.initContext();
@@ -31,7 +34,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     if (childernCtx.isLoad == true) {
       present({
-        message: "Loading...",
+        message: t("loading"),
       });
     } else {
       dismiss();
@@ -90,9 +93,9 @@ const HomePage: React.FC = () => {
         <IonToolbar>
           <IonText slot="start" color="primary">
             {selected == "pending_children" ? (
-              <strong>Pending children</strong>
+              <strong>{t("pending_children")}</strong>
             ) : (
-              <strong>Completed children</strong>
+              <strong>{t("completed_children")}</strong>
             )}
           </IonText>
           {/* <IonButton
@@ -129,9 +132,9 @@ const HomePage: React.FC = () => {
           isOpen={showAlert1}
           onDidDismiss={() => setShowAlert1(false)}
           cssClass="my-custom-class"
-          header={"Alert"}
-          message={"You are offline!!"}
-          buttons={["OK"]}
+          header={t("alert")}
+          message={t("offline_msg")}
+          buttons={[t("OK")]}
         />
 
         <IonAlert

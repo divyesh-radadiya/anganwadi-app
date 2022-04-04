@@ -6,7 +6,6 @@ import {
   IonRow,
   IonCol,
   IonButton,
-  IonDatetime,
   IonRadioGroup,
   IonListHeader,
   IonLabel,
@@ -15,7 +14,7 @@ import {
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 
-const FilterModal: React.FC<{
+const LangModal: React.FC<{
   show: boolean;
   onCancel: () => void;
   onSave: (curr: string) => void;
@@ -23,15 +22,15 @@ const FilterModal: React.FC<{
   const saveHandler = () => {
     props.onSave(selected);
   };
-  const { t } = useTranslation();
 
-  const [selected, setSelected] = useState<string>("pending_children");
+  const [selected, setSelected] = useState<string>("en");
+  const { t } = useTranslation();
 
   return (
     <IonModal
       isOpen={props.show}
-      initialBreakpoint={0.33}
-      breakpoints={[0, 0.33, 1]}
+      initialBreakpoint={0.27}
+      breakpoints={[0, 0.27, 1]}
       onDidDismiss={props.onCancel}
     >
       <IonContent>
@@ -43,17 +42,17 @@ const FilterModal: React.FC<{
                 onIonChange={(e) => setSelected(e.detail.value)}
               >
                 <IonListHeader>
-                  <IonLabel>{t("filter_by")}</IonLabel>
+                  <IonLabel>{t("switch_languages")}</IonLabel>
                 </IonListHeader>
 
                 <IonItem>
-                  <IonLabel>{t("pending_children")}</IonLabel>
-                  <IonRadio slot="start" value="pending_children" />
+                  <IonLabel>English</IonLabel>
+                  <IonRadio slot="start" value="en" />
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel>{t("completed_children")}</IonLabel>
-                  <IonRadio slot="start" value="completed_children" />
+                  <IonLabel>Hindi</IonLabel>
+                  <IonRadio slot="start" value="hn" />
                 </IonItem>
               </IonRadioGroup>
             </IonCol>
@@ -77,4 +76,4 @@ const FilterModal: React.FC<{
   );
 };
 
-export default FilterModal;
+export default LangModal;

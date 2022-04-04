@@ -6,14 +6,17 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 
 const NotificationPage: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <IonPage>
       <IonHeader className="IonHeader">
         <IonToolbar>
           <IonText slot="start" color="primary">
-            <strong>Notification page</strong>
+            <strong>{t("notification_page")}</strong>
           </IonText>
         </IonToolbar>
       </IonHeader>

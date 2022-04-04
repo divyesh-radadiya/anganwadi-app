@@ -17,6 +17,7 @@ import {
   personOutline,
   searchOutline,
 } from "ionicons/icons";
+import { useTranslation } from "react-i18next";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -49,6 +50,8 @@ import { useAuth } from "../stores/auth";
 import UserContext from "../stores/user_contex";
 
 const Dashbord: React.FC = () => {
+  const { t } = useTranslation();
+
   const { loggedIn, userJWT } = useAuth();
 
   const childernCtx = useContext(ChildernContext);
@@ -93,21 +96,21 @@ const Dashbord: React.FC = () => {
       <IonTabBar slot="bottom">
         <IonTabButton tab="homePage" href="/dashbord/homePage">
           <IonIcon icon={homeOutline} />
-          <IonLabel>Home</IonLabel>
+          <IonLabel>{t("home")}</IonLabel>
         </IonTabButton>
         <IonTabButton tab="searchPage" href="/dashbord/searchPage">
           <IonIcon icon={searchOutline} />
-          <IonLabel>Search</IonLabel>
+          <IonLabel>{t("search")}</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="notificationPage" href="/dashbord/notificationPage">
           <IonIcon icon={notificationsOutline} />
-          <IonLabel>Notification</IonLabel>
+          <IonLabel>{t("notification")}</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="profilePage" href="/dashbord/profilePage">
           <IonIcon icon={personOutline} />
-          <IonLabel>Profile</IonLabel>
+          <IonLabel>{t("profile")}</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>

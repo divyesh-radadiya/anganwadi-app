@@ -7,6 +7,7 @@ import {
   IonText,
 } from "@ionic/react";
 import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { Child } from "../../models/child";
 import ChildernContext from "../../stores/childern_contex";
 import "../constants/card.css";
@@ -19,6 +20,7 @@ const ChildCard: React.FC<ContainerProps> = ({ child }) => {
   const clickHandler = () => {
     childernCtx.isChildSelect(child.samId);
   };
+  const { t } = useTranslation();
 
   return (
     <IonCard
@@ -38,19 +40,19 @@ const ChildCard: React.FC<ContainerProps> = ({ child }) => {
           </IonCol>
           <IonCol className="ion-text-end">
             <IonText color="primary" className="ion-text-subhead">
-              Samid: {child.samId}
+              {t("samid")}: {child.samId}
             </IonText>
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol>
             <IonText color="primary" className="ion-text-subhead">
-              Age: {child.age}
+              {t("age")}: {child.age}
             </IonText>
           </IonCol>
           <IonCol className="ion-text-end">
             <IonText color="primary" className="ion-text-subhead">
-              {child.isDone && "Done"}
+              {child.isDone && t("done")}
               {!child.isDone && child.nextDate?.toDateString()}
             </IonText>
           </IonCol>

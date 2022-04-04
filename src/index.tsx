@@ -5,6 +5,8 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import ChildernContextProvider from "./stores/childern_contex_provider";
 import UserContextProvider from "./stores/user_context_provider";
+import "./i18n/config";
+import { Config } from "@ionic/core";
 
 ReactDOM.render(
   <React.StrictMode>

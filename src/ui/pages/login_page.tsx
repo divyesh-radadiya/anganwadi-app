@@ -28,8 +28,11 @@ import {
 import { useAuth } from "../../stores/auth";
 import { createStore, set } from "../../services/IonicStorage";
 import { logInRequest } from "../../services/network_service";
+import { useTranslation } from "react-i18next";
 
 const LoginPage: React.FC = () => {
+  const { t } = useTranslation();
+
   const history = useHistory();
   const [iserror, setIserror] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -41,26 +44,25 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = () => {
     if (!userId || userId.toString().trim().length === 0) {
-      setMessage("Please enter a valid userid");
+      setMessage(t("valid_userid_msg"));
       setIserror(true);
       return;
     }
 
     if (!password || password.toString().trim().length === 0) {
-      setMessage("Please enter your password");
+      setMessage(t("valid_pass_msg"));
       setIserror(true);
       return;
     }
     setLoading(true);
 
     if (Network.type == Network.Connection.NONE) {
-      setMessage("You are offline!!");
+      setMessage(t("offline_msg"));
       setIserror(true);
       setLoading(false);
     } else {
       logInRequest(userId, password)
-        .then((res) => {
-          const data = res.data;
+        .then((data) => {
           createStore("APPDB");
           set("jwt", "Bearer " + data["jwt"].toString());
           set("userId", "1");
@@ -73,13 +75,13 @@ const LoginPage: React.FC = () => {
           if (error.response) {
             console.log(error.response.status);
             if (error.response.status == 403)
-              setMessage("Username or password is incorrect ");
+              setMessage(t("username_password_incorrect_msg"));
             else setMessage(error.message);
           } else if (error.request) {
             console.log(error.request);
             setMessage(error.message);
           } else {
-            console.log("Error", error.message);
+            console.log(t("error"), error.message);
             setMessage(error.message);
           }
           // console.log("error:", error);
@@ -109,9 +111,9 @@ const LoginPage: React.FC = () => {
           isOpen={iserror}
           onDidDismiss={() => setIserror(false)}
           cssClass="my-custom-class"
-          header={"Error!"}
+          header={t("error!")}
           message={message}
-          buttons={["Dismiss"]}
+          buttons={[t("dismiss")]}
         />
         <IonList>
           <IonItem>
@@ -128,14 +130,14 @@ const LoginPage: React.FC = () => {
               <IonRow>
                 <IonCol size="12" className="ion-text-center">
                   <IonText className="ion-text-head" color="primary">
-                    <strong>Login</strong>
+                    <strong>{t("login")}</strong>
                   </IonText>
                 </IonCol>
               </IonRow>
             </IonGrid>
           </IonItem>
           <IonItem>
-            <IonText className="ion-text-subhead">Email</IonText>
+            <IonText className="ion-text-subhead">{t("userid")}</IonText>
           </IonItem>
           <IonCard className="ion-card">
             <IonInput
@@ -144,7 +146,7 @@ const LoginPage: React.FC = () => {
             ></IonInput>
           </IonCard>
           <IonItem>
-            <IonText className="ion-text-subhead">Password</IonText>
+            <IonText className="ion-text-subhead">{t("password")}</IonText>
           </IonItem>
           <IonCard className="ion-card">
             <IonInput

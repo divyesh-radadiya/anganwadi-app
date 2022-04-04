@@ -16,6 +16,7 @@ import {
 } from "@ionic/react";
 import { optionsOutline, refreshOutline, searchOutline } from "ionicons/icons";
 import React, { useContext, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Child } from "../../models/child";
 import { Children } from "../../models/fake_data";
 import ChildernContext from "../../stores/childern_contex";
@@ -25,6 +26,7 @@ import "../constants/search.css";
 
 const SearchPage: React.FC = () => {
   const childernCtx = useContext(ChildernContext);
+  const { t } = useTranslation();
 
   const searchRef = useRef<HTMLIonSearchbarElement>(null);
 
@@ -60,11 +62,11 @@ const SearchPage: React.FC = () => {
       selectedType == "mobile_no" &&
       (!enteredName || enteredName.toString().trim().length != 10)
     ) {
-      setError("Please enter a valid 10 digit Mobile no.");
+      setError(t("valid_10_digit_mobile_no_msg"));
       return;
     }
     if (!enteredName || enteredName.toString().trim().length === 0) {
-      setError("Please enter a valid data.");
+      setError(t("valid_data_msg"));
       return;
     }
     setError("");
@@ -87,11 +89,11 @@ const SearchPage: React.FC = () => {
         <IonToolbar className="IonToolbar">
           <IonText slot="start">
             {selectedType == "child_name" ? (
-              <strong>Search by name</strong>
+              <strong>{t("search_by_name")}</strong>
             ) : selectedType == "sam_id" ? (
-              <strong>Search by sam id</strong>
+              <strong>{t("search_by_sam_id")}</strong>
             ) : (
-              <strong>Search by mobile no</strong>
+              <strong>{t("search_by_mobile_no")}</strong>
             )}
           </IonText>
           <IonButton

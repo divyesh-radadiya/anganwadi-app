@@ -10,22 +10,47 @@ import {
   IonPage,
   IonRow,
   IonText,
-  IonTitle,
   IonToolbar,
   useIonLoading,
 } from "@ionic/react";
-import { personCircle } from "ionicons/icons";
+import { optionsOutline, personCircle } from "ionicons/icons";
 import { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Redirect, useHistory } from "react-router";
 
 import { createStore, set } from "../../services/IonicStorage";
 import UserContext from "../../stores/user_contex";
+import LangModal from "../components/lang_modal";
 
 const ProfilePage: React.FC = () => {
   const userCtx = useContext(UserContext);
   useEffect(() => {
     userCtx.initData();
   }, []);
+
+  const [isAdding, setIsAdding] = useState(false);
+
+  const [selectedType, setSelectedType] = useState<string>("en");
+
+  const startLangTypeAddHandler = () => {
+    setIsAdding(true);
+  };
+  const { t } = useTranslation();
+
+  const { i18n } = useTranslation();
+
+  const cancelAddLangTypeHandler = () => {
+    setIsAdding(false);
+  };
+
+  const langTypeAddHandler = (curr: string) => {
+    setSelectedType((old) => {
+      return curr;
+    });
+    i18n.changeLanguage(curr);
+
+    setIsAdding(false);
+  };
 
   const [logO, setLogO] = useState(false);
 
@@ -34,7 +59,7 @@ const ProfilePage: React.FC = () => {
   useEffect(() => {
     if (userCtx.isLoad == true) {
       present({
-        message: "Loading...",
+        message: t("loading"),
       });
     } else {
       dismiss();
@@ -45,7 +70,6 @@ const ProfilePage: React.FC = () => {
     createStore("APPDB");
     set("jwt", "none");
     set("userId", "none");
-    // history.push("/");
     setLogO(true);
   };
 
@@ -56,8 +80,25 @@ const ProfilePage: React.FC = () => {
 
   return (
     <IonPage>
+      <LangModal
+        show={isAdding}
+        onCancel={cancelAddLangTypeHandler}
+        onSave={langTypeAddHandler}
+      />
       <IonHeader className="IonHeader">
-        <IonToolbar></IonToolbar>
+        <IonToolbar>
+          <IonText slot="start" color="primary">
+            <strong>{t("profile_page")}</strong>
+          </IonText>
+          <IonButton onClick={startLangTypeAddHandler} fill="clear" slot="end">
+            <IonIcon
+              icon={optionsOutline}
+              color="primary"
+              size="large"
+              onClick={startLangTypeAddHandler}
+            />
+          </IonButton>
+        </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={true}>
         <IonList>
@@ -82,7 +123,9 @@ const ProfilePage: React.FC = () => {
               <IonRow>
                 <IonCol size="12" className="ion-text-center">
                   <IonText className="ion-text-subhead" color="primary">
-                    <strong>AWC Name: {userCtx.curUser.awc.name}</strong>
+                    <strong>
+                      {t("AWC_name")}: {userCtx.curUser.awc.name}
+                    </strong>
                   </IonText>
                 </IonCol>
               </IonRow>
@@ -117,7 +160,7 @@ const ProfilePage: React.FC = () => {
             shape="round"
             // routerLink="/homePage"
           >
-            Contact nrc
+            {t("contact_nrc")}
           </IonButton>
           <IonButton
             onClick={handleLogout}
@@ -129,7 +172,7 @@ const ProfilePage: React.FC = () => {
             shape="round"
             // routerLink="/homePage"
           >
-            LogOut
+            {t("logout")}
           </IonButton>
         </IonList>
       </IonContent>

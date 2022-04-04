@@ -25,6 +25,7 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./ui/theme/variables.css";
+import "./i18n/config";
 
 import LoginPage from "./ui/pages/login_page";
 import Dashbord from "./ui/dashbord";
