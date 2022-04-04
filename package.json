@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@awesome-cordova-plugins/biometric-wrapper": "^5.40.0",
     "@awesome-cordova-plugins/network": "^5.40.0",
     "@capacitor/android": "3.4.1",
     "@capacitor/app": "1.1.0",
@@ -25,6 +26,9 @@
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.26.0",
+    "capacitor-native-biometric": "^3.0.3",
+    "cordova-plugin-biometric": "^0.0.3",
+    "cordova-plugin-fingerprint-aio": "^5.0.1",
     "cordova-plugin-network-information": "^3.0.0",
     "ionicons": "^5.4.0",
     "react": "^17.0.1",

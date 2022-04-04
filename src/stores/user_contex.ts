@@ -1,20 +1,22 @@
 import { Database } from '@ionic/storage';
 import React from 'react';
+import { Aww } from '../models/aww';
 import { Child } from '../models/child';
 import { Followup } from '../models/followup';
 
 interface Context {
-    isLoad:number;
+    isLoad:boolean;
     db:Database;
     isOn:boolean;
-    curFollowUp:Followup;
+    curUser:Aww;
+    
     updateJwt:(jwt:string)=>void;
-    onSubmit: (subFollowup: Followup,subChild:Child) => void;
+    initData: () => void;
     
 }
 
-const FollowupContext = React.createContext<Context>({
+const UserContext = React.createContext<Context>({
     
   } as Context);
   
-  export default FollowupContext;
+  export default UserContext;

@@ -15,6 +15,7 @@ import { IonGrid, IonRow, IonCol } from "@ionic/react";
 import { personCircle } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router";
+import { Network } from "@awesome-cordova-plugins/network";
 
 import {
   IonItem,
@@ -26,6 +27,7 @@ import {
 } from "@ionic/react";
 import { useAuth } from "../../stores/auth";
 import { createStore, set } from "../../services/IonicStorage";
+import { logInRequest } from "../../services/network_service";
 
 const LoginPage: React.FC = () => {
   const history = useHistory();
@@ -50,36 +52,42 @@ const LoginPage: React.FC = () => {
       return;
     }
     setLoading(true);
-    const loginData = {
-      username: userId,
-      password: password,
-      role: "USER",
-    };
 
-    const api = axios.create({
-      baseURL: `http://localhost:8080/api/v1`,
-    });
+    if (Network.type == Network.Connection.NONE) {
+      setMessage("You are offline!!");
+      setIserror(true);
+      setLoading(false);
+    } else {
+      logInRequest(userId, password)
+        .then((res) => {
+          const data = res.data;
+          createStore("APPDB");
+          set("jwt", "Bearer " + data["jwt"].toString());
+          set("userId", "1");
+          console.log("sucsess", data["jwt"]);
 
-    api
-      .post("/authenticate", loginData)
-      .then((res) => {
-        const data = res.data;
-        createStore("APPDB");
-        set("jwt", "Bearer " + data["jwt"].toString());
-        set("userId", "1");
-        console.log("sucsess", data["jwt"]);
+          setLoading(false);
+          setLogS(true);
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log(error.response.status);
+            if (error.response.status == 403)
+              setMessage("Username or password is incorrect ");
+            else setMessage(error.message);
+          } else if (error.request) {
+            console.log(error.request);
+            setMessage(error.message);
+          } else {
+            console.log("Error", error.message);
+            setMessage(error.message);
+          }
+          // console.log("error:", error);
 
-        setLoading(false);
-        setLogS(true);
-        // useAuthInit();
-        // history.push("/");
-      })
-      .catch((error) => {
-        console.log("error:", error);
-        setMessage("Auth failure! Please create an account");
-        setIserror(true);
-        setLoading(false);
-      });
+          setIserror(true);
+          setLoading(false);
+        });
+    }
   };
 
   if (logS) {

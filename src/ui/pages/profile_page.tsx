@@ -12,15 +12,34 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonLoading,
 } from "@ionic/react";
 import { personCircle } from "ionicons/icons";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router";
+
 import { createStore, set } from "../../services/IonicStorage";
+import UserContext from "../../stores/user_contex";
 
 const ProfilePage: React.FC = () => {
-  const history = useHistory();
+  const userCtx = useContext(UserContext);
+  useEffect(() => {
+    userCtx.initData();
+  }, []);
+
   const [logO, setLogO] = useState(false);
+
+  const [present, dismiss] = useIonLoading();
+
+  useEffect(() => {
+    if (userCtx.isLoad == true) {
+      present({
+        message: "Loading...",
+      });
+    } else {
+      dismiss();
+    }
+  }, [userCtx.isLoad]);
 
   const handleLogout = () => {
     createStore("APPDB");
@@ -56,14 +75,28 @@ const ProfilePage: React.FC = () => {
               <IonRow>
                 <IonCol size="12" className="ion-text-center">
                   <IonText className="ion-text-head" color="primary">
-                    <strong>AWW NAME</strong>
+                    <strong>{userCtx.curUser.name}</strong>
                   </IonText>
                 </IonCol>
               </IonRow>
               <IonRow>
                 <IonCol size="12" className="ion-text-center">
                   <IonText className="ion-text-subhead" color="primary">
-                    <strong>AWC address</strong>
+                    <strong>AWC Name: {userCtx.curUser.awc.name}</strong>
+                  </IonText>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size="12" className="ion-text-center">
+                  <IonText className="ion-text-subhead" color="primary">
+                    <strong>{userCtx.curUser.awc.address}</strong>
+                  </IonText>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size="12" className="ion-text-center">
+                  <IonText className="ion-text-subhead" color="primary">
+                    <strong>{userCtx.curUser.awc.pincode}</strong>
                   </IonText>
                 </IonCol>
               </IonRow>

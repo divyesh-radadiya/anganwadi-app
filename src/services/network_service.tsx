@@ -2,8 +2,8 @@ import axios from "axios";
 import { Followup } from "../models/followup";
 import { useAuth } from "../stores/auth";
 
-const base = "http://localhost:8080";
-// const base = "https://9bce-103-156-19-229.ngrok.io";
+const base = "http://172.16.128.148:8080";
+// const base = " http://c38a-119-161-98-68.ngrok.io";
 
 const sendRequest = async (authCode: string) => {
   const response = await axios.get(
@@ -15,6 +15,28 @@ const sendRequest = async (authCode: string) => {
       },
     }
   );
+  //   console.log(response);
+  return response.data;
+};
+
+export const getUser = async (authCode: string) => {
+  const response = await axios.get(base + "/api/v1/currentUser", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: authCode,
+    },
+  });
+  //   console.log(response);
+  return response.data;
+};
+
+export const logInRequest = async (userId: string, password: string) => {
+  const loginData = {
+    username: userId,
+    password: password,
+    role: "USER",
+  };
+  const response = await axios.post(base + "/api/v1/authenticate");
   //   console.log(response);
   return response.data;
 };

@@ -44,17 +44,19 @@ import ChildPage from "./pages/child_page";
 import FollowUpPage from "./pages/follow_up_page";
 import { useContext, useEffect, useState } from "react";
 import FollowupContextProvider from "../stores/followup_context_provider";
-import LoginPage from "./pages/login_page";
 import ChildernContext from "../stores/childern_contex";
 import { useAuth } from "../stores/auth";
+import UserContext from "../stores/user_contex";
 
 const Dashbord: React.FC = () => {
   const { loggedIn, userJWT } = useAuth();
 
   const childernCtx = useContext(ChildernContext);
+  const userCtx = useContext(UserContext);
 
   useEffect(() => {
     childernCtx.updateJwt(userJWT ?? "");
+    userCtx.updateJwt(userJWT ?? "");
   }, []);
 
   if (!loggedIn) {

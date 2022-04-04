@@ -4,11 +4,14 @@ import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import ChildernContextProvider from "./stores/childern_contex_provider";
+import UserContextProvider from "./stores/user_context_provider";
 
 ReactDOM.render(
   <React.StrictMode>
     <ChildernContextProvider>
-      <App />
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
     </ChildernContextProvider>
   </React.StrictMode>,
 
