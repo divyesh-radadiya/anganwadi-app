@@ -9,6 +9,29 @@
   margin-left: 4%;
   margin-right: 4%;
 }
+.ion-card-success {
+  box-shadow: none;
+  border: 3px solid green;
+  background-color: white;
+  
+  border-radius: 10px;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+.ion-card-danger {
+  box-shadow: none;
+  border: 3px solid red;
+  background-color: white;
+  
+  border-radius: 10px;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  margin-left: 4%;
+  margin-right: 4%;
+}
 
 .ion-text-head {
   font-size: x-large;
@@ -18,4 +41,11 @@
 .ion-text-subhead {
   font-size: large;
   font-weight: 700;
+}
+
+.ion-text-success {
+  color: green;
+}
+.ion-text-danger {
+  color: red;
 }

@@ -29,8 +29,8 @@ const LangModal: React.FC<{
   return (
     <IonModal
       isOpen={props.show}
-      initialBreakpoint={0.27}
-      breakpoints={[0, 0.27, 1]}
+      initialBreakpoint={0.33}
+      breakpoints={[0, 0.33, 1]}
       onDidDismiss={props.onCancel}
     >
       <IonContent>

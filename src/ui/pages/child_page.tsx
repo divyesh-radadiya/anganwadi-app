@@ -53,15 +53,35 @@ const ChildPage: React.FC = () => {
           <div className="box" slot="end">
             <IonGrid>
               <IonRow>
-                <IonCol className="ion-text-end" class="col-no-top">
-                  <IonText className="ion-text-subhead">
+                <IonCol className="ion-text-end " class="col-no-top">
+                  <IonText
+                    className={
+                      childernCtx.selectedChild.currGrowthStatus?.toString() ==
+                      "SAM"
+                        ? "ion-text-subhead ion-text-danger"
+                        : childernCtx.selectedChild.currGrowthStatus?.toString() ==
+                          "Normal"
+                        ? "ion-text-subhead ion-text-success"
+                        : "ion-text-subhead"
+                    }
+                  >
                     {childernCtx.selectedChild.currGrowthStatus}
                   </IonText>
                 </IonCol>
               </IonRow>
               <IonRow>
                 <IonCol className="ion-text-end" class="col-no-top">
-                  <IonText className="ion-text-subhead">
+                  <IonText
+                    className={
+                      childernCtx.selectedChild.currGrowthStatus?.toString() ==
+                      "SAM"
+                        ? "ion-text-subhead ion-text-danger"
+                        : childernCtx.selectedChild.currGrowthStatus?.toString() ==
+                          "Normal"
+                        ? "ion-text-subhead ion-text-success"
+                        : "ion-text-subhead"
+                    }
+                  >
                     {childernCtx.selectedChild.currWeight} KG
                   </IonText>
                 </IonCol>

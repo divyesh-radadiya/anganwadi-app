@@ -19,15 +19,19 @@ import {
   IonBackButton,
 } from "@ionic/react";
 
-import { calendarOutline, chevronBackOutline } from "ionicons/icons";
+import {
+  calendarOutline,
+  chevronBackOutline,
+  refreshOutline,
+} from "ionicons/icons";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router";
+import { rules } from "../../app_constants/growthStatus_rules";
 import { Followup } from "../../models/followup";
 import { useAuth } from "../../stores/auth";
 import ChildernContext from "../../stores/childern_contex";
 import FollowupContext from "../../stores/followup_contex";
 import DateModal from "../components/date_modal";
-
 import "../constants/home.css";
 
 const FollowUpPage: React.FC = () => {
@@ -41,6 +45,7 @@ const FollowUpPage: React.FC = () => {
 
   const [isAdding, setIsAdding] = useState(false);
   const [cDate, setCDate] = useState<Date>(new Date());
+  const [growthStatus, setGrowthStatus] = useState<string>("");
 
   const startAddDateHandler = () => {
     setIsAdding(true);
@@ -66,12 +71,42 @@ const FollowUpPage: React.FC = () => {
   const growthStatusRef = useRef<HTMLIonInputElement>(null);
   const symptomsRef = useRef<HTMLIonInputElement>(null);
 
+  const getGrowthStatus = () => {
+    const enteredWeight = weightRef.current!.value as number;
+    const enteredHeight = heightRef.current!.value as number;
+    const gen = childernCtx.selectedChild.gender;
+    const result = rules.filter(checkHeight);
+
+    function checkHeight(rule: any) {
+      return rule["height"] == Math.ceil(enteredHeight);
+    }
+    if (gen == "M") {
+      if (enteredWeight < result[0]["boys3d"]) {
+        console.log("SAM");
+        setGrowthStatus("SAM");
+      } else {
+        console.log("Normal");
+        setGrowthStatus("Normal");
+      }
+    } else {
+      if (enteredWeight < result[0]["girls3d"]) {
+        console.log("SAM");
+        setGrowthStatus("SAM");
+      } else {
+        console.log("Normal");
+        setGrowthStatus("Normal");
+      }
+    }
+  };
+
   const saveHandler = () => {
     const selectedDate = dateRef.current!.value;
     const enteredWeight = weightRef.current!.value;
     const enteredHeight = heightRef.current!.value;
     const enteredMuac = muacRef.current!.value;
     const enteredGrowthStatus = growthStatusRef.current!.value;
+    // const enteredGrowthStatus = "SAM";
+
     const enteredSymptoms = symptomsRef.current!.value;
 
     if (
@@ -261,7 +296,17 @@ const FollowUpPage: React.FC = () => {
 
               <IonRow>
                 <IonCol className="col-no-top">
-                  <IonCard className="ion-card">
+                  <IonCard
+                    className={
+                      childernCtx.selectedFollowUp?.growthStatus?.toString() ==
+                      "SAM"
+                        ? "ion-card-danger"
+                        : childernCtx.selectedFollowUp?.growthStatus?.toString() ==
+                          "Normal"
+                        ? "ion-card-success"
+                        : "ion-card"
+                    }
+                  >
                     <IonInput
                       placeholder="Growth status"
                       value={childernCtx.selectedFollowUp?.growthStatus?.toString()}
@@ -328,7 +373,7 @@ const FollowUpPage: React.FC = () => {
                       inputmode="numeric"
                       ref={weightRef}
                       // value={childernCtx.selectedFollowUp?.weight?.toString()}
-                      value={12}
+                      // value={12}
                     ></IonInput>
                   </IonCard>
                 </IonCol>
@@ -338,7 +383,7 @@ const FollowUpPage: React.FC = () => {
                       placeholder="Height"
                       inputmode="numeric"
                       ref={heightRef}
-                      value={60}
+                      // value={60}
 
                       // value={childernCtx.selectedFollowUp?.height?.toString()}
                     ></IonInput>
@@ -353,7 +398,7 @@ const FollowUpPage: React.FC = () => {
                       placeholder="Middle upper arm circumference"
                       inputmode="numeric"
                       ref={muacRef}
-                      value={4.7}
+                      // value={4.7}
 
                       // value={childernCtx.selectedFollowUp?.muac?.toString()}
                     ></IonInput>
@@ -363,15 +408,33 @@ const FollowUpPage: React.FC = () => {
 
               <IonRow>
                 <IonCol className="col-no-top">
-                  <IonCard className="ion-card">
-                    <IonInput
-                      placeholder="Growth status"
-                      inputmode="text"
-                      ref={growthStatusRef}
-                      value={"MAM"}
-
-                      // value={childernCtx.selectedFollowUp?.growthStatus?.toString()}
-                    ></IonInput>
+                  <IonCard
+                    className={
+                      growthStatus == "SAM"
+                        ? "ion-card-danger"
+                        : growthStatus == "Normal"
+                        ? "ion-card-success"
+                        : "ion-card"
+                    }
+                  >
+                    <IonRow>
+                      <IonCol class="col-no-top">
+                        <IonInput
+                          placeholder="Growth status"
+                          value={growthStatus}
+                          readonly
+                          inputmode="text"
+                        ></IonInput>
+                      </IonCol>
+                      <IonCol size="1.5" class="col-no-top">
+                        <IonIcon
+                          color="primary"
+                          size="large"
+                          icon={refreshOutline}
+                          onClick={getGrowthStatus}
+                        />
+                      </IonCol>
+                    </IonRow>
                   </IonCard>
                 </IonCol>
               </IonRow>
@@ -383,7 +446,7 @@ const FollowUpPage: React.FC = () => {
                       placeholder="Any other symptoms"
                       inputmode="text"
                       ref={symptomsRef}
-                      value={"None"}
+                      // value={"None"}
 
                       // value={childernCtx.selectedFollowUp?.symptoms?.toString()}
                     ></IonInput>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "99733447299",
+    "project_id": "anganwadi-app",
+    "storage_bucket": "anganwadi-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99733447299:android:95fef594c554237dccf1b6",
+        "android_client_info": {
+          "package_name": "iiitb.had"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99733447299-6d8c6olj9gg4k0fki2qjf5id3mol5rl8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvjPOjdeZPuc-BTya6MW5CEAplw26rfBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99733447299-6d8c6olj9gg4k0fki2qjf5id3mol5rl8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

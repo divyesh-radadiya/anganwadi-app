@@ -2,7 +2,7 @@ import axios from "axios";
 import { Followup } from "../models/followup";
 import { useAuth } from "../stores/auth";
 
-const base = "http://172.16.128.148:8080";
+const base = "http://192.168.220.208:8080";
 // const base = " http://c38a-119-161-98-68.ngrok.io";
 
 const sendRequest = async (authCode: string) => {

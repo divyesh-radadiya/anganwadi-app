@@ -16,7 +16,7 @@ import {
 import { optionsOutline, personCircle } from "ionicons/icons";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect, useHistory } from "react-router";
+import { CallNumber } from "@awesome-cordova-plugins/call-number";
 
 import { createStore, set } from "../../services/IonicStorage";
 import UserContext from "../../stores/user_contex";
@@ -28,6 +28,11 @@ const ProfilePage: React.FC = () => {
     userCtx.initData();
   }, []);
 
+  const callHandler = () => {
+    CallNumber.callNumber("9773180438", true)
+      .then((res) => console.log("Launched dialer!", res))
+      .catch((err) => console.log("Error launching dialer", err));
+  };
   const [isAdding, setIsAdding] = useState(false);
 
   const [selectedType, setSelectedType] = useState<string>("en");
@@ -75,7 +80,7 @@ const ProfilePage: React.FC = () => {
 
   if (logO) {
     window.location.assign("/");
-    return <Redirect to="/dashbord" />;
+    // return <Redirect to="/dashbord" />;
   }
 
   return (
@@ -151,14 +156,13 @@ const ProfilePage: React.FC = () => {
             </IonGrid>
           </IonItem>
           <IonButton
-            // onClick={saveHandler}
+            onClick={callHandler}
             className="button-submit"
             slot="end"
             expand="block"
             color="primary"
             fill="solid"
             shape="round"
-            // routerLink="/homePage"
           >
             {t("contact_nrc")}
           </IonButton>
