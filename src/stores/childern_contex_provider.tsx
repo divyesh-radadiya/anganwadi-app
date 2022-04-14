@@ -5,8 +5,6 @@ import ChildernContext from "./childern_contex";
 import { useCallback, useEffect, useState } from "react";
 import { Database, Drivers, Storage } from "@ionic/storage";
 import { Network } from "@awesome-cordova-plugins/network";
-import { football } from "ionicons/icons";
-import { useAuth } from "./auth";
 // import IonicSecureStorageDriver from "@ionic-native/secure-storage/index";
 
 const ChildernContextProvider: React.FC = (props) => {

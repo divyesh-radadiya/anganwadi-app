@@ -29,7 +29,9 @@ const ChildCard: React.FC<ContainerProps> = ({ child }) => {
       // }}
       routerLink={`/dashbord/childPage`}
       onClick={clickHandler}
-      className="ion-card"
+      className={
+        child.currGrowthStatus == "SAM" ? "ion-card-danger" : "ion-card-success"
+      }
     >
       <IonGrid>
         <IonRow>

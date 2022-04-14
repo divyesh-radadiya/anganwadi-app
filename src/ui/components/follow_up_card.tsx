@@ -24,80 +24,82 @@ const FollowUpCard: React.FC<ContainerProps> = ({ followup, childId, no }) => {
   const clickHandler = () => {
     childernCtx.isFollowUpSelect(followup.followUpId);
   };
-  return (
+  return followup.attempted ? (
+    <IonCard
+      className={
+        followup.growthStatus == "SAM" ? "ion-card-danger" : "ion-card-success"
+      }
+    >
+      <IonGrid>
+        <IonRow>
+          <IonCol>
+            <IonLabel color="primary" className="ion-text-subhead">
+              Follow up {no}
+            </IonLabel>
+          </IonCol>
+          <IonCol className="ion-text-end">
+            <IonText color="primary" className="ion-text-subhead">
+              Status: {followup.growthStatus}
+            </IonText>
+          </IonCol>
+        </IonRow>
+        <IonRow class="ion-align-items-center" style={{ height: "100%" }}>
+          <IonCol>
+            <IonText color="primary" className="ion-text-subhead">
+              {followup.attemptedDate?.toDateString()}
+            </IonText>
+          </IonCol>
+          <IonCol className="ion-text-end">
+            <IonButton
+              routerLink={`/dashbord/followUpPage`}
+              onClick={clickHandler}
+              size="small"
+              color="primary"
+              fill="solid"
+              shape="round"
+              className="col-no-top"
+            >
+              Details
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </IonCard>
+  ) : (
     <IonCard className="ion-card">
-      {followup.attempted && (
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonLabel color="primary" className="ion-text-subhead">
-                Follow up {no}
-              </IonLabel>
-            </IonCol>
-            <IonCol className="ion-text-end">
-              <IonText color="primary" className="ion-text-subhead">
-                Status: {followup.growthStatus}
-              </IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow class="ion-align-items-center" style={{ height: "100%" }}>
-            <IonCol>
-              <IonText color="primary" className="ion-text-subhead">
-                {followup.attemptedDate?.toDateString()}
-              </IonText>
-            </IonCol>
-            <IonCol className="ion-text-end">
-              <IonButton
-                routerLink={`/dashbord/followUpPage`}
-                onClick={clickHandler}
-                size="small"
-                color="primary"
-                fill="solid"
-                shape="round"
-                className="col-no-top"
-              >
-                Details
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      )}
-
-      {!followup.attempted && (
-        <IonGrid>
-          <IonRow class="ion-align-items-center" style={{ height: "100%" }}>
-            <IonCol className="col-no-left">
-              <IonRow>
-                <IonCol>
-                  <IonLabel color="primary" className="ion-text-subhead">
-                    Follow up {no}
-                  </IonLabel>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <IonLabel color="primary" className="ion-text-subhead">
-                    {followup.followupDate.toDateString()}
-                  </IonLabel>
-                </IonCol>
-              </IonRow>
-            </IonCol>
-            <IonCol className="ion-text-end">
-              <IonButton
-                routerLink={`/dashbord/followUpPage`}
-                onClick={clickHandler}
-                size="small"
-                color="primary"
-                fill="solid"
-                shape="round"
-              >
-                Add
-                <IonIcon icon={addOutline} />
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      )}
+      <IonGrid>
+        <IonRow class="ion-align-items-center" style={{ height: "100%" }}>
+          <IonCol className="col-no-left">
+            <IonRow>
+              <IonCol>
+                <IonLabel color="primary" className="ion-text-subhead">
+                  Follow up {no}
+                </IonLabel>
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <IonLabel color="primary" className="ion-text-subhead">
+                  {followup.followupDate.toDateString()}
+                </IonLabel>
+              </IonCol>
+            </IonRow>
+          </IonCol>
+          <IonCol className="ion-text-end">
+            <IonButton
+              routerLink={`/dashbord/followUpPage`}
+              onClick={clickHandler}
+              size="small"
+              color="primary"
+              fill="solid"
+              shape="round"
+            >
+              Add
+              <IonIcon icon={addOutline} />
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
     </IonCard>
   );
 };

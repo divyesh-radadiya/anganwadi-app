@@ -1,5 +1,5 @@
 // import { AvailableResult, NativeBiometric } from "capacitor-native-biometric";
-import { BiometricWrapper } from "@awesome-cordova-plugins/biometric-wrapper";
+// import { BiometricWrapper } from "@awesome-cordova-plugins/biometric-wrapper";
 
 export const setCredential = () => {
   // Save user's credentials
@@ -8,9 +8,9 @@ export const setCredential = () => {
   //     password: "password",
   //     server: "www.example.com",
   //   }).then();
-  BiometricWrapper.activateFingerprint({ PID_XML: "&lt;pid-xml/>" })
-    .then((res: any) => {})
-    .catch((error: any) => {});
+  // BiometricWrapper.activateFingerprint({ PID_XML: "&lt;pid-xml/>" })
+  //   .then((res: any) => {})
+  //   .catch((error: any) => {});
 };
 
 // export const deleteCredential = () => {

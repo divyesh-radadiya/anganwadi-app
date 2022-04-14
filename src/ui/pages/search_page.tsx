@@ -18,7 +18,6 @@ import { optionsOutline, refreshOutline, searchOutline } from "ionicons/icons";
 import React, { useContext, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Child } from "../../models/child";
-import { Children } from "../../models/fake_data";
 import ChildernContext from "../../stores/childern_contex";
 import ChildCard from "../components/child_card";
 import SearchModal from "../components/search_modal";

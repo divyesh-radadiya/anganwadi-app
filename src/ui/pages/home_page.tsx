@@ -2,6 +2,8 @@ import {
   IonAlert,
   IonButton,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonHeader,
   IonIcon,
   IonList,
@@ -10,7 +12,7 @@ import {
   IonToolbar,
   useIonLoading,
 } from "@ionic/react";
-import { optionsOutline } from "ionicons/icons";
+import { optionsOutline, refreshOutline } from "ionicons/icons";
 import ChildCard from "../components/child_card";
 import "../constants/home.css";
 import { useHistory } from "react-router";
@@ -82,6 +84,10 @@ const HomePage: React.FC = () => {
 
   const history = useHistory();
 
+  const refreshHandler = () => {
+    window.location.assign("/");
+  };
+
   return (
     <IonPage>
       <FilterModal
@@ -149,6 +155,11 @@ const HomePage: React.FC = () => {
           message={"Sync data updated online successfully!!"}
           buttons={["OK"]}
         />
+        <IonFab horizontal="end" vertical="bottom">
+          <IonFabButton color="primary" onClick={refreshHandler}>
+            <IonIcon icon={refreshOutline} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );
