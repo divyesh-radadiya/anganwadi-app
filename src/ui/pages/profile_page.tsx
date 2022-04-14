@@ -21,6 +21,7 @@ import { CallNumber } from "@awesome-cordova-plugins/call-number";
 import { createStore, set } from "../../services/IonicStorage";
 import UserContext from "../../stores/user_contex";
 import LangModal from "../components/lang_modal";
+import OneSignal from "onesignal-cordova-plugin";
 
 const ProfilePage: React.FC = () => {
   const userCtx = useContext(UserContext);
@@ -75,6 +76,7 @@ const ProfilePage: React.FC = () => {
     createStore("APPDB");
     set("jwt", "none");
     set("userId", "none");
+    OneSignal.setExternalUserId("none");
     setLogO(true);
   };
 

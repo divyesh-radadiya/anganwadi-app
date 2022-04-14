@@ -29,6 +29,8 @@ import { useAuth } from "../../stores/auth";
 import { createStore, set } from "../../services/IonicStorage";
 import { logInRequest } from "../../services/network_service";
 import { useTranslation } from "react-i18next";
+import OneSignal from "onesignal-cordova-plugin";
+import { Toast } from "@capacitor/toast";
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
@@ -61,28 +63,51 @@ const LoginPage: React.FC = () => {
       setIserror(true);
       setLoading(false);
     } else {
+      // axios
+      //   .get(
+      //     "http://192.168.228.208:8080/api/v1/discharge_summary/findByAwwId/1",
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: authCode,
+      //       },
+      //     }
+      //   )
+      //   .then((response) => response.data)
+      //   .then((json) => {
+      //     console.log(json);
+      //     showToast("*-*" + json.toString());
+      //   });
+      // showToast("1");
       logInRequest(userId, password)
         .then((data) => {
+          showToast("in1");
+
           createStore("APPDB");
           set("jwt", "Bearer " + data["jwt"].toString());
           set("userId", "1");
+          showToast("in2");
+
+          // OneSignal.setExternalUserId(userId);
           console.log("sucsess", data["jwt"]);
 
           setLoading(false);
           setLogS(true);
+          showToast("in3");
         })
+
         .catch((error) => {
           if (error.response) {
             console.log(error.response.status);
             if (error.response.status == 403)
               setMessage(t("username_password_incorrect_msg"));
-            else setMessage(error.message);
+            else setMessage(error.response.status + error.message);
           } else if (error.request) {
             console.log(error.request);
-            setMessage(error.message);
+            setMessage(error.toString());
           } else {
             console.log(t("error"), error.message);
-            setMessage(error.message);
+            setMessage(error.message + "-");
           }
           // console.log("error:", error);
 
@@ -90,6 +115,11 @@ const LoginPage: React.FC = () => {
           setLoading(false);
         });
     }
+  };
+  const showToast = async (msg: string) => {
+    await Toast.show({
+      text: msg,
+    });
   };
 
   if (logS) {

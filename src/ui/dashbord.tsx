@@ -48,9 +48,27 @@ import FollowupContextProvider from "../stores/followup_context_provider";
 import ChildernContext from "../stores/childern_contex";
 import { useAuth } from "../stores/auth";
 import UserContext from "../stores/user_contex";
+import OneSignal from "onesignal-cordova-plugin";
 
 const Dashbord: React.FC = () => {
   const { t } = useTranslation();
+  useEffect(() => {
+    OneSignalInit();
+  }, []);
+  function OneSignalInit(): void {
+    try {
+      OneSignal.setAppId("f2596674-be88-45f6-a7f3-e77f1b82ae13");
+      OneSignal.setNotificationOpenedHandler(function (jsonData) {
+        console.log("notificationOpenedCallback: " + JSON.stringify(jsonData));
+      });
+
+      //
+      OneSignal.setExternalUserId("user");
+      //
+    } catch (exception_var) {
+      console.log(exception_var);
+    }
+  }
 
   const { loggedIn, userJWT } = useAuth();
 

@@ -1,8 +1,8 @@
+import { Toast } from "@capacitor/toast";
 import axios from "axios";
 import { Followup } from "../models/followup";
-import { useAuth } from "../stores/auth";
 
-const base = "http://192.168.220.208:8080";
+const base = "http://192.168.228.208:8080";
 // const base = " http://c38a-119-161-98-68.ngrok.io";
 
 const sendRequest = async (authCode: string) => {
@@ -29,20 +29,30 @@ export const getUser = async (authCode: string) => {
   //   console.log(response);
   return response.data;
 };
+const showToast = async (msg: string) => {
+  await Toast.show({
+    text: msg,
+  });
+};
 
 export const logInRequest = async (userId: string, password: string) => {
+  showToast("ot1");
+
   const loginData = {
     username: userId,
     password: password,
     role: "USER",
   };
+  showToast("ot2");
+
   const response = await axios.post(base + "/api/v1/authenticate", loginData);
   //   console.log(response);
+  showToast("ot3");
+
   return response.data;
 };
 
 export const putRequest = async (curFollowUp: Followup, authCode: string) => {
-  // PUT request using axios with error handling
   const article = {
     attemptedDate: curFollowUp.attemptedDate,
     followUpId: curFollowUp.followUpId,
