@@ -1,0 +1,7 @@
+.IonToolbar {
+  padding: 2%;
+}
+
+.IonHeader::after {
+  background: none;
+}

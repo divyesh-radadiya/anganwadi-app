@@ -1,0 +1,49 @@
+{
+    "home": "घर",
+    "search": "खोजें",
+    "notification": "अधिसूचना",
+    "profile": "प्रोफ़ाइल",
+
+    "login":"लॉग इन",
+    "userid":"उपयोगकर्ता आईडी",
+    "password":"पासवर्ड",
+    "valid_userid_msg":"कृपया मान्य उपयोगकर्ता आईडी दर्ज करें",
+    "valid_pass_msg":"कृपया मान्य पासवर्ड दर्ज करें",
+    "offline_msg":"आप ऑफलाइन हैं!!",
+    "alert":"चेतावनी",
+    "username_password_incorrect_msg":"उपयोगकर्ता आईडी या पासवर्ड गलत है!!",
+    "error":"त्रुटि",
+    "error!":"त्रुटि!",
+    "dismiss":"खारिज",
+
+    "pending_children":"लंबित बच्चे",
+    "completed_children":"पूर्ण बच्चे",
+    "filter_by":"फिल्टर के द्वारा",
+    "ok":"ठीक",
+
+    "search_by_name":"नाम से खोजें",
+    "search_by_sam_id":"सैम आईडी द्वारा खोजें",
+    "search_by_mobile_no":"मोबाइल नंबर द्वारा खोजें",
+    "valid_10_digit_mobile_no_msg":"कृपया 10 अंकों का मान्य मोबाइल नंबर दर्ज करें",
+    "valid_data_msg":"कृपया एक मान्य डेटा दर्ज करें",
+    "child_name":"बच्चे का नाम",
+    "sam_id":"सैम आईडी",
+    "mobile_no":"मोबाइल नंबर",
+    "search_by":"द्वारा खोज",
+
+    "samid":"सैम आईडी",
+    "age":"उम्र",
+    "done":"पूर्ण",
+
+    "notification_page":"अधिसूचना पृष्ठ",
+    
+
+    "profile_page":"प्रोफ़ाइल पृष्ठ",
+    "loading":"लोड हो रहा है...",
+    "AWC_name":"आंगनवाड़ी केंद्र का नाम",
+    "contact_nrc":"एनआरसी से संपर्क करें",
+    "logout":"लॉग आउट",
+    "switch_languages":"भाषा बदलें",
+    "cancel":"रद्द करें",
+    "save":"सहेजें"
+}

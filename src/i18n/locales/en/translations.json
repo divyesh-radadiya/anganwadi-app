@@ -1,0 +1,49 @@
+{
+    "home": "Home",
+    "search": "Search",
+    "notification": "Notification",
+    "profile": "Profile",
+
+    "login":"Login",
+    "userid":"Userid",
+    "password":"Password",
+    "valid_userid_msg":"Please enter a valid userid",
+    "valid_pass_msg":"Please enter your password",
+    "alert":"alert",
+    "offline_msg":"You are offline!!",
+    "username_password_incorrect_msg":"Username or password is incorrect!!",
+    "error":"Error",
+    "error!":"Error!",
+    "dismiss":"Dismiss",
+
+    "pending_children":"Pending children",
+    "completed_children":"Completed children",
+    "filter_by":"Filter By",
+    "ok":"OK",
+
+    "search_by_name":"Search by name",
+    "search_by_sam_id":"Search by sam id",
+    "search_by_mobile_no":"Search by mobile no",
+    "valid_10_digit_mobile_no_msg":"Please enter a valid 10 digit Mobile no.",
+    "valid_data_msg":"Please enter a valid data.",
+    "child_name":"Child Name",
+    "sam_id":"Sam id",
+    "mobile_no":"Mobile no",
+    "search_by":"Search By",
+
+    "samid":"Samid",
+    "age":"Age",
+    "done":"Done",
+
+    "notification_page":"Notification page",
+
+
+    "profile_page":"Profile page",
+    "loading":"Loading...",
+    "AWC_name":"AWC Name",
+    "contact_nrc":"Contact NRC",
+    "logout":"LogOut",
+    "switch_languages":"Switch languages",
+    "cancel":"Cancel",
+    "save":"Save"
+}

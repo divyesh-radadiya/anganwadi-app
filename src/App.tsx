@@ -1,88 +1,66 @@
-import { Redirect, Route } from 'react-router-dom';
+/* eslint-disable react-hooks/rules-of-hooks */
+import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
+  IonLoading,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-  setupIonicReact
-} from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, homeSharp, notificationsCircleSharp, notificationsSharp, personAddSharp, personCircleSharp, personSharp, searchCircleSharp, searchSharp, square, triangle } from 'ionicons/icons';
+  setupIonicReact,
+} from "@ionic/react";
+import { IonReactRouter } from "@ionic/react-router";
 
 /* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import "@ionic/react/css/core.css";
 
 /* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
+import "@ionic/react/css/normalize.css";
+import "@ionic/react/css/structure.css";
+import "@ionic/react/css/typography.css";
 
 /* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
+import "@ionic/react/css/padding.css";
+import "@ionic/react/css/float-elements.css";
+import "@ionic/react/css/text-alignment.css";
+import "@ionic/react/css/text-transformation.css";
+import "@ionic/react/css/flex-utils.css";
+import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import './ui/theme/variables.css';
-import HomePage from './ui/pages/home_page';
-import SearchPage from './ui/pages/search_page';
-import NotificationPage from './ui/pages/notification_page';
-import ProfilePage from './ui/pages/profile_page';
+import "./ui/theme/variables.css";
+import "./i18n/config";
+
+import LoginPage from "./ui/pages/login_page";
+import Dashbord from "./ui/dashbord";
+import { AuthContext, useAuthInit } from "./stores/auth";
+import NotificationPage from "./ui/pages/notification_page";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-        <Route exact path="/homePage">
-            <HomePage />
-          </Route>
-          <Route exact path="/searchPage">
-            <SearchPage />
-          </Route>
-          <Route exact path="/notificationPage">
-            <NotificationPage />
-          </Route>
-          <Route path="/profilePage">
-            <ProfilePage />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/homePage" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-        <IonTabButton tab="homePage" href="/homePage">
-            <IonIcon icon={homeSharp} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="searchPage" href="/searchPage">
-            <IonIcon icon={searchSharp} />
-            <IonLabel>Search</IonLabel>
-          </IonTabButton>
+const App: React.FC = () => {
+  const { loading, auth } = useAuthInit();
+  if (loading) {
+    return <IonLoading isOpen />;
+  }
 
-          <IonTabButton tab="notificationPage" href="/notificationPage">
-            <IonIcon icon={notificationsSharp} />
-            <IonLabel>Notification</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="profilePage" href="/profilePage">
-            <IonIcon icon={personSharp} />
-            <IonLabel>Profile</IonLabel>
-          </IonTabButton>
-         
-         
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+  return (
+    <IonApp>
+      <AuthContext.Provider value={auth}>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route path="/loginPage">
+              <LoginPage />
+              {/* <NotificationPage /> */}
+            </Route>
+            <Route path="/dashbord">
+              <Dashbord />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/dashbord/homePage" />
+            </Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </AuthContext.Provider>
+    </IonApp>
+  );
+};
 
 export default App;

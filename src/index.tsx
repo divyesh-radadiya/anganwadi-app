@@ -1,14 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import reportWebVitals from "./reportWebVitals";
+import ChildernContextProvider from "./stores/childern_contex_provider";
+import UserContextProvider from "./stores/user_context_provider";
+import "./i18n/config";
+import { Config } from "@ionic/core";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ChildernContextProvider>
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
+    </ChildernContextProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
