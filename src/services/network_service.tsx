@@ -2,7 +2,7 @@ import { Toast } from "@capacitor/toast";
 import axios from "axios";
 import { Followup } from "../models/followup";
 
-const base = "http://192.168.92.208:8080";
+const base = "http://192.168.100.208:8080";
 // const base = "http://48b3-119-161-98-68.ngrok.io";
 
 const sendRequest = async (authCode: string) => {

@@ -70,6 +70,7 @@ const LoginPage: React.FC = () => {
           set("userId", "1");
 
           OneSignal.setExternalUserId(userId);
+
           console.log("sucsess", data["jwt"]);
 
           setLoading(false);

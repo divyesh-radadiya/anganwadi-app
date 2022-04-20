@@ -22,6 +22,8 @@ import { Child } from "../../models/child";
 import ChildernContext from "../../stores/childern_contex";
 import FilterModal from "../components/filter_modal";
 import { useTranslation } from "react-i18next";
+import { createStore, set } from "../../services/IonicStorage";
+import OneSignal from "onesignal-cordova-plugin";
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -72,6 +74,14 @@ const HomePage: React.FC = () => {
   }, [childernCtx.isOn]);
 
   useEffect(() => {
+    if (childernCtx.isSession == false) {
+      setShowAlert3(true);
+    } else {
+      setShowAlert3(false);
+    }
+  }, [childernCtx.isSession]);
+
+  useEffect(() => {
     if (childernCtx.isSync == true) {
       setShowAlert2(true);
     } else {
@@ -81,6 +91,7 @@ const HomePage: React.FC = () => {
 
   const [showAlert1, setShowAlert1] = useState(false);
   const [showAlert2, setShowAlert2] = useState(false);
+  const [showAlert3, setShowAlert3] = useState(false);
 
   const history = useHistory();
 
@@ -153,6 +164,21 @@ const HomePage: React.FC = () => {
           cssClass="my-custom-class"
           header={"Alert"}
           message={"Sync data updated online successfully!!"}
+          buttons={["OK"]}
+        />
+        <IonAlert
+          isOpen={showAlert3}
+          onDidDismiss={() => {
+            setShowAlert3(false);
+            createStore("APPDB");
+            set("jwt", "none");
+            set("userId", "none");
+            OneSignal.removeExternalUserId();
+            window.location.assign("/");
+          }}
+          cssClass="my-custom-class"
+          header={"Alert"}
+          message={"Session timeout!! Please, login again."}
           buttons={["OK"]}
         />
         <IonFab horizontal="end" vertical="bottom">

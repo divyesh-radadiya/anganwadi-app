@@ -1,18 +1,11 @@
 import {
   IonContent,
-  IonFab,
-  IonFabButton,
   IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
   IonList,
-  IonListHeader,
   IonPage,
   IonText,
   IonToolbar,
 } from "@ionic/react";
-import { refreshOutline } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import {
   PushNotificationSchema,
@@ -22,39 +15,42 @@ import {
 } from "@capacitor/push-notifications";
 import { Toast } from "@capacitor/toast";
 import { useEffect, useState } from "react";
-import OneSignal from "onesignal-cordova-plugin";
 import NotificationCard from "../components/notification_card";
-import { DeviceState } from "onesignal-cordova-plugin/types/Subscription";
+import { createStore, get, set } from "../../services/IonicStorage";
 
 const NotificationPage: React.FC = () => {
   const { t } = useTranslation();
 
-  // const [id, setid] = useState("1");
-  // function ch(): void {
-  //   OneSignal.setExternalUserId(id);
-  //   if (id == "1") setid("2");
-  //   else setid("1");
-  // }
-
   useEffect(() => {
-    // OneSignalInit();
     onRef();
+    getData();
   }, []);
 
-  const [notifications, setnotifications] = useState([
-    {
-      id: "456",
-      title: "title",
-      body: "alert",
-      type: "foreground",
-    },
-  ]);
+  class Not {
+    id!: string;
+    title!: string;
+    body!: string;
+    type!: string;
+    date!: Date;
+  }
 
-  const [notificationss, setnotificationss] = useState("asd");
+  const [notifications, setnotifications] = useState<Not[]>([]);
+
+  const getData = async () => {
+    createStore("APPDB");
+    const old: Not[] = (await get("notification")) ?? [];
+    setnotifications(old);
+  };
+
+  const addd = async (not: Not[]) => {
+    setnotifications((mynotifications: Not[]) => {
+      return mynotifications.concat(not);
+    });
+    const newNot: Not[] = (await get("notification")) ?? [];
+    set("notification", newNot.concat(not));
+  };
 
   const onRef = () => {
-    // ch();
-    // OneSignalInit();
     PushNotifications.checkPermissions().then((res) => {
       try {
         if (res.receive !== "granted") {
@@ -67,7 +63,7 @@ const NotificationPage: React.FC = () => {
             }
           });
         } else {
-          // register();
+          register();
         }
       } catch (exception_var: any) {
         showToast(exception_var.toString());
@@ -82,12 +78,6 @@ const NotificationPage: React.FC = () => {
       // Register with Apple / Google to receive push via APNS/FCM
       PushNotifications.register();
 
-      // On success, we should be able to receive notifications
-      PushNotifications.addListener("registration", (token: Token) => {
-        showToast("Push registration success");
-        setnotificationss(token.value);
-      });
-
       // Some issue with our setup and push will not work
       PushNotifications.addListener("registrationError", (error: any) => {
         alert("Error on registration: " + JSON.stringify(error));
@@ -97,14 +87,14 @@ const NotificationPage: React.FC = () => {
       PushNotifications.addListener(
         "pushNotificationReceived",
         (notification: PushNotificationSchema) => {
-          setnotifications((notifications) => [
-            ...notifications,
-            // JSON.stringify(notification),
+          const d = new Date();
+          addd([
             {
               id: notification.id,
               title: notification.data.title,
               body: notification.data.alert,
               type: "foreground",
+              date: d,
             },
           ]);
         }
@@ -114,14 +104,14 @@ const NotificationPage: React.FC = () => {
       PushNotifications.addListener(
         "pushNotificationActionPerformed",
         (notification: ActionPerformed) => {
-          setnotifications((notifications) => [
-            ...notifications,
-            // JSON.stringify(notification),
+          const d = new Date();
+          addd([
             {
               id: notification.notification.id,
               title: notification.notification.data.title,
               body: notification.notification.data.body,
               type: "action",
+              date: d,
             },
           ]);
         }
@@ -148,21 +138,25 @@ const NotificationPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonListHeader mode="ios" lines="full">
-          <IonLabel>New Child</IonLabel>
-        </IonListHeader>
-        {notifications.length !== 0 && (
+        {/* <IonListHeader mode="ios" lines="full">
+          <IonLabel>New Notifictions</IonLabel>
+        </IonListHeader> */}
+        {notifications?.length !== 0 && (
           <IonList>
-            {notifications.map((notif: any) => (
-              <NotificationCard key={notif.id} notif={notif} />
-            ))}
+            {notifications
+              ?.slice(0)
+              .reverse()
+              .map((notif: Not) => (
+                <NotificationCard key={notif.id} notif={notif} />
+              ))}
           </IonList>
         )}
-        <IonFab horizontal="end" vertical="bottom">
-          <IonFabButton color="primary" onClick={register}>
+
+        {/* <IonFab horizontal="end" vertical="bottom">
+          <IonFabButton color="primary" onClick={addd()}>
             <IonIcon icon={refreshOutline} />
           </IonFabButton>
-        </IonFab>
+        </IonFab> */}
       </IonContent>
     </IonPage>
   );

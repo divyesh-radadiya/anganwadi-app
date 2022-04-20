@@ -1,5 +1,5 @@
 {
-	"appId": "io.ionic.anganwadiApp",
+	"appId": "io.ionic.starter",
 	"appName": "Anganwadi App",
 	"webDir": "build",
 	"bundledWebRuntime": false

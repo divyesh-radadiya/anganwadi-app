@@ -8,6 +8,7 @@ interface Context {
     db:Database;
     isOn:boolean;
     isSync:boolean;
+    isSession:boolean;
     allChildren: Child[];
     searchChildren:Child[];
     selectedChild:Child;

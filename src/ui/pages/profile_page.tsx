@@ -76,7 +76,7 @@ const ProfilePage: React.FC = () => {
     createStore("APPDB");
     set("jwt", "none");
     set("userId", "none");
-    OneSignal.setExternalUserId("none");
+    OneSignal.removeExternalUserId();
     setLogO(true);
   };
 

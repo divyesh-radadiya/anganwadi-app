@@ -13,6 +13,7 @@ const ChildernContextProvider: React.FC = (props) => {
   const [isOn, setOn] = useState<boolean>(true);
   const [isLoad, setLoad] = useState<boolean>(true);
   const [isSync, setSync] = useState<boolean>(false);
+  const [isSession, setSession] = useState<boolean>(true);
 
   const [userJWT, setUserJWT] = useState<string>("");
 
@@ -205,50 +206,73 @@ const ChildernContextProvider: React.FC = (props) => {
       if (Network.type == Network.Connection.NONE) {
         setOn(false);
       } else {
-        await sendRequest(userJWT ?? "").then((data) => {
-          setOnChildern(() => {
-            return [];
-          });
+        await sendRequest(userJWT ?? "")
+          .then((data) => {
+            setOnChildern(() => {
+              return [];
+            });
 
-          data.forEach((curData: any) => {
-            let newChild: Child = Object.assign(
-              new Child(),
-              curData["admission"]["child"]
-            );
-            // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
-            let allfollowUps: Followup[] = [];
-            let isDone = true;
-            let nextDate = new Date();
-            let nextFollowupid = "-";
-
-            curData["followUps"].forEach((curfollow: any) => {
-              let newFollow: Followup = Object.assign(
-                new Followup(),
-                curfollow
+            data.forEach((curData: any) => {
+              let newChild: Child = Object.assign(
+                new Child(),
+                curData["admission"]["child"]
               );
-              if (isDone == true && newFollow.attempted == false) {
-                isDone = false;
-                nextDate = newFollow.followupDate;
-                nextFollowupid = newFollow.followUpId;
-              }
-              allfollowUps = allfollowUps.concat(newFollow);
-            });
-            newChild.followUps = allfollowUps;
-            newChild.isDone = isDone;
+              // let newChild: Child = Object.assign(new Child(), curData["followUps"]);
+              let allfollowUps: Followup[] = [];
+              let isDone = true;
+              let nextDate = new Date();
+              let nextFollowupid = "-";
 
-            newChild.nextDate = new Date(nextDate);
-            newChild.nextFollowupid = nextFollowupid;
+              curData["followUps"].forEach((curfollow: any) => {
+                let newFollow: Followup = Object.assign(
+                  new Followup(),
+                  curfollow
+                );
+                if (newFollow.attempted == true) {
+                  newChild.currGrowthStatus = newFollow?.growthStatus;
+                  newChild.currWeight = newFollow?.weight;
+                }
+                if (isDone == true && newFollow.attempted == false) {
+                  isDone = false;
+                  nextDate = newFollow.followupDate;
+                  nextFollowupid = newFollow.followUpId;
+                }
+                allfollowUps = allfollowUps.concat(newFollow);
+              });
+              newChild.followUps = allfollowUps;
+              newChild.isDone = isDone;
 
-            setOnChildern((allOnChildren) => {
-              return allOnChildren.concat(newChild);
+              newChild.nextDate = new Date(nextDate);
+              newChild.nextFollowupid = nextFollowupid;
+
+              setOnChildern((allOnChildren) => {
+                return allOnChildren.concat(newChild);
+              });
             });
+
+            // setSearchChildern((allSearchChildren) => {
+            //   return allChildren;
+            // });
+            setOn(true);
+          })
+          .catch((error) => {
+            if (error.response) {
+              console.log(error.response.status);
+              if (error.response.status == 403) setSession(false);
+              else setOn(false);
+              //   setMessage(t("username_password_incorrect_msg"));
+              // else setMessage(error.response.status + error.message);
+            } else if (error.request) {
+              console.log(error.request);
+              setOn(false);
+              // setMessage(error.toString());
+            } else {
+              console.log("error", error.message);
+              setOn(false);
+              // setMessage(error.message + "-");
+            }
+            // console.log("error:", error);
           });
-
-          // setSearchChildern((allSearchChildren) => {
-          //   return allChildren;
-          // });
-          setOn(true);
-        });
       }
     } catch (exception_var) {
       setOn(false);
@@ -419,6 +443,7 @@ const ChildernContextProvider: React.FC = (props) => {
         isLoad,
         isOn,
         isSync,
+        isSession,
         db,
         allChildren,
         searchChildren,

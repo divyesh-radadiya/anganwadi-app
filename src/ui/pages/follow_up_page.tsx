@@ -422,6 +422,7 @@ const FollowUpPage: React.FC = () => {
                         <IonInput
                           placeholder="Growth status"
                           value={growthStatus}
+                          ref={growthStatusRef}
                           readonly
                           inputmode="text"
                         ></IonInput>

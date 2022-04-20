@@ -55,6 +55,7 @@ const Dashbord: React.FC = () => {
   useEffect(() => {
     OneSignalInit();
   }, []);
+
   function OneSignalInit(): void {
     try {
       OneSignal.setAppId("f2596674-be88-45f6-a7f3-e77f1b82ae13");
@@ -63,7 +64,7 @@ const Dashbord: React.FC = () => {
       });
 
       //
-      OneSignal.setExternalUserId("user");
+      // OneSignal.setExternalUserId("user");
       //
     } catch (exception_var) {
       console.log(exception_var);

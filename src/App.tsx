@@ -32,8 +32,6 @@ import LoginPage from "./ui/pages/login_page";
 import Dashbord from "./ui/dashbord";
 import { AuthContext, useAuthInit } from "./stores/auth";
 import NotificationPage from "./ui/pages/notification_page";
-import { useEffect } from "react";
-import OneSignal from "onesignal-cordova-plugin";
 
 setupIonicReact();
 
