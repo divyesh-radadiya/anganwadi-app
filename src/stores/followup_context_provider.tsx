@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { Database, Storage } from "@ionic/storage";
 import { Network } from "@awesome-cordova-plugins/network";
 import FollowupContext from "./followup_contex";
-import { useAuth } from "./auth";
 
 const FollowupContextProvider: React.FC = (props) => {
   const [isOn, setOn] = useState<boolean>(true);
@@ -154,6 +153,7 @@ const FollowupContextProvider: React.FC = (props) => {
     subChild.followUps[fi].muac = subFollowUp.muac;
     subChild.followUps[fi].growthStatus = subFollowUp.growthStatus;
     subChild.followUps[fi].symptoms = subFollowUp.symptoms;
+
     console.log(fi, "**", subChild.followUps);
 
     if (subChild.followUps.length > fi + 1) {

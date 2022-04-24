@@ -49,6 +49,7 @@ import ChildernContext from "../stores/childern_contex";
 import { useAuth } from "../stores/auth";
 import UserContext from "../stores/user_contex";
 import OneSignal from "onesignal-cordova-plugin";
+import SyncPage from "./pages/sync_page";
 
 const Dashbord: React.FC = () => {
   const { t } = useTranslation();
@@ -109,6 +110,10 @@ const Dashbord: React.FC = () => {
           <FollowupContextProvider>
             <FollowUpPage />
           </FollowupContextProvider>
+        </Route>
+
+        <Route path="/dashbord/syncPage">
+          <SyncPage />
         </Route>
       </IonRouterOutlet>
 

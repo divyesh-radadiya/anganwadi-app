@@ -11,6 +11,7 @@ interface Context {
     isSession:boolean;
     allChildren: Child[];
     searchChildren:Child[];
+    syncFollowup:Followup[];
     selectedChild:Child;
     selectedFollowUp:Followup;
 
@@ -20,6 +21,7 @@ interface Context {
     isFollowUpSelect: (followUpId: string) => void;
     search: (searchType : string,name?: string) => void;
     updateData:() => void;
+    updateSyncFollowup:() => void;
     getOfflineData:() => void;
     updateOfflineData:() => void;
     updateSearchData:() => void;

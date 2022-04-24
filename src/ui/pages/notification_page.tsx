@@ -51,25 +51,30 @@ const NotificationPage: React.FC = () => {
   };
 
   const onRef = () => {
-    PushNotifications.checkPermissions().then((res) => {
-      try {
-        if (res.receive !== "granted") {
-          PushNotifications.requestPermissions().then((res) => {
-            if (res.receive === "denied") {
-              showToast("Push Notification permission denied");
-            } else {
-              showToast("Push Notification permission granted");
-              register();
-            }
-          });
-        } else {
-          register();
+    PushNotifications.checkPermissions()
+      .then((res) => {
+        try {
+          if (res.receive !== "granted") {
+            PushNotifications.requestPermissions().then((res) => {
+              if (res.receive === "denied") {
+                showToast("Push Notification permission denied");
+              } else {
+                showToast("Push Notification permission granted");
+                register();
+              }
+            });
+          } else {
+            register();
+          }
+        } catch (exception_var: any) {
+          showToast(exception_var.toString());
+          console.log(exception_var);
         }
-      } catch (exception_var: any) {
-        showToast(exception_var.toString());
-        console.log(exception_var);
-      }
-    });
+      })
+      .catch((e) => {
+        showToast(e.toString());
+        console.log(e.toString());
+      });
   };
 
   const register = () => {

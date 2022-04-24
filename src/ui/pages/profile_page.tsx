@@ -30,9 +30,9 @@ const ProfilePage: React.FC = () => {
   }, []);
 
   const callHandler = () => {
-    CallNumber.callNumber("9773180438", true)
-      .then((res) => console.log("Launched dialer!", res))
-      .catch((err) => console.log("Error launching dialer", err));
+    // CallNumber.callNumber("9773180438", true)
+    //   .then((res) => console.log("Launched dialer!", res))
+    //   .catch((err) => console.log("Error launching dialer", err));
   };
   const [isAdding, setIsAdding] = useState(false);
 
@@ -158,7 +158,8 @@ const ProfilePage: React.FC = () => {
             </IonGrid>
           </IonItem>
           <IonButton
-            onClick={callHandler}
+            // onClick={callHandler}
+            routerLink={`/dashbord/syncPage`}
             className="button-submit"
             slot="end"
             expand="block"

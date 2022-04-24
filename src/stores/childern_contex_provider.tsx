@@ -11,8 +11,11 @@ const ChildernContextProvider: React.FC = (props) => {
   // const { userJWT } = useAuth();
 
   const [isOn, setOn] = useState<boolean>(true);
+
   const [isLoad, setLoad] = useState<boolean>(true);
+
   const [isSync, setSync] = useState<boolean>(false);
+
   const [isSession, setSession] = useState<boolean>(true);
 
   const [userJWT, setUserJWT] = useState<string>("");
@@ -122,6 +125,8 @@ const ChildernContextProvider: React.FC = (props) => {
   ]);
 
   const [searchChildren, setSearchChildern] = useState<Child[]>([]);
+
+  const [syncFollowup, setSyncFollowup] = useState<Followup[]>([]);
 
   const [selectedChild, setChild] = useState<Child>({
     samId: "123",
@@ -437,6 +442,13 @@ const ChildernContextProvider: React.FC = (props) => {
     // setLoad(false);
   };
 
+  const updateSyncFollowup = async () => {
+    setSyncFollowup([]);
+    const followups: Followup[] = (await db.get("synFollowUps")) ?? [];
+    console.log(followups);
+    setSyncFollowup(followups);
+  };
+
   return (
     <ChildernContext.Provider
       value={{
@@ -447,6 +459,7 @@ const ChildernContextProvider: React.FC = (props) => {
         db,
         allChildren,
         searchChildren,
+        syncFollowup,
         selectedChild,
         selectedFollowUp,
         updateJwt,
@@ -455,6 +468,7 @@ const ChildernContextProvider: React.FC = (props) => {
         isFollowUpSelect,
         search,
         updateData,
+        updateSyncFollowup,
         getOfflineData,
         updateOfflineData,
         updateSearchData,
