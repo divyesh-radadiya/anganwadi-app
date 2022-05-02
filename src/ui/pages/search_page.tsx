@@ -25,52 +25,6 @@ const SearchPage: React.FC = () => {
   const childernCtx = useContext(ChildernContext);
   const { t } = useTranslation();
 
-  // const [isAdding, setIsAdding] = useState(false);
-
-  const [selectedType, setSelectedType] = useState<string>("child_name");
-
-  // const startSearchTypeAddHandler = () => {
-  //   setIsAdding(true);
-  // };
-
-  // const cancelAddSearchTypeHandler = () => {
-  //   setIsAdding(false);
-  // };
-
-  // const searchTypeAddHandler = (curr: string) => {
-  //   setSelectedType((old) => {
-  //     return curr;
-  //   });
-
-  //   setIsAdding(false);
-  // };
-
-  // const [error, setError] = useState("");
-
-  // const searchHandler = () => {
-  //   const enteredName = searchRef.current!.value;
-  //   if (
-  //     selectedType == "mobile_no" &&
-  //     (!enteredName || enteredName.toString().trim().length != 10)
-  //   ) {
-  //     setError(t("valid_10_digit_mobile_no_msg"));
-  //     return;
-  //   }
-  //   if (!enteredName || enteredName.toString().trim().length === 0) {
-  //     setError(t("valid_data_msg"));
-  //     return;
-  //   }
-  //   setError("");
-  //   childernCtx.search(selectedType, enteredName ?? "");
-  // };
-  // const refreshHandler = () => {
-  //   searchRef.current!.value = "";
-  //   setError("");
-  //   childernCtx.updateSearchData();
-  // };
-  // const searchbar = document.querySelector("ion-searchbar");
-  // searchbar.addEventListener("ionInput", listener:handleInput);
-  // var items: Child[] = [];
   const [isVis, setisVis] = useState<Boolean[]>([]);
   const [items, setisItems] = useState<Child[]>([]);
 
@@ -90,7 +44,6 @@ const SearchPage: React.FC = () => {
 
   const handleInput = (event: CustomEvent<SearchbarChangeEventDetail>) => {
     const query = event.detail.value?.toLowerCase();
-    // console.log(query);
     requestAnimationFrame(() => {
       let newArr = [...isVis];
       items.forEach((item, index) => {
@@ -107,9 +60,6 @@ const SearchPage: React.FC = () => {
             .toString()
             .toLowerCase()
             .indexOf(query ?? "") > -1;
-        // console.log(shouldShow ? "block" : "none");
-        // allCard[index] = shouldShow;
-        // copying the old datas array
         newArr[index] = shouldShow;
         console.log(shouldShow ? item.name : "", newArr[index]);
       });
@@ -119,34 +69,11 @@ const SearchPage: React.FC = () => {
 
   return (
     <IonPage>
-      {/* <SearchModal
-        show={isAdding}
-        onCancel={cancelAddSearchTypeHandler}
-        onSave={searchTypeAddHandler}
-      /> */}
       <IonHeader className="IonHeader">
         <IonToolbar className="IonToolbar">
-          <IonText slot="start">
-            {selectedType == "child_name" ? (
-              <strong>{t("search_by_name")}</strong>
-            ) : selectedType == "sam_id" ? (
-              <strong>{t("search_by_sam_id")}</strong>
-            ) : (
-              <strong>{t("search_by_mobile_no")}</strong>
-            )}
+          <IonText slot="start" color="primary">
+            <strong>Search</strong>
           </IonText>
-          {/* <IonButton
-            onClick={startSearchTypeAddHandler}
-            fill="clear"
-            slot="end"
-          >
-            <IonIcon
-              icon={optionsOutline}
-              color="primary"
-              size="large"
-              onClick={startSearchTypeAddHandler}
-            />
-          </IonButton> */}
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -158,6 +85,7 @@ const SearchPage: React.FC = () => {
                 showClearButton="never"
                 className="ion-searchbar"
                 onIonChange={handleInput}
+                placeholder="Name, SamId or Mobile No."
               ></IonSearchbar>
             </IonCol>
             <IonCol className="ion-text-center" size="3">
@@ -167,25 +95,6 @@ const SearchPage: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonCard>
-        {/* <IonList>
-          {error && (
-            <IonRow className="ion-text-center">
-              <IonCol>
-                <IonText color="danger">
-                  <p>{error}</p>
-                </IonText>
-              </IonCol>
-            </IonRow>
-          )}
-          <ChildCard name="Child 1" />
-          <ChildCard name="Child 2" />
-          <ChildCard name="Child 3" /> 
-          <IonList>
-            {childernCtx.allChildren.map((child: Child) => (
-              <ChildCard key={child.samId} child={child} />
-            ))}
-          </IonList>
-        </IonList> */}
 
         <IonList>
           {isVis.map((isV: Boolean, index) => {
@@ -194,12 +103,6 @@ const SearchPage: React.FC = () => {
             );
           })}
         </IonList>
-
-        {/* <IonFab horizontal="end" vertical="bottom">
-          <IonFabButton color="primary" onClick={refreshHandler}>
-            <IonIcon icon={refreshOutline} />
-          </IonFabButton>
-        </IonFab> */}
       </IonContent>
     </IonPage>
   );

@@ -7,10 +7,15 @@ interface Context {
     isLoad:boolean;
     db:Database;
     isOn:boolean;
-    isSync:boolean;
+    isSync:number;
     isSession:boolean;
     allChildren: Child[];
-    searchChildren:Child[];
+    searchChildren: Child[];
+    completedChildren:Child[];
+    todayChildren:Child[];
+    lateChildren:Child[];
+    veryLateChildren:Child[];
+    upcomingChildren:Child[];
     syncFollowup:Followup[];
     selectedChild:Child;
     selectedFollowUp:Followup;

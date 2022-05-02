@@ -17,16 +17,9 @@ import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router";
 import { Network } from "@awesome-cordova-plugins/network";
 
-import {
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonButton,
-  IonIcon,
-  IonAlert,
-} from "@ionic/react";
+import { IonItem, IonInput, IonButton, IonIcon, IonAlert } from "@ionic/react";
 import { useAuth } from "../../stores/auth";
-import { createStore, set } from "../../services/IonicStorage";
+import { createStore, get, set } from "../../services/IonicStorage";
 import { logInRequest } from "../../services/network_service";
 import { useTranslation } from "react-i18next";
 import OneSignal from "onesignal-cordova-plugin";
@@ -64,17 +57,19 @@ const LoginPage: React.FC = () => {
       setLoading(false);
     } else {
       logInRequest(userId, password)
-        .then((data) => {
+        .then(async (data) => {
           createStore("APPDB");
-          set("jwt", "Bearer " + data["jwt"].toString());
-          set("userId", "1");
+          await set("jwt", "Bearer " + data["jwt"].toString());
+          await set("userId", "1");
 
-          OneSignal.setExternalUserId(userId);
+          await OneSignal.setExternalUserId(userId);
+
+          showToast(data["jwt"].toString());
 
           console.log("sucsess", data["jwt"]);
 
-          setLoading(false);
           setLogS(true);
+          setLoading(false);
         })
         .catch((error) => {
           if (error.response) {
@@ -89,7 +84,6 @@ const LoginPage: React.FC = () => {
             console.log(t("error"), error.message);
             setMessage(error.message + "-");
           }
-          // console.log("error:", error);
 
           setIserror(true);
           setLoading(false);
@@ -106,7 +100,7 @@ const LoginPage: React.FC = () => {
     window.location.assign("/");
   }
 
-  if (loggedIn) {
+  if (logS || loggedIn) {
     return <Redirect to="/dashbord/homePage" />;
   }
   console.log("error:", loggedIn);
@@ -140,7 +134,16 @@ const LoginPage: React.FC = () => {
               <IonRow>
                 <IonCol size="12" className="ion-text-center">
                   <IonText className="ion-text-head" color="primary">
-                    <strong>{t("login")}</strong>
+                    <IonText className="ion-text-topsubhead">
+                      Welcome back to,
+                    </IonText>
+                  </IonText>
+                </IonCol>
+              </IonRow>{" "}
+              <IonRow>
+                <IonCol size="12" className="ion-text-center">
+                  <IonText className="ion-text-head" color="primary">
+                    <IonText className="ion-text-title">Anganwadi App</IonText>
                   </IonText>
                 </IonCol>
               </IonRow>

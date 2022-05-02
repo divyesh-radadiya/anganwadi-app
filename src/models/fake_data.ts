@@ -11,6 +11,13 @@ export const Children: Child[] = [
       isDone: false,
       nextFollowupid:"2",
       nextDate: new Date("2022-03-01"),
+      admissionDate: new Date("2022-03-01"),
+      admissionWeight: 2.1,
+      targetWeight: 2.6,
+      dischargeDate: new Date("2022-03-01"),
+      dischargeWeight: 2.5,
+      outcome: "normal",
+      treatmentProtocol: "healthy diet",
       followUps: [
         {
           followUpId: "1",
@@ -59,6 +66,13 @@ export const Children: Child[] = [
       contactNumber: 9876543456,
       isDone: false,
       nextDate: new Date("2022-03-03"),
+      admissionDate: new Date("2022-03-01"),
+      admissionWeight: 2.1,
+      targetWeight: 2.6,
+      dischargeDate: new Date("2022-03-01"),
+      dischargeWeight: 2.5,
+      outcome: "normal",
+      treatmentProtocol: "healthy diet",
       followUps: []
     },
     {
@@ -70,6 +84,13 @@ export const Children: Child[] = [
       contactNumber: 9876543756,
       isDone: false,
       nextDate: new Date("2022-03-04"),
+      admissionDate: new Date("2022-03-01"),
+      admissionWeight: 2.1,
+      targetWeight: 2.6,
+      dischargeDate: new Date("2022-03-01"),
+      dischargeWeight: 2.5,
+      outcome: "normal",
+      treatmentProtocol: "healthy diet",
       followUps: []
     },
     {
@@ -80,6 +101,13 @@ export const Children: Child[] = [
       address: "102, kbn colony, cg road, pune.",
       contactNumber: 9786543756,
       isDone: true,
+      admissionDate: new Date("2022-03-01"),
+      admissionWeight: 2.1,
+      targetWeight: 2.6,
+      dischargeDate: new Date("2022-03-01"),
+      dischargeWeight: 2.5,
+      outcome: "normal",
+      treatmentProtocol: "healthy diet",
       followUps: []
     },
   ];

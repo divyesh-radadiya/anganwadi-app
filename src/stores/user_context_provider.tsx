@@ -1,11 +1,9 @@
 import { Child } from "../models/child";
 import { Followup } from "../models/followup";
-import { getUser, putRequest } from "../services/network_service";
+import { getUser } from "../services/network_service";
 import { useEffect, useState } from "react";
 import { Database, Storage } from "@ionic/storage";
 import { Network } from "@awesome-cordova-plugins/network";
-import FollowupContext from "./followup_contex";
-import { useAuth } from "./auth";
 import UserContext from "./user_contex";
 import { Aww } from "../models/aww";
 
@@ -50,6 +48,7 @@ const UserContextProvider: React.FC = (props) => {
   const updateJwt = (jwt: string) => {
     setUserJWT(jwt);
   };
+
   const initData = async () => {
     setLoad(true);
     setOn(true);
@@ -68,6 +67,7 @@ const UserContextProvider: React.FC = (props) => {
       } else {
         await getUser(userJWT ?? "").then((data) => {
           let newAww: Aww = Object.assign(new Aww(), data["aww"]);
+
           newAww.userId = data["userId"].toString();
 
           setCurOnUser(newAww);
@@ -116,7 +116,6 @@ const UserContextProvider: React.FC = (props) => {
         isOn,
         db,
         curUser,
-
         updateJwt,
         initData,
       }}

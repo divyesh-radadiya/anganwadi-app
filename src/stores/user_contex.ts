@@ -1,8 +1,6 @@
 import { Database } from '@ionic/storage';
 import React from 'react';
 import { Aww } from '../models/aww';
-import { Child } from '../models/child';
-import { Followup } from '../models/followup';
 
 interface Context {
     isLoad:boolean;

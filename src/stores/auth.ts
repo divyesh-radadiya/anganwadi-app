@@ -20,14 +20,15 @@ export function useAuth(): Auth {
 
 export function useAuthInit(): AuthInit {
   const [authInit, setAuthInit] = useState<AuthInit>({ loading: true,auth:{ loggedIn: false} });
+ 
   useEffect(() => {
-
     const setupStore = async () => {
        createStore("APPDB");
       const jwtexists = await get("jwt") ?? "none";
       const userIdexists = await get("userId") ?? "none";
       console.log("Got exists", jwtexists);
       var ans:Auth={loggedIn: false};
+
       if ( jwtexists == "none"  || userIdexists == "none") {
        return ans;
       }else{
@@ -38,14 +39,17 @@ export function useAuthInit(): AuthInit {
       }
     };
 
-    (async () => {
-      return setupStore().then((user) => {
+    // (async () => {
+    //   return 
+      setupStore().then((user) => {
         const auth = user.loggedIn ?
           { loggedIn: true, userId: user.userId, userJWT: user.userJWT } :
           { loggedIn: false };
         setAuthInit({ loading: false, auth });
       });
-    })()
+    // }
+    // )
+    // ()
    
 
   }, []);

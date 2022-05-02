@@ -192,7 +192,7 @@ const FollowUpPage: React.FC = () => {
             />
           </IonButton>
           <IonText slot="start" color="primary" className="ion-text-title">
-            Follow up {childernCtx.selectedFollowUp?.followUpId}
+            Follow up id {childernCtx.selectedFollowUp?.followUpId}
           </IonText>
         </IonToolbar>
       </IonHeader>

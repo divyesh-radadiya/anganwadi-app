@@ -1,18 +1,24 @@
 import {
   IonAlert,
-  IonButton,
+  IonCard,
   IonContent,
   IonFab,
   IonFabButton,
-  IonHeader,
   IonIcon,
+  IonImg,
+  IonItem,
+  IonLabel,
   IonList,
+  IonListHeader,
   IonPage,
+  IonSegment,
+  IonSegmentButton,
+  IonSlide,
+  IonSlides,
   IonText,
-  IonToolbar,
   useIonLoading,
 } from "@ionic/react";
-import { optionsOutline, refreshOutline } from "ionicons/icons";
+import { refreshOutline } from "ionicons/icons";
 import ChildCard from "../components/child_card";
 import "../constants/home.css";
 import { useHistory } from "react-router";
@@ -20,10 +26,10 @@ import { useHistory } from "react-router";
 import React, { useContext, useEffect, useState } from "react";
 import { Child } from "../../models/child";
 import ChildernContext from "../../stores/childern_contex";
-import FilterModal from "../components/filter_modal";
 import { useTranslation } from "react-i18next";
 import { createStore, set } from "../../services/IonicStorage";
 import OneSignal from "onesignal-cordova-plugin";
+import UserContext from "../../stores/user_contex";
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -31,6 +37,12 @@ const HomePage: React.FC = () => {
   const childernCtx = useContext(ChildernContext);
   useEffect(() => {
     childernCtx.initContext();
+  }, []);
+
+  const userCtx = useContext(UserContext);
+
+  useEffect(() => {
+    userCtx.initData();
   }, []);
 
   const [present, dismiss] = useIonLoading();
@@ -45,25 +57,7 @@ const HomePage: React.FC = () => {
     }
   }, [childernCtx.isLoad]);
 
-  const [isAdding, setIsAdding] = useState(false);
-
   const [selected, setSelected] = useState<string>("pending_children");
-
-  const startAddFilterHandler = () => {
-    setIsAdding(true);
-  };
-
-  const cancelAddFilterHandler = () => {
-    setIsAdding(false);
-  };
-
-  const filterAddHandler = (curr: string) => {
-    setSelected((old) => {
-      return curr;
-    });
-
-    setIsAdding(false);
-  };
 
   useEffect(() => {
     if (childernCtx.isOn == false) {
@@ -82,7 +76,7 @@ const HomePage: React.FC = () => {
   }, [childernCtx.isSession]);
 
   useEffect(() => {
-    if (childernCtx.isSync == true) {
+    if (childernCtx.isSync > 0) {
       setShowAlert2(true);
     } else {
       setShowAlert2(false);
@@ -99,49 +93,133 @@ const HomePage: React.FC = () => {
     window.location.assign("/");
   };
 
+  const slideOpts = {
+    initialSlide: 0,
+    speed: 400,
+    autoplay: {
+      delay: 3000,
+    },
+  };
+
   return (
     <IonPage>
-      <FilterModal
-        show={isAdding}
-        onCancel={cancelAddFilterHandler}
-        onSave={filterAddHandler}
-      />
-      <IonHeader className="IonHeader">
-        <IonToolbar>
-          <IonText slot="start" color="primary">
-            {selected == "pending_children" ? (
-              <strong>{t("pending_children")}</strong>
-            ) : (
-              <strong>{t("completed_children")}</strong>
-            )}
-          </IonText>
-          {/* <IonButton
-            slot="end"
-            // size="large"
-            color="primary"
-            fill="solid"
-            shape="round"
-            
-          > */}
-          <IonButton onClick={startAddFilterHandler} fill="clear" slot="end">
-            <IonIcon
-              icon={optionsOutline}
-              color="primary"
-              size="large"
-              onClick={startAddFilterHandler}
-            />
-          </IonButton>
-
-          {/* </IonButton> */}
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
         <IonList>
+          <IonListHeader>
+            <IonText className="ion-text-topsubhead">
+              {userCtx.curUser.name} Welcome back to,
+            </IonText>
+          </IonListHeader>
+          <IonListHeader>
+            <IonText className="ion-text-title">Anganwadi App</IonText>
+          </IonListHeader>
+
+          <IonSlides pager={true} options={slideOpts}>
+            <IonSlide>
+              <IonCard className="ion-card-img">
+                <IonImg src="assets/MUAC.jpg" />
+              </IonCard>
+            </IonSlide>
+            <IonSlide>
+              <IonCard className="ion-card-img">
+                <IonImg src="assets/nrc.jpg" />
+              </IonCard>
+            </IonSlide>
+            <IonSlide>
+              <IonCard className="ion-card-img">
+                <IonImg src="assets/nrc3.jpg" />
+              </IonCard>
+            </IonSlide>
+          </IonSlides>
+
+          <IonListHeader>
+            <IonText className="ion-text-title">FollowUps</IonText>
+          </IonListHeader>
+          <IonSegment
+            value={selected}
+            onIonChange={(e) =>
+              setSelected(e.detail.value ?? "pending_children")
+            }
+          >
+            <IonSegmentButton value="pending_children">
+              <IonLabel>Pending</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="completed_children">
+              <IonLabel>Completed</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+          <IonCard></IonCard>
+
+          {selected == "pending_children" &&
+            childernCtx.todayChildren.length > 0 && (
+              <IonItem>
+                <IonText className="ion-text-head ion-text-success">
+                  Today{" "}
+                </IonText>
+              </IonItem>
+            )}
+
+          {childernCtx.todayChildren.map((child: Child) => {
+            return (
+              selected == "pending_children" && (
+                <ChildCard key={child.samId} child={child} />
+              )
+            );
+          })}
+
+          {selected == "pending_children" &&
+            childernCtx.lateChildren.length > 0 && (
+              <IonItem>
+                <IonText className="ion-text-head ion-text-less-danger">
+                  Late{" "}
+                </IonText>
+              </IonItem>
+            )}
+
+          {childernCtx.lateChildren.map((child: Child) => {
+            return (
+              selected == "pending_children" && (
+                <ChildCard key={child.samId} child={child} />
+              )
+            );
+          })}
+
+          {selected == "pending_children" &&
+            childernCtx.veryLateChildren.length > 0 && (
+              <IonItem>
+                <IonText className="ion-text-head ion-text-danger">
+                  Very Late{" "}
+                </IonText>
+              </IonItem>
+            )}
+
+          {childernCtx.veryLateChildren.map((child: Child) => {
+            return (
+              selected == "pending_children" && (
+                <ChildCard key={child.samId} child={child} />
+              )
+            );
+          })}
+
+          {selected == "pending_children" &&
+            childernCtx.upcomingChildren.length > 0 && (
+              <IonItem>
+                <IonText className="ion-text-head">Up Coming </IonText>
+              </IonItem>
+            )}
+
+          {childernCtx.upcomingChildren.map((child: Child) => {
+            return (
+              selected == "pending_children" && (
+                <ChildCard key={child.samId} child={child} />
+              )
+            );
+          })}
+
           {childernCtx.allChildren.map(
             (child: Child) =>
-              (selected == "pending_children"
-                ? !child.isDone
-                : child.isDone) && <ChildCard key={child.samId} child={child} />
+              selected == "completed_children" &&
+              child.isDone && <ChildCard key={child.samId} child={child} />
           )}
         </IonList>
 
@@ -162,8 +240,12 @@ const HomePage: React.FC = () => {
             history.push("/");
           }}
           cssClass="my-custom-class"
-          header={"Alert"}
-          message={"Sync data updated online successfully!!"}
+          header={"Success"}
+          message={
+            "Your Offline data ( Number of followups: " +
+            childernCtx.isSync +
+            ") updated online successfully!!"
+          }
           buttons={["OK"]}
         />
         <IonAlert
@@ -181,7 +263,7 @@ const HomePage: React.FC = () => {
           message={"Session timeout!! Please, login again."}
           buttons={["OK"]}
         />
-        <IonFab horizontal="end" vertical="bottom">
+        <IonFab horizontal="end" vertical="bottom" slot="fixed">
           <IonFabButton color="primary" onClick={refreshHandler}>
             <IonIcon icon={refreshOutline} />
           </IonFabButton>

@@ -2,75 +2,32 @@ import { Child } from "../models/child";
 import { Followup } from "../models/followup";
 import sendRequest, { putRequest } from "../services/network_service";
 import ChildernContext from "./childern_contex";
-import { useCallback, useEffect, useState } from "react";
-import { Database, Drivers, Storage } from "@ionic/storage";
+import { useEffect, useState } from "react";
+import { Database, Storage } from "@ionic/storage";
 import { Network } from "@awesome-cordova-plugins/network";
-// import IonicSecureStorageDriver from "@ionic-native/secure-storage/index";
 
 const ChildernContextProvider: React.FC = (props) => {
-  // const { userJWT } = useAuth();
-
   const [isOn, setOn] = useState<boolean>(true);
 
   const [isLoad, setLoad] = useState<boolean>(true);
 
-  const [isSync, setSync] = useState<boolean>(false);
+  const [isSync, setSync] = useState<number>(0);
 
   const [isSession, setSession] = useState<boolean>(true);
 
   const [userJWT, setUserJWT] = useState<string>("");
 
-  const [allChildren, setChildern] = useState<Child[]>([
-    // {
-    //   samId: "123",
-    //   name: "Naman",
-    //   age: 3,
-    //   gender: "Male",
-    //   address: "123, abc colony, mg road, pune. ",
-    //   contactNumber: 9876543210,
-    //   isDone: false,
-    //   nextFollowupid: "2",
-    //   nextDate: new Date("2022-03-01"),
-    //   followUps: [
-    //     {
-    //       followUpId: "1",
-    //       height: 80,
-    //       weight: 12,
-    //       muac: 3,
-    //       growthStatus: "SAM",
-    //       symptoms: "No",
-    //       attempted: true,
-    //       followupDate: new Date("2022-02-14"),
-    //       attemptedDate: new Date("2022-02-14"),
-    //     },
-    //     {
-    //       followUpId: "2",
-    //       attempted: false,
-    //       followupDate: new Date("2022-03-01"),
-    //     },
-    //     {
-    //       followUpId: "3",
-    //       attempted: false,
-    //       followupDate: new Date("2022-03-16"),
-    //     },
-    //     {
-    //       followUpId: "4",
-    //       attempted: false,
-    //       followupDate: new Date("2022-04-01"),
-    //     },
-    //     {
-    //       followUpId: "5",
-    //       attempted: false,
-    //       followupDate: new Date("2022-04-16"),
-    //     },
-    //     {
-    //       followUpId: "6",
-    //       attempted: false,
-    //       followupDate: new Date("2022-05-01"),
-    //     },
-    //   ],
-    // },
-  ]);
+  const [allChildren, setChildern] = useState<Child[]>([]);
+
+  const [completedChildren, setCompletedChildern] = useState<Child[]>([]);
+
+  const [todayChildren, setTodayChildern] = useState<Child[]>([]);
+
+  const [lateChildren, setLateChildern] = useState<Child[]>([]);
+
+  const [veryLateChildren, setVeryLateChildern] = useState<Child[]>([]);
+
+  const [upcomingChildren, setUpcomingChildern] = useState<Child[]>([]);
 
   const [allOnChildren, setOnChildern] = useState<Child[]>([
     // {
@@ -138,6 +95,13 @@ const ChildernContextProvider: React.FC = (props) => {
     isDone: false,
     nextFollowupid: "2",
     nextDate: new Date("2022-03-01"),
+    admissionDate: new Date("2022-03-01"),
+    admissionWeight: 2.1,
+    targetWeight: 2.6,
+    dischargeDate: new Date("2022-03-01"),
+    dischargeWeight: 2.5,
+    outcome: "normal",
+    treatmentProtocol: "healthy diet",
     followUps: [
       {
         followUpId: "1",
@@ -250,14 +214,23 @@ const ChildernContextProvider: React.FC = (props) => {
               newChild.nextDate = new Date(nextDate);
               newChild.nextFollowupid = nextFollowupid;
 
+              newChild.admissionDate = new Date(
+                curData["admission"]["admittedAt"]
+              );
+              newChild.admissionWeight = curData["admission"]["weight"];
+              newChild.targetWeight = Number(
+                (curData["admission"]["weight"] * 1.15).toFixed(2)
+              );
+              newChild.dischargeDate = new Date(curData["dischargeAt"]);
+              newChild.dischargeWeight = curData["weight"];
+              newChild.outcome = curData["outcome"];
+              newChild.treatmentProtocol = curData["treatmentProtocol"];
+
               setOnChildern((allOnChildren) => {
                 return allOnChildren.concat(newChild);
               });
             });
 
-            // setSearchChildern((allSearchChildren) => {
-            //   return allChildren;
-            // });
             setOn(true);
           })
           .catch((error) => {
@@ -310,7 +283,7 @@ const ChildernContextProvider: React.FC = (props) => {
               console.log("syn data added", data["followUpId"]);
               i++;
               if (i == l) {
-                setSync(true);
+                setSync(l);
               }
             });
           });
@@ -332,14 +305,58 @@ const ChildernContextProvider: React.FC = (props) => {
   };
 
   const getOfflineData = async () => {
-    const children = await db.get("childrenDataAll");
+    setChildern([]);
+    setCompletedChildern([]);
+    setTodayChildern([]);
+    setLateChildern([]);
+    setVeryLateChildern([]);
+    setUpcomingChildern([]);
+
+    var children: Child[] = await db.get("childrenDataAll");
+
+    children.sort(function (a, b) {
+      return (
+        (a.nextDate ?? new Date()).valueOf() -
+        (b.nextDate ?? new Date()).valueOf()
+      );
+    });
+
     setChildern((allChildren) => {
       return children;
     });
-    setSearchChildern((allSearchChildren) => {
-      return children;
-    });
 
+    children.map((child: Child) => {
+      if (child.isDone) {
+        setCompletedChildern((oldChild) => {
+          return oldChild.concat(child);
+        });
+      } else {
+        const d1 = child.nextDate ?? new Date();
+        const d2 = new Date();
+
+        const diff = Math.ceil(
+          (d2.valueOf() - d1.valueOf()) / (1000 * 60 * 60 * 24)
+        );
+
+        if (diff < 0) {
+          setUpcomingChildern((oldChild) => {
+            return oldChild.concat(child);
+          });
+        } else if (diff < 2) {
+          setTodayChildern((oldChild) => {
+            return oldChild.concat(child);
+          });
+        } else if (diff > 1 && diff < 8) {
+          setLateChildern((oldChild) => {
+            return oldChild.concat(child);
+          });
+        } else {
+          setVeryLateChildern((oldChild) => {
+            return oldChild.concat(child);
+          });
+        }
+      }
+    });
     console.log("Got value", children);
   };
 
@@ -459,6 +476,11 @@ const ChildernContextProvider: React.FC = (props) => {
         db,
         allChildren,
         searchChildren,
+        completedChildren,
+        todayChildren,
+        lateChildren,
+        veryLateChildren,
+        upcomingChildren,
         syncFollowup,
         selectedChild,
         selectedFollowUp,

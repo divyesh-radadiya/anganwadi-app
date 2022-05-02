@@ -12,9 +12,10 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 import ChildernContext from "../../stores/childern_contex";
 import "../constants/card.css";
+import { NotificationData } from "../pages/notification_page";
 
 interface ContainerProps {
-  notif: any;
+  notif: NotificationData;
 }
 
 const NotificationCard: React.FC<ContainerProps> = ({ notif }) => {
@@ -22,11 +23,11 @@ const NotificationCard: React.FC<ContainerProps> = ({ notif }) => {
 
   const clickHandler = () => {
     const isChild = childernCtx.allChildren.find((child) => {
-      return child.samId == notif.body.toString();
+      return child.samId == notif.samId;
     });
 
     if (isChild) {
-      childernCtx.isChildSelect(notif.body);
+      childernCtx.isChildSelect(notif.samId);
       setShowAlert2(true);
       setShowAlert1(false);
     } else {
@@ -39,6 +40,7 @@ const NotificationCard: React.FC<ContainerProps> = ({ notif }) => {
   const [showAlert1, setShowAlert1] = useState(false);
   const [showAlert2, setShowAlert2] = useState(false);
   const history = useHistory();
+
   return (
     <IonGrid>
       <IonRow>
@@ -48,7 +50,16 @@ const NotificationCard: React.FC<ContainerProps> = ({ notif }) => {
       </IonRow>
       <IonRow>
         <IonCol className="col-no-top col-no-left col-no-right">
-          <IonCard onClick={clickHandler} className="ion-card-notification ">
+          <IonCard
+            onClick={clickHandler}
+            className={
+              notif.pr == "L"
+                ? "ion-card-notification-low"
+                : notif.pr == "H"
+                ? "ion-card-notification-high"
+                : "ion-card-notification-med"
+            }
+          >
             <IonAlert
               isOpen={showAlert1}
               onDidDismiss={() => {
@@ -85,14 +96,14 @@ const NotificationCard: React.FC<ContainerProps> = ({ notif }) => {
                   <IonRow>
                     <IonCol>
                       <IonLabel color="primary" className="ion-text-subhead">
-                        {notif.title}
+                        Name: {notif.name}
                       </IonLabel>
                     </IonCol>
                   </IonRow>
                   <IonRow>
                     <IonCol>
                       <IonLabel color="primary" className="ion-text-subhead">
-                        SamId: {notif.body}
+                        {notif.body}
                       </IonLabel>
                     </IonCol>
                   </IonRow>

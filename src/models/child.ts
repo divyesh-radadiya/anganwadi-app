@@ -13,6 +13,14 @@ import { Followup } from "./followup";
     followUps!: Followup[];
     currWeight?: Number;
     currGrowthStatus?: string;
+    admissionDate!:Date;
+    admissionWeight!:number;
+    targetWeight!:number;
+    dischargeDate!:Date;
+    dischargeWeight!:number;
+    outcome!:string;
+    treatmentProtocol!:string;
+
 
   }
  

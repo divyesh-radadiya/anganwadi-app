@@ -1,4 +1,6 @@
 import {
+  IonAccordion,
+  IonAccordionGroup,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -8,6 +10,7 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
+  IonLabel,
   IonList,
   IonPage,
   IonRow,
@@ -22,11 +25,20 @@ import { chevronBackOutline } from "ionicons/icons";
 import "../constants/home.css";
 import ChildernContext from "../../stores/childern_contex";
 import { useHistory } from "react-router";
+import { CallNumber } from "@awesome-cordova-plugins/call-number";
+import { useTranslation } from "react-i18next";
 
 const ChildPage: React.FC = () => {
   const childernCtx = useContext(ChildernContext);
   const history = useHistory();
   var i = 0;
+  const callHandler = () => {
+    CallNumber.callNumber("9773180438", true)
+      .then((res) => console.log("Launched dialer!", res))
+      .catch((err) => console.log("Error launching dialer", err));
+  };
+
+  const { t } = useTranslation();
   return (
     <IonPage>
       <IonHeader className="IonHeader">
@@ -104,7 +116,7 @@ const ChildPage: React.FC = () => {
 
           <IonItem>
             <IonText className="ion-text-subhead">
-              Age : {childernCtx.selectedChild?.age}
+              Age : {childernCtx.selectedChild?.age} Year
             </IonText>
           </IonItem>
 
@@ -126,6 +138,63 @@ const ChildPage: React.FC = () => {
             </IonText>
           </IonItem>
 
+          <IonAccordionGroup>
+            <IonAccordion value="colors">
+              <IonItem slot="header">
+                <IonText className="ion-text-head">Discharge Summary</IonText>
+              </IonItem>
+
+              <IonList slot="content">
+                <IonItem>
+                  <IonText className="ion-text-subhead">
+                    Admission date :{" "}
+                    {childernCtx.selectedChild?.admissionDate.toDateString()}
+                  </IonText>
+                </IonItem>
+
+                <IonItem>
+                  <IonText className="ion-text-subhead">
+                    Admission weight :{" "}
+                    {childernCtx.selectedChild?.admissionWeight} KG
+                  </IonText>
+                </IonItem>
+
+                <IonItem>
+                  <IonText className="ion-text-subhead">
+                    Target weight : {childernCtx.selectedChild?.targetWeight} KG
+                  </IonText>
+                </IonItem>
+
+                <IonItem>
+                  <IonText className="ion-text-subhead">
+                    Discharge date :{" "}
+                    {childernCtx.selectedChild?.dischargeDate.toDateString()}
+                  </IonText>
+                </IonItem>
+
+                <IonItem>
+                  <IonText className="ion-text-subhead">
+                    Discharge weight :{" "}
+                    {childernCtx.selectedChild?.dischargeWeight} KG
+                  </IonText>
+                </IonItem>
+
+                <IonItem>
+                  <IonText className="ion-text-subhead">
+                    Outcome : {childernCtx.selectedChild?.outcome}
+                  </IonText>
+                </IonItem>
+
+                <IonItem>
+                  <IonText className="ion-text-subhead">
+                    Treatment protocol :{" "}
+                    {childernCtx.selectedChild?.treatmentProtocol}
+                  </IonText>
+                </IonItem>
+              </IonList>
+            </IonAccordion>
+          </IonAccordionGroup>
+
           <IonItem>
             <IonText className="ion-text-head">All follow ups</IonText>
           </IonItem>
@@ -143,6 +212,17 @@ const ChildPage: React.FC = () => {
               );
             })}
           </IonList>
+          <IonButton
+            onClick={callHandler}
+            className="button-submit"
+            slot="end"
+            expand="block"
+            color="primary"
+            fill="solid"
+            shape="round"
+          >
+            {t("contact_nrc")}
+          </IonButton>
         </IonList>
       </IonContent>
     </IonPage>

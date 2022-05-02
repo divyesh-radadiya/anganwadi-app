@@ -1,16 +1,12 @@
 import { Redirect, Route } from "react-router";
 import {
-  IonApp,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
-  setupIonicReact,
-  useIonLoading,
 } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
 import {
   homeOutline,
   notificationsOutline,
@@ -43,7 +39,7 @@ import NotificationPage from "./pages/notification_page";
 import ProfilePage from "./pages/profile_page";
 import ChildPage from "./pages/child_page";
 import FollowUpPage from "./pages/follow_up_page";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import FollowupContextProvider from "../stores/followup_context_provider";
 import ChildernContext from "../stores/childern_contex";
 import { useAuth } from "../stores/auth";

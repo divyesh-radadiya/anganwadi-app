@@ -5,18 +5,35 @@ import {
   IonPage,
   IonText,
   IonToolbar,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonFab,
+  IonFabButton,
+  IonIcon,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import {
   PushNotificationSchema,
   PushNotifications,
-  Token,
   ActionPerformed,
 } from "@capacitor/push-notifications";
 import { Toast } from "@capacitor/toast";
 import { useEffect, useState } from "react";
 import NotificationCard from "../components/notification_card";
 import { createStore, get, set } from "../../services/IonicStorage";
+import { refreshOutline } from "ionicons/icons";
+
+export class NotificationData {
+  type!: string;
+  samId!: string;
+  name!: string;
+  age!: number;
+  gender!: string;
+  pr!: string;
+  date?: Date;
+  body?: string;
+}
 
 const NotificationPage: React.FC = () => {
   const { t } = useTranslation();
@@ -26,27 +43,31 @@ const NotificationPage: React.FC = () => {
     getData();
   }, []);
 
-  class Not {
-    id!: string;
-    title!: string;
-    body!: string;
-    type!: string;
-    date!: Date;
+  class ExData {
+    a!: NotificationData;
   }
 
-  const [notifications, setnotifications] = useState<Not[]>([]);
+  const [notifications, setnotifications] = useState<NotificationData[]>([]);
 
   const getData = async () => {
     createStore("APPDB");
-    const old: Not[] = (await get("notification")) ?? [];
+    const old: NotificationData[] = (await get("notification")) ?? [];
     setnotifications(old);
   };
 
-  const addd = async (not: Not[]) => {
-    setnotifications((mynotifications: Not[]) => {
+  const clearData = async () => {
+    setnotifications([]);
+    set("notification", []);
+  };
+
+  const addd = async (not: NotificationData) => {
+    setnotifications((mynotifications: NotificationData[]) => {
       return mynotifications.concat(not);
     });
-    const newNot: Not[] = (await get("notification")) ?? [];
+
+    setSelectedType(not.type);
+    const newNot: NotificationData[] = (await get("notification")) ?? [];
+
     set("notification", newNot.concat(not));
   };
 
@@ -93,15 +114,16 @@ const NotificationPage: React.FC = () => {
         "pushNotificationReceived",
         (notification: PushNotificationSchema) => {
           const d = new Date();
-          addd([
-            {
-              id: notification.id,
-              title: notification.data.title,
-              body: notification.data.alert,
-              type: "foreground",
-              date: d,
-            },
-          ]);
+
+          let exData: ExData = Object.assign(
+            new ExData(),
+            JSON.parse(notification.data.custom)
+          );
+
+          exData.a.body = notification.data.alert;
+          exData.a.date = d;
+
+          addd(exData.a);
         }
       );
 
@@ -110,15 +132,16 @@ const NotificationPage: React.FC = () => {
         "pushNotificationActionPerformed",
         (notification: ActionPerformed) => {
           const d = new Date();
-          addd([
-            {
-              id: notification.notification.id,
-              title: notification.notification.data.title,
-              body: notification.notification.data.body,
-              type: "action",
-              date: d,
-            },
-          ]);
+
+          let exData: ExData = Object.assign(
+            new ExData(),
+            JSON.parse(notification.notification.data.custom)
+          );
+
+          exData.a.body = notification.notification.data.alert;
+          exData.a.date = d;
+
+          addd(exData.a);
         }
       );
     } catch (exception_var: any) {
@@ -133,35 +156,56 @@ const NotificationPage: React.FC = () => {
     });
   };
 
+  const [selectedType, setSelectedType] = useState<string>("new");
+
   return (
     <IonPage>
       <IonHeader className="IonHeader">
         <IonToolbar>
           <IonText slot="start" color="primary">
-            <strong>{t("notification_page")}</strong>
+            <strong>Notification</strong>
           </IonText>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {/* <IonListHeader mode="ios" lines="full">
-          <IonLabel>New Notifictions</IonLabel>
-        </IonListHeader> */}
-        {notifications?.length !== 0 && (
+        <IonSegment
+          value={selectedType}
+          onIonChange={(e) => setSelectedType(e.detail.value ?? "new")}
+        >
+          <IonSegmentButton value="new">
+            <IonLabel>New Followups</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="pending">
+            <IonLabel>Pending Followups</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
+        {selectedType === "new" && (
           <IonList>
-            {notifications
-              ?.slice(0)
-              .reverse()
-              .map((notif: Not) => (
-                <NotificationCard key={notif.id} notif={notif} />
-              ))}
+            {notifications.reverse().map((notif: NotificationData, index) => {
+              return (
+                notif.type === "new" && (
+                  <NotificationCard key={index} notif={notif} />
+                )
+              );
+            })}
           </IonList>
         )}
-
-        {/* <IonFab horizontal="end" vertical="bottom">
-          <IonFabButton color="primary" onClick={addd()}>
+        {selectedType === "pending" && (
+          <IonList>
+            {notifications.reverse().map((notif: NotificationData, index) => {
+              return (
+                notif.type === "pending" && (
+                  <NotificationCard key={index} notif={notif} />
+                )
+              );
+            })}
+          </IonList>
+        )}
+        <IonFab horizontal="end" vertical="bottom" slot="fixed">
+          <IonFabButton color="primary" onClick={clearData}>
             <IonIcon icon={refreshOutline} />
           </IonFabButton>
-        </IonFab> */}
+        </IonFab>
       </IonContent>
     </IonPage>
   );

@@ -6,6 +6,7 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
+  IonLabel,
   IonList,
   IonPage,
   IonRow,
@@ -16,45 +17,34 @@ import {
 import { optionsOutline, personCircle } from "ionicons/icons";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CallNumber } from "@awesome-cordova-plugins/call-number";
 
 import { createStore, set } from "../../services/IonicStorage";
 import UserContext from "../../stores/user_contex";
-import LangModal from "../components/lang_modal";
 import OneSignal from "onesignal-cordova-plugin";
+import LangModal from "../components/lang_modal";
 
 const ProfilePage: React.FC = () => {
   const userCtx = useContext(UserContext);
-  useEffect(() => {
-    userCtx.initData();
-  }, []);
-
-  const callHandler = () => {
-    // CallNumber.callNumber("9773180438", true)
-    //   .then((res) => console.log("Launched dialer!", res))
-    //   .catch((err) => console.log("Error launching dialer", err));
-  };
-  const [isAdding, setIsAdding] = useState(false);
 
   const [selectedType, setSelectedType] = useState<string>("en");
+
+  const { t } = useTranslation();
+
+  const { i18n } = useTranslation();
+
+  const [isAdding, setIsAdding] = useState(false);
 
   const startLangTypeAddHandler = () => {
     setIsAdding(true);
   };
-  const { t } = useTranslation();
-
-  const { i18n } = useTranslation();
 
   const cancelAddLangTypeHandler = () => {
     setIsAdding(false);
   };
 
   const langTypeAddHandler = (curr: string) => {
-    setSelectedType((old) => {
-      return curr;
-    });
+    setSelectedType(curr);
     i18n.changeLanguage(curr);
-
     setIsAdding(false);
   };
 
@@ -73,41 +63,38 @@ const ProfilePage: React.FC = () => {
   }, [userCtx.isLoad]);
 
   const handleLogout = () => {
-    createStore("APPDB");
-    set("jwt", "none");
-    set("userId", "none");
-    OneSignal.removeExternalUserId();
-    setLogO(true);
+    try {
+      createStore("APPDB");
+      set("jwt", "none");
+      set("userId", "none");
+      set("notification", []);
+      OneSignal.removeExternalUserId();
+      setLogO(true);
+    } catch (error) {
+      console.log(error);
+      setLogO(true);
+    }
   };
 
   if (logO) {
     window.location.assign("/");
-    // return <Redirect to="/dashbord" />;
   }
 
   return (
     <IonPage>
-      <LangModal
-        show={isAdding}
-        onCancel={cancelAddLangTypeHandler}
-        onSave={langTypeAddHandler}
-      />
       <IonHeader className="IonHeader">
         <IonToolbar>
           <IonText slot="start" color="primary">
-            <strong>{t("profile_page")}</strong>
+            <strong>Profile</strong>
           </IonText>
-          <IonButton onClick={startLangTypeAddHandler} fill="clear" slot="end">
-            <IonIcon
-              icon={optionsOutline}
-              color="primary"
-              size="large"
-              onClick={startLangTypeAddHandler}
-            />
-          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={true}>
+        <LangModal
+          show={isAdding}
+          onCancel={cancelAddLangTypeHandler}
+          onSave={langTypeAddHandler}
+        />
         <IonList>
           <IonItem>
             <IonGrid>
@@ -157,8 +144,23 @@ const ProfilePage: React.FC = () => {
               </IonRow>
             </IonGrid>
           </IonItem>
+          <IonItem>
+            <IonLabel>
+              <IonText className="ion-text-subhead" color="primary">
+                <strong>
+                  Choose language: {selectedType == "en" ? "English" : "Hindi"}
+                </strong>
+              </IonText>
+            </IonLabel>
+
+            <IonIcon
+              slot="end"
+              icon={optionsOutline}
+              color="primary"
+              onClick={startLangTypeAddHandler}
+            />
+          </IonItem>
           <IonButton
-            // onClick={callHandler}
             routerLink={`/dashbord/syncPage`}
             className="button-submit"
             slot="end"
@@ -167,7 +169,7 @@ const ProfilePage: React.FC = () => {
             fill="solid"
             shape="round"
           >
-            {t("contact_nrc")}
+            Sync page
           </IonButton>
           <IonButton
             onClick={handleLogout}
@@ -177,7 +179,6 @@ const ProfilePage: React.FC = () => {
             color="primary"
             fill="outline"
             shape="round"
-            // routerLink="/homePage"
           >
             {t("logout")}
           </IonButton>

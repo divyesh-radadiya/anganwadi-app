@@ -1,6 +1,8 @@
 import {
   IonButton,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonHeader,
   IonIcon,
   IonList,
@@ -10,20 +12,26 @@ import {
 } from "@ionic/react";
 import React, { useContext, useEffect } from "react";
 import { Followup } from "../../models/followup";
-import FollowUpCard from "../components/follow_up_card";
-import { chevronBackOutline } from "ionicons/icons";
-
+import { chevronBackOutline, refreshOutline } from "ionicons/icons";
 import "../constants/home.css";
 import ChildernContext from "../../stores/childern_contex";
 import { useHistory } from "react-router";
+import SyncFollowUpCard from "../components/sync_follow_up_card";
 
 const SyncPage: React.FC = () => {
   const childernCtx = useContext(ChildernContext);
+
   const history = useHistory();
+
   useEffect(() => {
     childernCtx.updateSyncFollowup();
   }, []);
-  var i = 0;
+
+  const clearData = () => {
+    childernCtx.initContext();
+    history.push("/");
+  };
+
   return (
     <IonPage>
       <IonHeader className="IonHeader">
@@ -41,31 +49,30 @@ const SyncPage: React.FC = () => {
               size="large"
               onClick={() => {
                 history.goBack();
-              }} // onClick={startSearchTypeAddHandler}
+              }}
             />
           </IonButton>
-          <IonText slot="start" color="primary" className="ion-text-title">
-            All Sync follow ups
+
+          <IonText slot="start" color="primary">
+            <strong> All Sync follow ups</strong>
           </IonText>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
         <IonList>
-          <IonList>
-            {childernCtx.syncFollowup.map((followup: Followup) => {
-              i++;
-              return (
-                <FollowUpCard
-                  key={followup.followUpId}
-                  no={i}
-                  followup={followup}
-                  childId={childernCtx.selectedChild.samId}
-                />
-              );
-            })}
-          </IonList>
+          {childernCtx.syncFollowup.map((followup: Followup) => {
+            return (
+              <SyncFollowUpCard key={followup.followUpId} followup={followup} />
+            );
+          })}
         </IonList>
       </IonContent>
+      <IonFab horizontal="end" vertical="bottom" slot="fixed">
+        <IonFabButton color="primary" onClick={clearData}>
+          <IonIcon icon={refreshOutline} />
+        </IonFabButton>
+      </IonFab>
     </IonPage>
   );
 };

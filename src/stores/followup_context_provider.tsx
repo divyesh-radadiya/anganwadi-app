@@ -34,6 +34,13 @@ const FollowupContextProvider: React.FC = (props) => {
     isDone: false,
     nextFollowupid: "2",
     nextDate: new Date("2022-03-01"),
+    admissionDate: new Date("2022-03-01"),
+    admissionWeight: 2.1,
+    targetWeight: 2.6,
+    dischargeDate: new Date("2022-03-01"),
+    dischargeWeight: 2.5,
+    outcome: "normal",
+    treatmentProtocol: "healthy diet",
     followUps: [
       {
         followUpId: "1",
@@ -221,6 +228,8 @@ const FollowupContextProvider: React.FC = (props) => {
     children[ci].isDone = curChild.isDone;
     children[ci].nextDate = curChild.nextDate;
     children[ci].nextFollowupid = curChild.nextFollowupid;
+    children[ci].currGrowthStatus = curFollowUp.growthStatus;
+    children[ci].currWeight = curFollowUp.weight;
 
     allChildren = children;
 
