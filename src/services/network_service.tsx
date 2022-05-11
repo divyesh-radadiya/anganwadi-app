@@ -1,13 +1,12 @@
-import { Toast } from "@capacitor/toast";
 import axios from "axios";
 import { Followup } from "../models/followup";
 
-const base = "http://192.168.59.208:8080";
-// const base = "http://48b3-119-161-98-68.ngrok.io";
+// const base = "http://192.168.65.208:8080";
+const base = "http://localhost:8080";
 
 const sendRequest = async (authCode: string) => {
   const response = await axios.get(
-    base + "/api/v1/discharge_summary/findByAwwId/1",
+    base + "/api/v1/discharge_summary/findByAwwId",
     {
       headers: {
         "Content-Type": "application/json",
@@ -28,11 +27,6 @@ export const getUser = async (authCode: string) => {
   });
   //   console.log(response);
   return response.data;
-};
-const showToast = async (msg: string) => {
-  await Toast.show({
-    text: msg,
-  });
 };
 
 export const logInRequest = async (userId: string, password: string) => {

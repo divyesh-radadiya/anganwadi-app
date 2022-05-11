@@ -10,7 +10,6 @@ interface Context {
     isSync:number;
     isSession:boolean;
     allChildren: Child[];
-    searchChildren: Child[];
     completedChildren:Child[];
     todayChildren:Child[];
     lateChildren:Child[];
@@ -24,12 +23,10 @@ interface Context {
     initContext: () => void;
     isChildSelect: (samId: string) => void;
     isFollowUpSelect: (followUpId: string) => void;
-    search: (searchType : string,name?: string) => void;
     updateData:() => void;
     updateSyncFollowup:() => void;
     getOfflineData:() => void;
     updateOfflineData:() => void;
-    updateSearchData:() => void;
     
 }
 

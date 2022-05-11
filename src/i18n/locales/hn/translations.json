@@ -16,8 +16,15 @@
     "error!":"त्रुटि!",
     "dismiss":"खारिज",
 
-    "pending_children":"लंबित बच्चे",
-    "completed_children":"पूर्ण बच्चे",
+    "welcome":"वापसी पर स्वागत है",
+    "anganwadi_app":"आंगनबाडी ऐप",
+    "pending":"लंबित",
+    "completed":"पूर्ण",
+    "followups":"फॉलोअप",
+    "today":"आज",
+    "late":"देर से",
+    "very_late":" बहुत देर से",
+    "up_coming":"आ रहा है",
     "filter_by":"फिल्टर के द्वारा",
     "ok":"ठीक",
 
@@ -36,6 +43,10 @@
     "done":"पूर्ण",
 
     "notification_page":"अधिसूचना पृष्ठ",
+    "new_followups":"नए फॉलोअप",
+    "pending_followups":"लंबित फॉलोअप",
+    "name":"नाम",
+    "details":"विवरण",
     
 
     "profile_page":"प्रोफ़ाइल पृष्ठ",
@@ -45,5 +56,11 @@
     "logout":"लॉग आउट",
     "switch_languages":"भाषा बदलें",
     "cancel":"रद्द करें",
-    "save":"सहेजें"
+    "save":"सहेजें",
+    "sync_page":"सिंक पेज",
+
+    "all_sync_follow_ups":"सभी सिंक फॉलो अप",
+    "follow_up_id":"फॉलो अप आईडी",
+    "Status":"स्थिति",
+    "KG":"केजी"
 }

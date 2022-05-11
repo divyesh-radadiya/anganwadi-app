@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   IonModal,
   IonContent,
@@ -6,7 +6,6 @@ import {
   IonRow,
   IonCol,
   IonButton,
-  IonDatetime,
   IonRadioGroup,
   IonListHeader,
   IonLabel,

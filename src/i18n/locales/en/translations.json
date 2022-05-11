@@ -16,8 +16,17 @@
     "error!":"Error!",
     "dismiss":"Dismiss",
 
-    "pending_children":"Pending children",
-    "completed_children":"Completed children",
+    "welcome":"Welcome back to",
+    "anganwadi_app":"Anganwadi App",
+    "pending":"Pending",
+    "completed":"Completed",
+    "followups":"Followups",
+    "today":"Today",
+    "late":"Late",
+    "very_late":" Very Late",
+    "up_coming":"Up Coming",
+
+
     "filter_by":"Filter By",
     "ok":"OK",
 
@@ -36,6 +45,11 @@
     "done":"Done",
 
     "notification_page":"Notification page",
+    "new_followups":"New Followups",
+    "pending_followups":"Pending Followups",
+    "name":"Name",
+    "details":"Details",
+
 
 
     "profile_page":"Profile page",
@@ -45,5 +59,11 @@
     "logout":"LogOut",
     "switch_languages":"Switch languages",
     "cancel":"Cancel",
-    "save":"Save"
+    "save":"Save",
+    "sync_page":"Sync page",
+
+    "all_sync_follow_ups":"All Sync follow ups",
+    "follow_up_id":"Follow up id",
+    "Status":"Status",
+    "KG":"KG"
 }

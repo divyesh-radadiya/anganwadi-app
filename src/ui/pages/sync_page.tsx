@@ -1,12 +1,16 @@
 import {
   IonButton,
+  IonCol,
   IonContent,
   IonFab,
   IonFabButton,
+  IonGrid,
   IonHeader,
   IonIcon,
+  IonItem,
   IonList,
   IonPage,
+  IonRow,
   IonText,
   IonToolbar,
 } from "@ionic/react";
@@ -17,8 +21,11 @@ import "../constants/home.css";
 import ChildernContext from "../../stores/childern_contex";
 import { useHistory } from "react-router";
 import SyncFollowUpCard from "../components/sync_follow_up_card";
+import { useTranslation } from "react-i18next";
 
 const SyncPage: React.FC = () => {
+  const { t } = useTranslation();
+
   const childernCtx = useContext(ChildernContext);
 
   const history = useHistory();
@@ -54,7 +61,7 @@ const SyncPage: React.FC = () => {
           </IonButton>
 
           <IonText slot="start" color="primary">
-            <strong> All Sync follow ups</strong>
+            <strong> {t("all_sync_follow_ups")}</strong>
           </IonText>
         </IonToolbar>
       </IonHeader>
@@ -66,6 +73,19 @@ const SyncPage: React.FC = () => {
               <SyncFollowUpCard key={followup.followUpId} followup={followup} />
             );
           })}
+          {childernCtx.syncFollowup.length == 0 && (
+            <IonGrid>
+              <IonRow>
+                <IonCol size="12" className="ion-text-center">
+                  <IonItem></IonItem>
+                  <IonText className="ion-text-subhead" color="primary">
+                    <strong>No Data found</strong>
+                  </IonText>
+                  <IonItem></IonItem>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          )}
         </IonList>
       </IonContent>
       <IonFab horizontal="end" vertical="bottom" slot="fixed">

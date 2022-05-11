@@ -12,6 +12,8 @@ import {
   IonCol,
   IonButton,
   SearchbarChangeEventDetail,
+  IonGrid,
+  IonItem,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
 import React, { useContext, useEffect, useState } from "react";
@@ -72,7 +74,7 @@ const SearchPage: React.FC = () => {
       <IonHeader className="IonHeader">
         <IonToolbar className="IonToolbar">
           <IonText slot="start" color="primary">
-            <strong>Search</strong>
+            <strong>{t("search")}</strong>
           </IonText>
         </IonToolbar>
       </IonHeader>
@@ -85,7 +87,9 @@ const SearchPage: React.FC = () => {
                 showClearButton="never"
                 className="ion-searchbar"
                 onIonChange={handleInput}
-                placeholder="Name, SamId or Mobile No."
+                placeholder={
+                  t("name") + ", " + t("samid") + " or " + t("mobile_no")
+                }
               ></IonSearchbar>
             </IonCol>
             <IonCol className="ion-text-center" size="3">
@@ -97,6 +101,19 @@ const SearchPage: React.FC = () => {
         </IonCard>
 
         <IonList>
+          {childernCtx.allChildren.length == 0 && (
+            <IonGrid>
+              <IonRow>
+                <IonCol size="12" className="ion-text-center">
+                  <IonItem></IonItem>
+                  <IonText className="ion-text-subhead" color="primary">
+                    <strong>No Data found</strong>
+                  </IonText>
+                  <IonItem></IonItem>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          )}
           {isVis.map((isV: Boolean, index) => {
             return (
               isV && <ChildCard key={items[index].samId} child={items[index]} />

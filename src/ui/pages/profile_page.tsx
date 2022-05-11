@@ -85,7 +85,7 @@ const ProfilePage: React.FC = () => {
       <IonHeader className="IonHeader">
         <IonToolbar>
           <IonText slot="start" color="primary">
-            <strong>Profile</strong>
+            <strong>{t("profile")}</strong>
           </IonText>
         </IonToolbar>
       </IonHeader>
@@ -148,7 +148,8 @@ const ProfilePage: React.FC = () => {
             <IonLabel>
               <IonText className="ion-text-subhead" color="primary">
                 <strong>
-                  Choose language: {selectedType == "en" ? "English" : "Hindi"}
+                  {t("switch_languages")} :{" "}
+                  {selectedType == "en" ? "English" : "Hindi"}
                 </strong>
               </IonText>
             </IonLabel>
@@ -169,7 +170,7 @@ const ProfilePage: React.FC = () => {
             fill="solid"
             shape="round"
           >
-            Sync page
+            {t("sync_page")}
           </IonButton>
           <IonButton
             onClick={handleLogout}

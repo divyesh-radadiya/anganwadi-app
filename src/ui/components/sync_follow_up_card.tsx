@@ -10,6 +10,7 @@ import {
 } from "@ionic/react";
 import { addOutline } from "ionicons/icons";
 import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { Followup } from "../../models/followup";
 import ChildernContext from "../../stores/childern_contex";
 import "../constants/card.css";
@@ -22,6 +23,8 @@ const SyncFollowUpCard: React.FC<ContainerProps> = ({ followup }) => {
   // const clickHandler = () => {
   //   childernCtx.isFollowUpSelect(followup.followUpId);
   // };
+  const { t } = useTranslation();
+
   return followup.attempted ? (
     <IonCard
       className={
@@ -32,12 +35,12 @@ const SyncFollowUpCard: React.FC<ContainerProps> = ({ followup }) => {
         <IonRow>
           <IonCol>
             <IonLabel color="primary" className="ion-text-subhead">
-              Follow up id {followup.followUpId}
+              {t("follow_up_id")} {followup.followUpId}
             </IonLabel>
           </IonCol>
           <IonCol className="ion-text-end">
             <IonText color="primary" className="ion-text-subhead">
-              Status: {followup.growthStatus}
+              {t("Status")}: {followup.growthStatus}
             </IonText>
           </IonCol>
         </IonRow>
@@ -57,7 +60,7 @@ const SyncFollowUpCard: React.FC<ContainerProps> = ({ followup }) => {
               shape="round"
               className="col-no-top"
             >
-              {followup.weight} KG
+              {followup.weight} {t("KG")}
             </IonButton>
           </IonCol>
         </IonRow>

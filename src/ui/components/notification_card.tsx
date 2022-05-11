@@ -96,7 +96,7 @@ const NotificationCard: React.FC<ContainerProps> = ({ notif }) => {
                   <IonRow>
                     <IonCol>
                       <IonLabel color="primary" className="ion-text-subhead">
-                        Name: {notif.name}
+                        {t("name")}: {notif.name}
                       </IonLabel>
                     </IonCol>
                   </IonRow>
@@ -117,7 +117,7 @@ const NotificationCard: React.FC<ContainerProps> = ({ notif }) => {
                     fill="solid"
                     shape="round"
                   >
-                    Details
+                    {t("details")}
                   </IonButton>
                 </IonCol>
               </IonRow>

@@ -81,8 +81,6 @@ const ChildernContextProvider: React.FC = (props) => {
     // },
   ]);
 
-  const [searchChildren, setSearchChildern] = useState<Child[]>([]);
-
   const [syncFollowup, setSyncFollowup] = useState<Followup[]>([]);
 
   const [selectedChild, setChild] = useState<Child>({
@@ -191,7 +189,9 @@ const ChildernContextProvider: React.FC = (props) => {
               let isDone = true;
               let nextDate = new Date();
               let nextFollowupid = "-";
-
+              newChild.currWeight = curData["weight"];
+              newChild.currGrowthStatus =
+                curData["admission"]["child"]["growthStatus"];
               curData["followUps"].forEach((curfollow: any) => {
                 let newFollow: Followup = Object.assign(
                   new Followup(),
@@ -360,12 +360,6 @@ const ChildernContextProvider: React.FC = (props) => {
     console.log("Got value", children);
   };
 
-  const updateSearchData = () => {
-    setSearchChildern((allSearchChildren) => {
-      return allChildren;
-    });
-  };
-
   async function initDb() {
     const store = new Storage();
 
@@ -376,7 +370,6 @@ const ChildernContextProvider: React.FC = (props) => {
 
   useEffect(() => {
     updateOfflineData();
-    updateSearchData();
   }, [db]);
 
   const isChildSelect = (samId: string) => {
@@ -399,10 +392,6 @@ const ChildernContextProvider: React.FC = (props) => {
       curfollow.followupDate = new Date(curfollow.followupDate);
       allfollowUps = allfollowUps.concat(curfollow);
     });
-    // allfollowUps.sort()
-    // allfollowUps.sort(function(a, b) {
-    //   return a.followupDate.getTime()-b.followupDate.getTime();
-    // });
     currSelectedChildNext.followUps = allfollowUps;
 
     setChild((currChild) => currSelectedChildNext);
@@ -417,46 +406,6 @@ const ChildernContextProvider: React.FC = (props) => {
         setFollowUp((currFollowUp) => curfollow);
       }
     });
-  };
-
-  const search = (searchType: string, name?: string) => {
-    // setLoad(true);
-    if (name == "" || name == null || name == undefined) {
-      updateSearchData();
-    } else {
-      setSearchChildern(() => {
-        return [];
-      });
-
-      if (searchType == "child_name") {
-        allChildren.forEach((child: Child) => {
-          if (name?.toLowerCase() == child.name.toLowerCase()) {
-            setSearchChildern((allSearchChildren) => {
-              return allSearchChildren.concat(child);
-            });
-          }
-        });
-      } else if (searchType == "sam_id") {
-        allChildren.forEach((child: Child) => {
-          if (name?.toLowerCase() == child.samId.toString().toLowerCase()) {
-            setSearchChildern((allSearchChildren) => {
-              return allSearchChildren.concat(child);
-            });
-          }
-        });
-      } else if (searchType == "mobile_no") {
-        allChildren.forEach((child: Child) => {
-          if (
-            name?.toLowerCase() == child.contactNumber.toString().toLowerCase()
-          ) {
-            setSearchChildern((allSearchChildren) => {
-              return allSearchChildren.concat(child);
-            });
-          }
-        });
-      }
-    }
-    // setLoad(false);
   };
 
   const updateSyncFollowup = async () => {
@@ -475,7 +424,6 @@ const ChildernContextProvider: React.FC = (props) => {
         isSession,
         db,
         allChildren,
-        searchChildren,
         completedChildren,
         todayChildren,
         lateChildren,
@@ -488,12 +436,10 @@ const ChildernContextProvider: React.FC = (props) => {
         initContext,
         isChildSelect,
         isFollowUpSelect,
-        search,
         updateData,
         updateSyncFollowup,
         getOfflineData,
         updateOfflineData,
-        updateSearchData,
       }}
     >
       {props.children}

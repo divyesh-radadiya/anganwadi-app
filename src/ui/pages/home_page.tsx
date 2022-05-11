@@ -1,9 +1,11 @@
 import {
   IonAlert,
   IonCard,
+  IonCol,
   IonContent,
   IonFab,
   IonFabButton,
+  IonGrid,
   IonIcon,
   IonImg,
   IonItem,
@@ -11,6 +13,7 @@ import {
   IonList,
   IonListHeader,
   IonPage,
+  IonRow,
   IonSegment,
   IonSegmentButton,
   IonSlide,
@@ -107,11 +110,11 @@ const HomePage: React.FC = () => {
         <IonList>
           <IonListHeader>
             <IonText className="ion-text-topsubhead">
-              {userCtx.curUser.name} Welcome back to,
+              {userCtx.curUser.name} {t("welcome")},
             </IonText>
           </IonListHeader>
           <IonListHeader>
-            <IonText className="ion-text-title">Anganwadi App</IonText>
+            <IonText className="ion-text-title">{t("anganwadi_app")}</IonText>
           </IonListHeader>
 
           <IonSlides pager={true} options={slideOpts}>
@@ -133,7 +136,7 @@ const HomePage: React.FC = () => {
           </IonSlides>
 
           <IonListHeader>
-            <IonText className="ion-text-title">FollowUps</IonText>
+            <IonText className="ion-text-title">{t("followups")}</IonText>
           </IonListHeader>
           <IonSegment
             value={selected}
@@ -142,10 +145,10 @@ const HomePage: React.FC = () => {
             }
           >
             <IonSegmentButton value="pending_children">
-              <IonLabel>Pending</IonLabel>
+              <IonLabel>{t("pending")}</IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="completed_children">
-              <IonLabel>Completed</IonLabel>
+              <IonLabel>{t("completed")}</IonLabel>
             </IonSegmentButton>
           </IonSegment>
           <IonCard></IonCard>
@@ -154,7 +157,7 @@ const HomePage: React.FC = () => {
             childernCtx.todayChildren.length > 0 && (
               <IonItem>
                 <IonText className="ion-text-head ion-text-success">
-                  Today{" "}
+                  {t("today")}{" "}
                 </IonText>
               </IonItem>
             )}
@@ -171,7 +174,7 @@ const HomePage: React.FC = () => {
             childernCtx.lateChildren.length > 0 && (
               <IonItem>
                 <IonText className="ion-text-head ion-text-less-danger">
-                  Late{" "}
+                  {t("late")}{" "}
                 </IonText>
               </IonItem>
             )}
@@ -188,7 +191,7 @@ const HomePage: React.FC = () => {
             childernCtx.veryLateChildren.length > 0 && (
               <IonItem>
                 <IonText className="ion-text-head ion-text-danger">
-                  Very Late{" "}
+                  {t("very_late")}{" "}
                 </IonText>
               </IonItem>
             )}
@@ -204,7 +207,7 @@ const HomePage: React.FC = () => {
           {selected == "pending_children" &&
             childernCtx.upcomingChildren.length > 0 && (
               <IonItem>
-                <IonText className="ion-text-head">Up Coming </IonText>
+                <IonText className="ion-text-head">{t("up_coming")} </IonText>
               </IonItem>
             )}
 
@@ -220,6 +223,20 @@ const HomePage: React.FC = () => {
             (child: Child) =>
               selected == "completed_children" &&
               child.isDone && <ChildCard key={child.samId} child={child} />
+          )}
+
+          {childernCtx.allChildren.length == 0 && (
+            <IonGrid>
+              <IonRow>
+                <IonCol size="12" className="ion-text-center">
+                  <IonItem></IonItem>
+                  <IonText className="ion-text-subhead" color="primary">
+                    <strong>No Data found</strong>
+                  </IonText>
+                  <IonItem></IonItem>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           )}
         </IonList>
 

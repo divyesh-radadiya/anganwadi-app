@@ -2,14 +2,13 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonText,
   IonToolbar,
   useIonLoading,
 } from "@ionic/react";
 import { useEffect } from "react";
 
 const Loading: React.FC = () => {
-  const [present, dismiss] = useIonLoading();
+  const [present] = useIonLoading();
 
   useEffect(() => {
     present({

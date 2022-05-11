@@ -1,5 +1,3 @@
-import { Child } from "../models/child";
-import { Followup } from "../models/followup";
 import { getUser } from "../services/network_service";
 import { useEffect, useState } from "react";
 import { Database, Storage } from "@ionic/storage";
@@ -40,8 +38,6 @@ const UserContextProvider: React.FC = (props) => {
       longitude: 76.4758,
     },
   });
-  var synFollowUps: Followup[] = [];
-  var allChildren: Child[] = [];
 
   const [userJWT, setUserJWT] = useState<string>("");
 

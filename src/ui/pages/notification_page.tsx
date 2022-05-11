@@ -11,6 +11,10 @@ import {
   IonFab,
   IonFabButton,
   IonIcon,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonItem,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import {
@@ -163,7 +167,7 @@ const NotificationPage: React.FC = () => {
       <IonHeader className="IonHeader">
         <IonToolbar>
           <IonText slot="start" color="primary">
-            <strong>Notification</strong>
+            <strong>{t("notification")}</strong>
           </IonText>
         </IonToolbar>
       </IonHeader>
@@ -173,12 +177,25 @@ const NotificationPage: React.FC = () => {
           onIonChange={(e) => setSelectedType(e.detail.value ?? "new")}
         >
           <IonSegmentButton value="new">
-            <IonLabel>New Followups</IonLabel>
+            <IonLabel>{t("new_followups")}</IonLabel>
           </IonSegmentButton>
           <IonSegmentButton value="pending">
-            <IonLabel>Pending Followups</IonLabel>
+            <IonLabel>{t("pending_followups")}</IonLabel>
           </IonSegmentButton>
         </IonSegment>
+        {notifications.length == 0 && (
+          <IonGrid>
+            <IonRow>
+              <IonCol size="12" className="ion-text-center">
+                <IonItem></IonItem>
+                <IonText className="ion-text-subhead" color="primary">
+                  <strong>No Data found</strong>
+                </IonText>
+                <IonItem></IonItem>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        )}
         {selectedType === "new" && (
           <IonList>
             {notifications.reverse().map((notif: NotificationData, index) => {

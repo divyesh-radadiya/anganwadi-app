@@ -142,6 +142,7 @@ const FollowupContextProvider: React.FC = (props) => {
   const updateJwt = (jwt: string) => {
     setUserJWT(jwt);
   };
+
   const onSubmit = async (subFollowUp: Followup, subChild: Child) => {
     setLoad(11);
     setOn(true);
@@ -171,10 +172,6 @@ const FollowupContextProvider: React.FC = (props) => {
     }
 
     setCurChild(subChild);
-
-    // setCurFollowUp((old) => {
-    //   return subFollowUp;
-    // });
 
     await updateData(subFollowUp);
 

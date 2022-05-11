@@ -239,10 +239,26 @@ const FollowUpPage: React.FC = () => {
               Address : {childernCtx.selectedChild?.address}
             </IonText>
           </IonItem>
+          {childernCtx.selectedFollowUp?.attempted && (
+            <IonItem>
+              <IonText className="ion-text-subhead">
+                {" "}
+                Actual date :{" "}
+                {childernCtx.selectedFollowUp.followupDate.toDateString()}
+              </IonText>
+            </IonItem>
+          )}
 
-          <IonItem>
-            <IonText className="ion-text-head">Enter details</IonText>
-          </IonItem>
+          {childernCtx.selectedFollowUp?.attempted && (
+            <IonItem>
+              <IonText className="ion-text-head">Details</IonText>
+            </IonItem>
+          )}
+          {!childernCtx.selectedFollowUp?.attempted && (
+            <IonItem>
+              <IonText className="ion-text-head">Enter details</IonText>
+            </IonItem>
+          )}
 
           {childernCtx.selectedFollowUp?.attempted && (
             <IonGrid>
@@ -262,8 +278,10 @@ const FollowUpPage: React.FC = () => {
                 <IonCol className="col-left col-no-top">
                   <IonCard className="ion-card">
                     <IonInput
-                      placeholder="Weight"
-                      value={childernCtx.selectedFollowUp?.weight?.toString()}
+                      placeholder="Weight(KG)"
+                      value={
+                        childernCtx.selectedFollowUp?.weight?.toString() + " kg"
+                      }
                       readonly
                       inputmode="numeric"
                     ></IonInput>
@@ -272,8 +290,10 @@ const FollowUpPage: React.FC = () => {
                 <IonCol className="col-right col-no-top">
                   <IonCard className="ion-card">
                     <IonInput
-                      placeholder="Height"
-                      value={childernCtx.selectedFollowUp?.height?.toString()}
+                      placeholder="Height(cm)"
+                      value={
+                        childernCtx.selectedFollowUp?.height?.toString() + " cm"
+                      }
                       readonly
                       inputmode="numeric"
                     ></IonInput>
@@ -369,7 +389,7 @@ const FollowUpPage: React.FC = () => {
                 <IonCol className="col-left col-no-top">
                   <IonCard className="ion-card">
                     <IonInput
-                      placeholder="Weight"
+                      placeholder="Weight(kg)"
                       inputmode="numeric"
                       ref={weightRef}
                       // value={childernCtx.selectedFollowUp?.weight?.toString()}
@@ -380,7 +400,7 @@ const FollowUpPage: React.FC = () => {
                 <IonCol className="col-right col-no-top">
                   <IonCard className="ion-card">
                     <IonInput
-                      placeholder="Height"
+                      placeholder="Height(cm)"
                       inputmode="numeric"
                       ref={heightRef}
                       // value={60}
